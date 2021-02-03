@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pagadores</title>
+  <link rel="stylesheet" type="text/css" href="./css/prototype.css">
+  <script type="text/javascript" src="js/prototype.js"> </script>
+  <script type="text/javascript" src="js/modernizr.js"> </script>
+  <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+  <script type="text/javascript" src="js/indexCtrl.js"> </script>
+</head>
+<body ng-app="fiPessoas" ng-controller="fiPessoas as fiCtrl">
+  <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
+    <div style="height: 42px;">
+      <img height="100%" class="sc-border-radius" src="https://www.seucondominio.com.br/assets/responsivo/logo-seucondominio-d27c9e579e5286867bca8a6707f5f9af96addd5d7b62d47c0d0f8685979e6b0d.svg">
+    </div>
+  </header>
+
+  <div class="sc-m-lg">
+    <section id="top-bar" style="height: 52px;">
+      <div class="sc-p-r-xl left">
+        <button class="sc-btn sc-btn-blue sc-btn-awesomeness">
+          <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
+          <div class="sc-btn-text">Cadastrar Pessoa</div>
+        </button>
+      </div>
+      <div class="col-xs-4 col-md-4">
+        <form class="sc-input-group">
+          <input class="sc-input-default" type="text" placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone">
+          <button class="sc-btn sc-btn-blue">
+            <i class="sc-icon-lupa-2"></i>
+          </button>
+              <button class="sc-btn">
+            <i class="sc-icon-filtro-2"></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="sc-btn-group left">
+        <div class="sc-btn">
+          <span>Pessoa Física</span>
+        </div>
+        <div class="sc-btn">
+          <span>Pessoa Jurídica</span>
+        </div>
+      </div>
+
+      <div class="sc-btn-group left sc-p-l-xl">
+        <div class="sc-btn">
+          <span>Pagadores</span>
+        </div>
+        <div class="sc-btn">
+          <span>Fornecedores</span>
+        </div>
+      </div>
+
+      <button class="sc-btn right">
+        <i class="sc-icon-historico"></i>
+      </button>
+
+      <div class="sc-p-lg hidden">
+        <form>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">Nome</label>
+            <input class="sc-input-default sc-input-block" type="text">
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">CPF/CNPJ</label>
+            <input class="sc-input-default sc-input-block" type="text">
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">Telefone</label>
+            <input class="sc-input-default sc-input-block" type="text">
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">E-mail</label>
+            <input class="sc-input-default sc-input-block" type="text">
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">Data</label>
+            <div ng-model="datePickerDate" sc-date-picker=""></div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+            <label class="sc-label">Tipo de Data</label>
+            <select class="sc-input-default">
+              <option value="criado">Criado em</option>
+              <option value="ultimoReaj">Último Reajuste Contratual em</option>
+              <option value="reajuste">Reajuste em</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+            <div class="sc-dropdown">
+              <button type="button" class="sc-btn sc-btn-blue">Opções </button>
+              <ul class="sc-dropdown-menu">
+                <li><a href="">Action</a></li>
+                <li class="disabled"><a href="">Disabled Action</a></li>
+                <li class="divider"></li>
+                <li><a href="">Any Menu</a></li>
+                <li><a href="">Other Menu</a></li>
+              </ul>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+    </section>
+
+    <section id="pessoas">
+      <div class="sc-p-md-lg">
+        <ul class="sc-accordion">
+          <li ng-repeat="item in listaPessoas track by item.id" class="sc-acc-hover-blue" ng-class="{'sc-acc-opened' : item.opened}">
+            <div ng-click="item.opened = !item.opened" class="sc-accordion-head ">
+              <div class="sc-accordion-icon-col sc-divider align-xs-center">
+                <i class="sc-text-xl sc-icon sc-icon-homem-1 sc-transition" ng-class="{'sc-rotate-90': item.opened}"></i>
+              </div>
+              <div class="sc-accordion-elastic-col title">
+                {{item.nome}}
+              </div>
+            </div>
+            <div ng-show="item.opened" class="sc-accordion-body ng-animation-slider" style="display: none; padding: 1em;">
+              <div class="sc-accordion-element sc-p-xs sc-border-radius sc-border-gray-dark sc-border-solid sc-bg-gray-lighter">
+                {{item.label_text}}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
