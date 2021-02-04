@@ -1,0 +1,106 @@
+<div>
+  <div class="fix">
+    <div class="sc-p-r-xl left">
+      <button class="sc-btn sc-btn-blue sc-btn-awesomeness">
+        <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
+        <div class="sc-btn-text">Cadastrar Pessoa</div>
+      </button>
+    </div>
+
+    <div class="col-xs-4 col-md-4">
+      <form class="sc-input-group">
+        <input class="sc-input-default" type="text" placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone">
+        <button class="sc-btn sc-btn-blue">
+          <i class="sc-icon-lupa-2"></i>
+        </button>
+            <button class="sc-btn" ng-click="idxCtrl.avancado = !idxCtrl.avancado">
+          <i class="sc-icon-filtro-2"></i>
+        </button>
+      </form>
+    </div>
+
+    <div class="sc-btn-group left">
+      <div class="sc-btn">
+        <span>Pessoa Física</span>
+      </div>
+      <div class="sc-btn">
+        <span>Pessoa Jurídica</span>
+      </div>
+    </div>
+
+    <div class="sc-btn-group left sc-p-l-xl">
+      <div class="sc-btn">
+        <span>Pagadores</span>
+      </div>
+      <div class="sc-btn">
+        <span>Fornecedores</span>
+      </div>
+    </div>
+
+    <button class="sc-btn right">
+      <i class="sc-icon-historico"></i>
+    </button>
+  </div>
+</div>
+
+<form class="ng-animation-slider" ng-if="idxCtrl.avancado">
+  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">Nome</label>
+    <input class="sc-input-default sc-input-block" type="text">
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">CPF/CNPJ</label>
+    <input class="sc-input-default sc-input-block" type="text">
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">Telefone</label>
+    <input class="sc-input-default sc-input-block" type="text">
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">E-mail</label>
+    <input class="sc-input-default sc-input-block" type="text">
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">Data</label>
+    <div ng-model="datePickerDate"></div>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">Tipo de Data</label>
+    <select class="sc-input-default">
+      <option value="criado">Criado em</option>
+      <option value="ultimoReaj">Último Reajuste Contratual em</option>
+      <option value="reajuste">Reajuste em</option>
+    </select>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+    <label class="sc-label">Opções</label>
+    <span sc-dropdown-menu="" class="sc-dropdown ng-scope">
+      <button type="button" class="sc-btn sc-btn-blue" ng-click="menu.toggle()" style="width: 100%">
+        Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
+      </button>
+      <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+        <li class="sc-dropdown-input">
+          <input placeholder="Busque uma opção" type="text">
+        </li>
+        <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+          <li ng-repeat="filtro in filtro" ng-click="setCheck(filtro)" ng-disabled="filtro.disabled" ng-class="{'disabled': filtro.disabled}">
+            <div>
+              <i ng-class="filtro.active ? 'sc-icon-visto-4' : 'sc-icon-quadrado-1'" class="sc-icon sc-icon-quadrado-1"></i>
+              <span class="ng-binding">{{filtro.opcao}}</span>
+            </div>
+          </li>
+        </div>
+      </ul>
+    </span>
+  </div>
+  <div class="clear"></div>
+  <hr class="sc-hr-gray-light">
+  <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md" type="submit">
+    <div class="sc-btn-icon">
+      <i class="sc-icon-lupa-2"></i>
+    </div>
+    <div class="sc-btn-text">Aplicar</div>
+  </button>
+</form>
