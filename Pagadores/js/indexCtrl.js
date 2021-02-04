@@ -1,12 +1,10 @@
-componentesSc = angular.module("componentesSc", ["sc.app.helpers"])
-  componentesSc.run([
-    '$rootScope', 'scAlert', 'scTopMessages', function($rootScope, scAlert, scTopMessages) {
-      $rootScope.scAlert = scAlert;
-      $rootScope.scTopMessages = scTopMessages;
+pagadoresFinanc = angular.module("pagadoresFinanc", ["sc.app.helpers"])
+  pagadoresFinanc.run([
+    '$rootScope', function($rootScope) {
     }
   ])
-  componentesSc.controller("componentesCtrl", [
-    "$scope", "scAlert", "scTopMessages", function(s, scAlert, scTopMessages) {
+  pagadoresFinanc.controller("pessoasCtrl", [
+    "$scope", function(s) {
 
       s.listaPessoas = [
         { id: 0, key: 'p_um', nome: 'Igor Santos', cpf: '000.000.000-01', telefone: '(62) 9 9674-5214', endereco: 'Rua Maria João, 115, Goiânia, Goiás-GO, 74590579'},
@@ -24,11 +22,27 @@ componentesSc = angular.module("componentesSc", ["sc.app.helpers"])
     		{ id: 4, key: 'acc_cinco', color: 'green', label_text: 'Accordion 5', intensidade: '-darker' }
       ]
 
-    	s.changeColor = function(cor) {
-	      for(let i=0; i < s.listaAcc.length; i++) {
-	      	s.listaAcc[i].color = cor
-	      }
-    	}
+      s.scBorder = { color: 'red', position: '', type: 'solid', size: 'md' }
+
+      s.badgeIcon = [
+        { icon: 'sc-icon-cadeado-aberto', color: 'green' },
+        { icon: 'sc-icon-carta-2', color: 'green' },
+        { icon: 'sc-icon-cafe', color: 'green' },
+        { icon: 'sc-icon-exclamacao-3', color: 'green' },
+        { icon: 'sc-icon-estrela', color: 'green' }
+      ]
+
+      s.corIntensidade = ['-lighter', '-light', '', '-dark', '-darker'];
+
+      s.cores = ['blue', 'cian', 'green', 'red', 'yellow', 'gray']
+
+      s.listaBdg = [
+        { id: 0, key: 'bdg_um', color: 'green', intensidade: '-lighter'},
+        { id: 1, key: 'bdg_dois', color: 'green', intensidade: '-light'},
+        { id: 2, key: 'bdg_tres', color: 'green', intensidade: ''},
+        { id: 3, key: 'bdg_quatro', color: 'green', intensidade: '-dark'},
+        { id: 4, key: 'bdg_cinco', color: 'green', intensidade: '-darker'}
+      ]
 
     	s.listaAlign = [
     		{ id: 0, key: 'align_um', posicao: 'align-left', },
@@ -39,50 +53,21 @@ componentesSc = angular.module("componentesSc", ["sc.app.helpers"])
 
     	s.listaCoresBg = ['red-lighter', 'red-light', 'red', 'red-dark', 'red-darker']
 
+      s.scSides = ["", "-t", "-b", "-l", "-r", "-h", "-v"];
 
-      s.alert = function() {
-        scAlert.open({
-          title: 'O que é isso?',
-          messages: ['Se você acha que isso é um alerta clique em OK!', 'Só existe essa opção, então clica logo :P'],
-          buttons: [
-            {
-              label: 'OK',
-              color: 'green'
-            }
-          ]
-        })
+      // s.changeSide = function() {
+
+      // }
+
+      s.changeColorAcc = function(cor) {
+        for(let i=0; i < s.listaAcc.length; i++) {
+          s.listaAcc[i].color = cor
+        }
       }
 
-      s.confirm = function() {
-        scAlert.open({
-          title: 'Você tem certeza?',
-          messages: 'Você não será capaz de recuperar esse registro!',
-          buttons: [
-            {
-              label: 'Cancelar',
-              color: 'gray'
-            }, {
-              label: 'Excluír',
-              color: 'red',
-              action: function() {
-                scTopMessages.openSuccess("Registro excluído com sucesso!");
-              }
-            }
-          ]
-        })
-      }
-
-      // top messages
-
-      s.topMessages = {
-        sucess: function() {
-          scTopMessages.openSuccess("Parabéns!");
-        },
-        danger: function() {
-          scTopMessages.openDanger("Perigo!");
-        },
-        warning: function(){
-          scTopMessages.openWarning("Cuidado!");
+      s.changeColorBdg = function(cor) {
+        for(let i=0; i < s.badgeIcon.length; i++) {
+          s.badgeIcon[i].color = cor
         }
       }
 
