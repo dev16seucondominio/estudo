@@ -1,0 +1,302 @@
+<div class="sc-accordion">
+  <div class="sc-acc-blue">
+    <div class="sc-accordion-head sc-text-blue">
+      <div class="sc-accordion-col-3 align-center">
+        <i class="sc-text-xl sc-icon sc-icon-mais-1"></i>
+      </div>
+      <div class="sc-accordion-elastic-col title">
+        <div class="sc-p-xs">Nova Pessoa</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc-accordion-body ng-animation-slider" >
+    <div class="sc-p-lg sc-accordion-element">
+      <div class="sc-fieldset sc-bg-white form-pessoa fieldset-pessoa-dadosgerais">
+        <div class="sc-fieldset-head">
+          <span class="sc-p-b-md sc-text-blue sc-text-bold">Dados Gerais</span>
+        </div>
+        <div class="flex-row-with-padding pessoa-dadosgerais">
+          <div class="fcol-xs-16em">
+            <div class="sc-label">Tipo</div>
+            <div class="sc-btn-group">
+              <div class="sc-btn">Pagador</div>
+              <div class="sc-btn">Fornecedor</div>
+            </div>
+          </div>
+          <div class="fcol-xs-11em">
+            <div class="sc-label">Pessoa</div>
+            <div class="sc-btn-group">
+              <div class="sc-btn">Física</div>
+              <div class="sc-btn">Jurídica</div>
+            </div>
+          </div>
+          <div class="fcol-xs-11em">
+            <div class="sc-label">Sexo</div>
+            <div class="sc-btn-group">
+              <div class="sc-btn">Masc.</div>
+              <div class="sc-btn">Femin.</div>
+            </div>
+          </div>
+          <div class="fcol-xs-7em">
+            <label>
+              <div class="sc-label">Deficiente</div>
+              <div class="sc-p-v-sm">
+                <span class="sc-toggle sc-toggle-false-blue">
+                  <input ng-model="vmForm.pessoaCtrl.registro.deficiente" type="checkbox" style="">
+                  <span label-false="não" label-true="sim">
+                  </span>
+                </span>
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-auto" style="min-width: 16em">
+            <label>
+              <div class="sc-label">Nome</div>
+              <input class="sc-input-default sc-input-block pessoa-nome" type="text">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
+            <label>
+              <div class="sc-label">CPF</div>
+              <input class="sc-input-default sc-input-block" style="max-width: 100%" type="text">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
+            <label>
+              <div class="sc-label">RG</div>
+              <input class="sc-input-default sc-input-block" type="text">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
+            <label>
+              <div class="sc-label">Nascimento</div>
+              <input class="sc-input-default sc-input-block" type="date" max="3000-12-31">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
+            <label>
+              <div class="sc-label">Profissão</div>
+              <input class="sc-input-default sc-input-block" type="text">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
+            <label>
+              <div class="sc-label">E-mail (principal)</div>
+              <input class="sc-input-default sc-input-block" type="text">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-md-40">
+            <label>
+              <div class="sc-label">E-mail alternativos</div>
+              <input class="sc-input-default sc-input-block" type="email" placeholder="Digite um novo e-mail">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-10em">
+            <label>
+              <div class="sc-label">Identificador
+                <span class="sc-tooltip-md sc-m-l-xs" sc-tooltip="Usado no Controle de Acesso"><i class="sc-icon-info-2"></i></span>
+                <input class="sc-input-default sc-input-block" type="number">
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-md-50">
+            <label>
+              <div class="sc-label">Telefones</div>
+              <input class="sc-input-default sc-input-block" type="text" placeholder="Digite um novo telefone">
+            </label>
+          </div>
+          <div class="fcol-xs-100">
+            <label>
+              <div class="sc-label">Observações</div>
+              <textarea class="sc-input-default sc-input-block" rows="3"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="sc-fieldset sc-fieldset-pessoa-endereco sc-bg-white">
+        <div class="sc-fieldset-head flex-row">
+          <div class="sc-text-blue sc-text-bold">Endereços</div>
+          <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg">
+            <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
+          </div>
+        </div>
+        <div class="flex-row-with-padding fieldset-pessoa-endereco">
+          <div class="fcol-xs-7em">
+            <label>
+              <div class="sc-label">Principal?</div>
+              <div class="sc-p-v-sm">
+                <span class="sc-toggle">
+                  <input type="checkbox">
+                  <span label-false="não" label-true="sim"></span>
+                </span>
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-30 fcol-md-13em">
+            <label>
+              <div class="sc-label">Título do Endereço</div>
+              <input class="sc-input-default sc-input-block" type="text" placeholder="Casa, trabalho, etc...">
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-12em">
+            <label>
+              <div class="sc-label">CEP</div>
+              <div class="sc-input-group">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%">
+                <div class="sc-btn sc-btn-blue">
+                  <i class="sc-icon sc-icon-lupa-2"></i>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-20em">
+            <label>
+              <div class="sc-label">Cidade</div>
+              <div class="sc-input-group">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%">
+                <div class="sc-btn sc-btn-blue">
+                  <i class="sc-icon sc-icon-lupa-2"></i>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-50">
+            <label>
+              <div class="sc-label">Logradouro</div>
+              <div class="sc-input-group">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Rua João Alves">
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
+            <label>
+              <div class="sc-label">Número/Complemento</div>
+              <div class="sc-input-group">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="N° 31, Bloco 2, Ap. 103">
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
+            <label>
+              <div class="sc-label">Bairro</div>
+              <div class="sc-input-group">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Setor Central">
+              </div>
+            </label>
+          </div>
+          <div class="fcol-xs-3em align-self-center">
+            <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="sc-fieldset sc-bg-white">
+        <div class="sc-fieldset-head flex-row">
+          <div class="sc-text-blue sc-text-bold">Perfil para Pagamento</div>
+          <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg">
+            <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
+          </div>
+        </div>
+
+        <div class="flex-row-with-padding align-items-flex-end">
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <label>
+              <div class="sc-label">Operação</div>
+              <div class="sc-input-group">
+                <select class="sc-input-default sc-input-block"
+                  ng-model="formCtrl.js"
+                  ng-options="operacoes.key as operacoes.label for operacoes in formCtrl.operacoes">
+                  <option selected="selected" value>Selecione uma operação</option>
+                </select>
+              </div>
+            </label>
+          </div>
+
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <label>
+              <div class="sc-label">Plano de contas</div>
+              <span sc-dropdown-menu="" class="sc-dropdown">
+                <div class="sc-input-group">
+                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
+                </div>
+                <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+                  <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+                    <li ng-repeat="planoDeContas in formCtrl.planoDeContas" ng-class="{'disabled': filtro.disabled}">
+                      <div>
+                        <span>{{planoDeContas.label}}</span>
+                      </div>
+                    </li>
+                  </div>
+                </ul>
+              </span>
+            </label>
+          </div>
+
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <label>
+              <div class="sc-label">Fundo</div>
+              <span sc-dropdown-menu="" class="sc-dropdown">
+                <div class="sc-input-group">
+                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
+                </div>
+                <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+                  <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+                    <li ng-repeat="fundo in formCtrl.fundo" ng-class="{'disabled': filtro.disabled}">
+                      <div>
+                        <span>{{fundo.label}}</span>
+                      </div>
+                    </li>
+                  </div>
+                </ul>
+              </span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sc-fieldset sc-bg-white">
+        <div class="sc-fieldset-head flex-row">
+          <div class="sc-text-blue sc-text-bold">Contas Bancárias</div>
+          <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg">
+            <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
+          </div>
+        </div>
+
+        <div class="flex-row-with-padding">
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <label>
+              <div class="sc-label">Banco</div>
+              <span sc-dropdown-menu="" class="sc-dropdown">
+                <div class="sc-input-group">
+                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
+                </div>
+                <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+                  <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+                    <li ng-repeat="banco in formCtrl.banco" ng-class="{'disabled': filtro.disabled}">
+                      <div>
+                        <span>{{banco.label}}</span>
+                      </div>
+                    </li>
+                  </div>
+                </ul>
+              </span>
+            </label>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
