@@ -1,7 +1,7 @@
-<div>
-  <div id="top-bar-content" class="fix" style="top: 54px;">
+<div id="top-bar-content" class="fix" style="top: 54px;">
+  <div>
     <div class="sc-p-r-xl left">
-      <button class="sc-btn sc-btn-blue sc-btn-awesomeness" ng-click="idxCtrl.exibirForm = !idxCtrl.exibirForm">
+      <button class="sc-btn sc-btn-blue sc-btn-awesomeness" ng-click="idxCtrl.exibirForm = true">
         <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
         <div class="sc-btn-text">Cadastrar Pessoa</div>
       </button>
@@ -41,68 +41,75 @@
       <i class="sc-icon-historico"></i>
     </button>
   </div>
-</div>
 
-<div ng-if="idxCtrl.avancado" class="sc-bg-gray-lighter sc-p-lg sc-dropdown-menu ng-animation-slider">
-  <form>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">Nome</label>
-      <input class="sc-input-default sc-input-block" type="text">
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">CPF/CNPJ</label>
-      <input class="sc-input-default sc-input-block" type="text">
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">Telefone</label>
-      <input class="sc-input-default sc-input-block" type="text">
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">E-mail</label>
-      <input class="sc-input-default sc-input-block" type="text">
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">Data</label>
-      <div ng-model="datePickerDate"></div>
-    </div>
+  <div class="clear"></div>
 
-    <div class="col-xs-12 col-sm-6 col-md-3 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">Tipo de Data</label>
-      <select class="sc-input-default" style="width: 100%">
-        <option value="criado">Criado em</option>
-        <option value="ultimoReaj">Último Reajuste Contratual em</option>
-        <option value="reajuste">Reajuste em</option>
-      </select>
-    </div>
+  <div id="top-bar-filter" class="flex-row">
+    <div ng-if="idxCtrl.avancado" class="sc-p-lg ng-animation-slider" style="display: block;">
+      <form>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">Nome</label>
+          <input class="sc-input-default sc-input-block" type="text">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">CPF/CNPJ</label>
+          <input class="sc-input-default sc-input-block" type="text">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">Telefone</label>
+          <input class="sc-input-default sc-input-block" type="text">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">E-mail</label>
+          <input class="sc-input-default sc-input-block" type="text">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">Data</label>
+          <div ng-model="datePickerDate"></div>
+        </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-3 sc-p-h-md sc-p-b-md">
-      <label class="sc-label">Opções</label>
-      <span sc-dropdown-menu="" class="sc-dropdown">
-        <button type="button" class="sc-btn sc-btn-blue" ng-click="menu.toggle()" style="width: 100%">
-          Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
-        </button>
-        <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
-          <li class="sc-dropdown-input">
-            <input placeholder="Busque uma opção" type="text">
-          </li>
-          <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-            <li ng-repeat="filtro in idxCtrl.filtro" ng-click="setCheck(filtro)" ng-class="{'disabled': filtro.disabled}">
-              <div>
-                <i ng-class="filtro.active ? 'sc-icon-visto-4' : 'sc-icon-quadrado-1'" class="sc-icon sc-icon-quadrado-1"></i>
-                <span class="ng-binding">{{filtro.opcao}}</span>
+        <div class="col-xs-12 col-sm-6 col-md-3 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">Tipo de Data</label>
+          <select class="sc-input-default" style="width: 100%">
+            <option value="criado">Criado em</option>
+            <option value="ultimoReaj">Último Reajuste Contratual em</option>
+            <option value="reajuste">Reajuste em</option>
+          </select>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 sc-p-h-md sc-p-b-md">
+          <label class="sc-label">Opções</label>
+          <span sc-dropdown-menu="" class="sc-dropdown">
+            <button type="button" class="sc-btn sc-btn-blue" ng-click="menu.toggle()" style="width: 100%">
+              Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
+            </button>
+            <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+              <li class="sc-dropdown-input">
+                <input placeholder="Busque uma opção" type="text">
+              </li>
+              <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+                <li ng-repeat="filtro in idxCtrl.filtro" ng-click="setCheck(filtro)" ng-class="{'disabled': filtro.disabled}">
+                  <div>
+                    <i ng-class="filtro.active ? 'sc-icon-visto-4' : 'sc-icon-quadrado-1'" class="sc-icon sc-icon-quadrado-1"></i>
+                    <span class="ng-binding">{{filtro.opcao}}</span>
+                  </div>
+                </li>
               </div>
-            </li>
+            </ul>
+          </span>
+        </div>
+        <div class="clear"></div>
+        <hr class="sc-hr-gray-light">
+        <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md sc-m-b-md" type="submit">
+          <div class="sc-btn-icon">
+            <i class="sc-icon-lupa-2"></i>
           </div>
-        </ul>
-      </span>
+          <div class="sc-btn-text">Aplicar</div>
+        </button>
+      </form>
     </div>
-    <div class="clear"></div>
-    <hr class="sc-hr-gray-light">
-    <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md sc-m-b-md" type="submit">
-      <div class="sc-btn-icon">
-        <i class="sc-icon-lupa-2"></i>
-      </div>
-      <div class="sc-btn-text">Aplicar</div>
-    </button>
-  </form>
+
+  </div>
 </div>
+
+
