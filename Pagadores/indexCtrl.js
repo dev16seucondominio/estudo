@@ -8,7 +8,7 @@ pagadoresFinanc.controller("indexCtrl", [
     vm = this
 
     vm.listaPessoas = [
-      { id: 0, key: 'p_um', nome: 'Igor Santos', cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br', telefone: '(62) 9 9674-5214', endereco: 'Rua Maria João, 115, Goiânia, Goiás-GO, 74590579'},
+      { id: 0, key: 'p_um', nome: 'Igor Santos', cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br', telefone: '(62) 9 9674-5214', endereco: ''},
       { id: 1, key: 'p_dois', nome: 'Luciana Antedeguemon', cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br', telefone: '(62) 9 9674-5214', endereco: 'Rua Maria João, 115, Goiânia, Goiás-GO, 74590579' },
       { id: 2, key: 'p_tres', nome: 'Fernando Luiz', cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br', telefone: '(62) 9 9674-5214', endereco: 'Rua Maria João, 115, Goiânia, Goiás-GO, 74590579' },
       { id: 3, key: 'p_quatro', nome: 'Michael Jackson', cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br', telefone: '(62) 9 9674-5214', endereco: 'Rua Maria João, 115, Goiânia, Goiás-GO, 74590579' },
@@ -32,6 +32,21 @@ pagadoresFinanc.controller("indexCtrl", [
       {opcao: 'Sem emails'},
       {opcao: 'Com emails'}
     ]
+
+    vm.buscar = {
+      pesquisa: '',
+      listar: '',
+      filtrar: function() {
+        this.listar = this.pesquisa
+      },
+      nome: '',
+      documento: '',
+      telefone: '',
+      email: ''
+      buscaAvancada: function() {
+
+      }
+    }
 
     vm.exibirForm = false
     vm.avancado = false

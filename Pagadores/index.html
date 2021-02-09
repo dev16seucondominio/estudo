@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
   <link rel="stylesheet" type="text/css" href="./css/uikit.css" />
   <link rel="stylesheet" type="text/css" href="./css/uikit-sample.css" />
-  <!-- <script type="text/javascript" src="js/modernizr.js"> </script> -->
+  <script type="text/javascript" src="js/modernizr.js"> </script>
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
 <body ng-app="pagadoresFinanc" ng-controller="indexCtrl as idxCtrl" class="sc-system">
@@ -20,8 +20,8 @@
   </header>
 
   <section id="top-bar" style="height: 52px;">
-    <div id="top-bar-content" class="fix">
-      <div class="sc-p-md" ng-include="'top_bar_content.html'"></div>
+    <div id="top-bar-content">
+      <div ng-include="'top_bar_content.html'"></div>
     </div>
   </section>
 
@@ -47,7 +47,7 @@
         </div>
         <div ng-include="'form.html'"></div>
       </li>
-      <li ng-repeat="pessoa in idxCtrl.listaPessoas track by pessoa.id" class="sc-bg-gray-lighter" ng-class="{'sc-acc-blue' : pessoa.opened}">
+      <li ng-repeat="pessoa in idxCtrl.listaPessoas | filter:idxCtrl.buscar.listar as results track by pessoa.id" class="sc-bg-gray-lighter" ng-class="{'sc-acc-blue' : pessoa.opened}">
         <div ng-click="pessoa.opened = !pessoa.opened" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1"></i>
@@ -63,7 +63,8 @@
             </i>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
-                <a sc-dropdown-close-menu="">
+                <a sc-dropdown-close-menu=""
+                  ng-click="idxCtrl.exibirForm">
                   <i class="sc-icon-lapis"></i> Editar
                 </a>
               </li>
