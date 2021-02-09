@@ -32,7 +32,7 @@
             <div class="sc-label">Deficiente</div>
             <div class="sc-p-v-sm">
               <span class="sc-toggle sc-toggle-false-blue">
-                <input ng-model="vmForm.pessoaCtrl.registro.deficiente" type="checkbox" style="">
+                <input type="checkbox" style="">
                 <span label-false="não" label-true="sim">
                 </span>
               </span>
@@ -42,7 +42,7 @@
         <div class="fcol-xs-auto" style="min-width: 16em">
           <label>
             <div class="sc-label">Nome</div>
-            <input class="sc-input-default sc-input-block pessoa-nome" type="text">
+            <input class="sc-input-default sc-input-block pessoa-nome" type="text" value="{{idxCtrl.exibirForm.editar()}}">
           </label>
         </div>
         <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
@@ -109,7 +109,7 @@
         <span class="sc-text-blue sc-text-bold">Endereços</span>
         <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
           ng-model="formCtrl"
-          ng-click="formCtrl.enderecos.add()">
+          ng-click="formCtrl.formEnd.add()">
           <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
         </div>
       </div>
@@ -178,11 +178,13 @@
             </div>
           </label>
         </div>
-        <div class="fcol-xs-3em align-self-center">
+        <div class="fcol-xs-3em align-self-center"
+          ng-model="formCtrl"
+          ng-click="formCtrl.formEnd.rmv(end)">
           <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
         </div>
         <div class="sc-border-b-dashed fcol-xs-100 sc-p-v-lg"
-          ng-if="formCtrl.enderecos.length > 1 &amp;&amp; !$last">
+          ng-if="formCtrl.enderecos.length > 1 && !$last">
         </div>
 
       </div>
@@ -191,9 +193,6 @@
     <div class="sc-fieldset">
       <div class="sc-fieldset-head flex-row">
         <span class="sc-text-blue sc-text-bold">Perfil para Pagamento</span>
-        <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg">
-          <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
-        </div>
       </div>
 
       <div class="flex-row-with-padding align-items-flex-end">
@@ -258,12 +257,15 @@
     <div class="sc-fieldset">
       <div class="sc-fieldset-head flex-row">
         <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
-        <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg">
+        <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
+          ng-model="formCtrl"
+          ng-click="formCtrl.formConta.add()">
           <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
         </div>
       </div>
 
-      <div class="flex-row-with-padding align-items-flex-end">
+      <div class="flex-row-with-padding align-items-flex-end"
+        ng-repeat="conta in formCtrl.contasBanc track by conta.id">
 
         <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
           <label>
@@ -339,8 +341,14 @@
           <button class="sc-btn sc-btn-blue" type="button">Principal</button>
         </div>
 
-        <div class="fcol-xs-3">
+        <div class="fcol-xs-3"
+          ng-model="formCtrl"
+          ng-click="formCtrl.formConta.rmv(conta)">
           <i class="sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg"></i>
+        </div>
+
+        <div class="sc-border-b-solid sc-border-gray-light fcol-xs-100 sc-p-v-lg"
+          ng-if="formCtrl.contasBanc.length > 1 && !$last">
         </div>
 
       </div>
@@ -350,58 +358,63 @@
       <div class="sc-fieldset-head flex-row">
         <span class="sc-text-blue sc-text-bold">Reajuste Contratual</span>
         <label class="sc-toggle sc-text-sm sc-m-l-lg">
-          <input type="checkbox">
+          <input type="checkbox"
+            ng-change="formCtrl.reajuste = !formCtrl.reajuste"
+            ng-model="formCtrl">
           <span label-false="Não Reajustar" label-true="Reajustar"></span>
         </label>
       </div>
-      <div class="flex-row-with-padding align-items-flex-end">
 
-        <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
-          <div class="sc-label">Tipo de Reajuste</div>
-          <div class="sc-btn-group">
-            <button class="sc-btn" type="button"><i class="sc-icon sc-icon-dinheiro-2"></i> Valor</button>
-            <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-grafico-3"></i> Índice</button>
+      <div ng-if="!formCtrl.reajuste">
+        <div class="flex-row-with-padding align-items-flex-end">
+
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <div class="sc-label">Tipo de Reajuste</div>
+            <div class="sc-btn-group">
+              <button class="sc-btn" type="button"><i class="sc-icon sc-icon-dinheiro-2"></i> Valor</button>
+              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-grafico-3"></i> Índice</button>
+            </div>
           </div>
-        </div>
 
 
-        <div class="fcol-xs-100 fcol-sm-50 fcol-md-20em">
-          <label>
-            <div class="sc-label">Índice Reajuste</div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-20em">
+            <label>
+              <div class="sc-label">Índice Reajuste</div>
+              <div class="sc-input-group">
+                <select class="sc-input-default"
+                  ng-model="formCtrl.js"
+                  ng-options="correcao.key as correcao.label for correcao in formCtrl.correcao">
+                  <option selected="selected" value>Selecione</option>
+                </select>
+              </div>
+            </label>
+          </div>
+
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <div class="sc-label">Reajustar a cada</div>
             <div class="sc-input-group">
+              <input class="sc-input-default" type="number" max="9999" min="1" style="width: 5em; min-width: 5em;">
               <select class="sc-input-default"
                 ng-model="formCtrl.js"
-                ng-options="correcao.key as correcao.label for correcao in formCtrl.correcao">
-                <option selected="selected" value>Selecione</option>
+                ng-options="periodos.key as periodos.label for periodos in formCtrl.periodos" ng-selected="periodos.default">
               </select>
             </div>
-          </label>
-        </div>
-
-        <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
-          <div class="sc-label">Reajustar a cada</div>
-          <div class="sc-input-group">
-            <input class="sc-input-default" type="number" max="9999" min="1" style="width: 5em; min-width: 5em;">
-            <select class="sc-input-default"
-              ng-model="formCtrl.js"
-              ng-options="periodos.key as periodos.label for periodos in formCtrl.periodos" ng-selected="periodos.default">
-            </select>
           </div>
-        </div>
 
-        <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
-          <div class="sc-label">Último reajuste em</div>
-          <label>
-            <input class="sc-input-default sc-input-block" type="date" max="3000-12-31">
-          </label>
-        </div>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <div class="sc-label">Último reajuste em</div>
+            <label>
+              <input class="sc-input-default sc-input-block" type="date" max="3000-12-31">
+            </label>
+          </div>
 
-        <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
-          <div class="sc-label">Notificar reajuste</div>
-          <label class="sc-toggle">
-            <input type="checkbox">
-            <span label-false="Não" label-true="Sim"></span>
-          </label>
+          <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+            <div class="sc-label">Notificar reajuste</div>
+            <label class="sc-toggle">
+              <input type="checkbox">
+              <span label-false="Não" label-true="Sim"></span>
+            </label>
+          </div>
         </div>
       </div>
     </div>

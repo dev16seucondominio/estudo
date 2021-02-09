@@ -95,34 +95,41 @@ pagadoresFinanc.controller("formularioCtrl", [
     ]
 
     vm.enderecos = [
-      {
-        id: 1,
-        principal: true,
-        titulo: 'Casa',
-        cep: '74370577',
-        cidade: 'Goiânia - GO - Brasil',
-        logradouro: 'Rua Aulina Luiz',
-        complemento: 'Q.7 L.1',
-        bairro: 'Setor Santa Rita',
-      },
-      {
-        id: 2,
-        principal: false,
-        titulo: 'Trabalho',
-        cep: '74370580',
-        cidade: 'Goiânia - GO - Brasil',
-        logradouro: 'Rua 84',
-        complemento: 'Sala 505',
-        bairro: 'Setor Sul',
-      }
+      // {
+      //   id: 1,
+      //   principal: true,
+      //   titulo: 'Casa',
+      //   cep: '74370577',
+      //   cidade: 'Goiânia - GO - Brasil',
+      //   logradouro: 'Rua Aulina Luiz',
+      //   complemento: 'Q.7 L.1',
+      //   bairro: 'Setor Santa Rita',
+      // }
     ]
 
-    vm.add = function() {
-      vm.addItem = function() {
-        vm.enderecos.push(vm.addMe)
+    vm.contasBanc = []
+
+    vm.formEnd = {
+      add: function() {
+        vm.enderecos.push({id: (vm.enderecos.length) + 1})
+      },
+      rmv: function(end) {
+        vm.enderecos.remove(end)
       }
     }
 
+    vm.formConta = {
+      add: function() {
+        vm.contasBanc.push({id: (vm.contasBanc.length) + 1})
+      },
+      rmv: function(conta) {
+        vm.contasBanc.remove(conta)
+      }
+    }
+
+    vm.reajuste = true
+
     vm
+
   }
 ])
