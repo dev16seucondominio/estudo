@@ -10,12 +10,12 @@
   <script type="text/javascript" src="js/modernizr.js"> </script>
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
-<body ng-app="pagadoresFinanc" ng-controller="indexCtrl as idxCtrl" class="sc-system">
-  <script type="text/javascript" src="./js/prototype.js"></script>
+<body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as pessoasCtrl" class="sc-system">
 
   <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
     <div style="height: 42px;">
-      <img height="100%" class="sc-border-radius" src="https://www.seucondominio.com.br/assets/responsivo/logo-seucondominio-d27c9e579e5286867bca8a6707f5f9af96addd5d7b62d47c0d0f8685979e6b0d.svg">
+      <img height="100%" class="sc-border-radius"
+        src="https://www.seucondominio.com.br/assets/responsivo/logo-seucondominio-d27c9e579e5286867bca8a6707f5f9af96addd5d7b62d47c0d0f8685979e6b0d.svg">
     </div>
   </header>
 
@@ -35,9 +35,9 @@
       <li class="sc-acc-blue ng-animation-slider sc-bg-gray-lighter"
         ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
         style="display: block;"
-        ng-if="idxCtrl.exibirForm"
+        ng-if="pessoasCtrl.formCadastro.opened"
         ng-controller="formularioCtrl as formCtrl">
-        <div class="sc-accordion-head sc-text-blue" ng-click="idxCtrl.exibirForm = !idxCtrl.exibirForm">
+        <div class="sc-accordion-head sc-text-blue" ng-click="pessoasCtrl.formCadastro.close()">
           <div class="sc-accordion-col-3 align-center">
             <i class="sc-text-xl sc-icon-mais-1"></i>
           </div>
@@ -47,7 +47,9 @@
         </div>
         <div ng-include="'form.html'"></div>
       </li>
-      <li ng-repeat="pessoa in idxCtrl.listaPessoas | filter:idxCtrl.buscar.listar as results track by pessoa.id" class="sc-bg-gray-lighter" ng-class="{'sc-acc-blue' : pessoa.opened}">
+      <li ng-repeat="pessoa in pessoasCtrl.listaPessoas | filter:pessoasCtrl.listar as results track by pessoa.id"
+        class="sc-bg-gray-lighter"
+        ng-class="{'sc-acc-blue' : pessoa.opened}">
         <div ng-click="pessoa.opened = !pessoa.opened" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1"></i>
@@ -64,7 +66,7 @@
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="idxCtrl.exibirForm">
+                  ng-click="pessoasCtrl.exibirForm = true">
                   <i class="sc-icon-lapis"></i> Editar
                 </a>
               </li>
@@ -103,7 +105,7 @@
                     <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.email}}</div>
                   </div>
                   <div class="sc-p-xs">
-                    <i class="sc-p-r-md left sc-icon-local"></i><div>{{pessoa.endereco}}</div>
+                    <i class="sc-p-r-md left sc-icon-local"></i><div>{{pessoa.endereco.logradouro}}</div>
                   </div>
                 </div>
               </div>
@@ -128,6 +130,7 @@
     </ul>
   </section>
 
+  <script type="text/javascript" src="./js/prototype.js"></script>
   <script type="text/javascript" src="indexCtrl.js"></script>
   <script type="text/javascript" src="formCtrl.js"></script>
 </body>
