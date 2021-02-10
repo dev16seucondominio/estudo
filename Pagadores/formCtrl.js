@@ -1,9 +1,8 @@
-pagadoresFinanc.controller("formularioCtrl", [
-  "$scope",function(s) {
+pagadoresFinanc.controller("formularioCtrl",
+  function() {
+    vmForm = this
 
-    vm = this
-
-    vm.operacoes = [
+    vmForm.operacoes = [
       {id: 1, key: 'pix', label: 'Pix'},
       {id: 2, key: 'boleto_titulo', label: 'Boleto - Título'},
       {id: 3, key: 'boleto_convenio', label: 'Boleto - Convênio'},
@@ -24,7 +23,7 @@ pagadoresFinanc.controller("formularioCtrl", [
       {id: 18, key: 'tranferencia_mesmo_banco', label: 'Tranferência - MESMO BANCO'}
     ]
 
-    vm.planoDeContas = [
+    vmForm.planoDeContas = [
       {id: 0, key: 'receitas', label: '1 - RECEITAS'},
       {id: 1, key: 'receitas_ordinarias', label: '1.1 - RECEITAS ORDINÁRIAS'},
       {id: 2, key: 'taxa_de_condominio', label: '1.1.1 - Taxa de Condomínio'},
@@ -33,21 +32,21 @@ pagadoresFinanc.controller("formularioCtrl", [
       {id: 5, key: 'salarios', label: '2.1.1 - Salários'}
     ]
 
-    vm.fundo = [
+    vmForm.fundo = [
       {id: 0, key: 'caixa', label: '1 - CAIXA'},
       {id: 1, key: 'fundo_de_reserva', label: '2 - FUNDO DE RESERVA'},
       {id: 2, key: 'fundo_de_obras', label: '3 - FUNDO DE OBRAS'},
       {id: 3, key: 'fundo_trabalhista', label: '4 - FUNDO TRABALHISTA'}
     ]
 
-    vm.banco = [
+    vmForm.banco = [
       {id: 0, key: 'caixa', label: '104 - Caixa Econômica Federal'},
       {id: 1, key: 'inter', label: '077 - Banco Inter'},
       {id: 2, key: 'bradesco', label: '237 - Bradesco'},
       {id: 3, key: 'banco_do_brasil', label: '001 - Banco do Brasil'}
     ]
 
-    vm.tipoConta = [
+    vmForm.tipoConta = [
       {id: 0, key: 'conta_corrente', label: 'Conta Corrente'},
       {id: 1, key: 'poupanca', label: 'Poupança'},
       {id: 2, key: 'conta_investimento', label: 'Conta Investimento'},
@@ -64,7 +63,7 @@ pagadoresFinanc.controller("formularioCtrl", [
       {id: 13, key: 'f_reserva_compesa', label: 'Fundo de Reserva Compesa'}
     ]
 
-    vm.correcao = [
+    vmForm.correcao = [
       {id: 0, key: 'inpc_ibge', label: 'INPC (IBGE)'},
       {id: 1, key: 'igp_di_fgv', label: 'IGP-DI (FGV) - BR'},
       {id: 2, key: 'ipa_m_fgv', label: 'IPA-M (FGV) - BR'},
@@ -83,18 +82,18 @@ pagadoresFinanc.controller("formularioCtrl", [
       {id: 15, key: 'igp_m_fgv', label: 'IGP-M (FGV) - BR'}
     ]
 
-    vm.periodos = [
+    vmForm.periodos = [
       {id: 0, key: 'dias', label: 'Dias', default: false},
       {id: 1, key: 'meses', label: 'Meses', default: true},
       {id: 2, key: 'Anos', label: 'Anos', default: true}
     ]
 
-    vm.anexos = [
+    vmForm.anexos = [
       {id:0, key: 'fotos', label: 'Fotos'},
       {id:1, key: 'documentos', label: 'Documentos'}
     ]
 
-    vm.enderecos = [
+    vmForm.enderecos = [
       // {
       //   id: 1,
       //   principal: true,
@@ -107,29 +106,29 @@ pagadoresFinanc.controller("formularioCtrl", [
       // }
     ]
 
-    vm.contasBanc = []
+    vmForm.contasBanc = []
 
-    vm.formEnd = {
+    vmForm.formEnd = {
       add: function() {
-        vm.enderecos.push({id: (vm.enderecos.length) + 1})
+        vmForm.enderecos.push({id: (vmForm.enderecos.length) + 1})
       },
       rmv: function(end) {
-        vm.enderecos.remove(end)
+        vmForm.enderecos.remove(end)
       }
     }
 
-    vm.formConta = {
+    vmForm.formConta = {
       add: function() {
-        vm.contasBanc.push({id: (vm.contasBanc.length) + 1})
+        vmForm.contasBanc.push({id: (vmForm.contasBanc.length) + 1})
       },
       rmv: function(conta) {
-        vm.contasBanc.remove(conta)
+        vmForm.contasBanc.remove(conta)
       }
     }
 
-    vm.reajuste = true
+    vmForm.reajuste = true
 
-    vm
+    // vmForm
 
   }
-])
+)
