@@ -1,4 +1,4 @@
-<div class="sc-accordion-body ng-animation-slider" ng-init="formCtrl.init(idxCtrl.formFactory)">
+<div class="sc-accordion-body ng-animation-slider" ng-init="formCtrl.init(idxCtrl.formFactory, pessoa)">
   <div class="sc-p-lg sc-accordion-element">
     <form ng-submit="formCtrl.formCadastro.add(pessoa)">
 
@@ -47,43 +47,43 @@
           <div class="fcol-xs-auto" style="min-width: 16em">
             <label>
               <div class="sc-label">Nome</div>
-              <input class="sc-input-default sc-input-block" ng-model="idxCtrl.pessoa.nome" type="text">
+              <input class="sc-input-default sc-input-block" ng-model="formCtrl.params.nome" type="text">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
             <label>
               <div class="sc-label">CPF</div>
-              <input class="sc-input-default sc-input-block" style="max-width: 100%" type="text" ng-model="idxCtrl.pessoa.cpf">
+              <input class="sc-input-default sc-input-block" style="max-width: 100%" type="text" ng-model="formCtrl.params.cpf">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
             <label>
               <div class="sc-label">RG</div>
-              <input class="sc-input-default sc-input-block" type="text">
+              <input class="sc-input-default sc-input-block" type="text" ng-model="formCtrl.params.rg">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
             <label>
               <div class="sc-label">Nascimento</div>
-              <input class="sc-input-default sc-input-block" type="date" max="3000-12-31" ng-model="idxCtrl.pessoa.nascimento">
+              <input class="sc-input-default sc-input-block" type="date" max="3000-12-31" ng-model="formCtrl.params.nasc">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
             <label>
               <div class="sc-label">Profissão</div>
-              <input class="sc-input-default sc-input-block" type="text">
+              <input class="sc-input-default sc-input-block" type="text" ng-model="formCtrl.params.prof">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
             <label>
               <div class="sc-label">E-mail (principal)</div>
-              <input class="sc-input-default sc-input-block" type="text" ng-model="idxCtrl.pessoa.email">
+              <input class="sc-input-default sc-input-block" type="text" ng-model="formCtrl.params.email">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-md-40">
             <label>
               <div class="sc-label">E-mail alternativos</div>
-              <input class="sc-input-default sc-input-block" type="email" placeholder="Digite um novo e-mail">
+              <input class="sc-input-default sc-input-block" type="email" placeholder="Digite um novo e-mail" ng-model="formCtrl.params.emailalt">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-10em">
@@ -97,13 +97,13 @@
           <div class="fcol-xs-100 fcol-md-50">
             <label>
               <div class="sc-label">Telefones</div>
-              <input class="sc-input-default sc-input-block" type="text" placeholder="Digite um novo telefone" ng-model="idxCtrl.pessoa.telefone">
+              <input class="sc-input-default sc-input-block" type="text" placeholder="Digite um novo telefone" ng-model="formCtrl.params.telefone">
             </label>
           </div>
           <div class="fcol-xs-100">
             <label>
               <div class="sc-label">Observações</div>
-              <textarea class="sc-input-default sc-input-block" rows="3"></textarea>
+              <textarea class="sc-input-default sc-input-block" rows="3" ng-model="formCtrl.params.obs"></textarea>
             </label>
           </div>
         </div>
