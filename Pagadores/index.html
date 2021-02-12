@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
   <title>Pessoas - Financeiro </title>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
   <script type="text/javascript" src="js/modernizr.js"> </script>
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
-<body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as idxCtrl" ng-init="idxCtrl.init()" class="sc-system">
+<body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as idxCtrl" ng-init="idxCtrl.init()" style="background-color: #fff ">
 
   <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
     <div style="height: 42px;">
@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <section id="top-bar" style="height: 52px;">
+  <section id="top-bar" class="sc-bg-gray-lighter" style="height: 52px;">
     <div id="top-bar-content">
       <div ng-include="'top_bar_content.html'"></div>
     </div>
@@ -75,7 +75,7 @@
                 </a>
               </li>
               <li>
-                <a sc-dropdown-close-menu="">
+                <a sc-dropdown-close-menu="" ng-click="formCtrl.formCadastro.edit(pessoa)">
                   <i class="sc-icon-lixeira-1"></i> Excluir
                 </a>
               </li>

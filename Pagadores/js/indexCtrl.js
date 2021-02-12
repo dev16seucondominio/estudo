@@ -32,56 +32,56 @@ pagadoresFinanc.controller("PessoasIndexCtrl", ["formFactory",
     vmIdx.formFactory = undefined
 
     vmIdx.init = function(){
-      console.log('ioasjdjias')
-      vmIdx.formFactory = new formFactory()
+      vmIdx.formFactory = new formFactory() //instanciando a factory..
+      vmIdx.formFactory.lista = vmIdx.listaPessoas
     }
 
     vmIdx.listaPessoas = [
       { id: 1, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Igor Santos',
-        cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br',
+        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
           { id: 123, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', completo: 'Quadra 7, Lote 10', bairro: 'Setor Central'
+            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
           { id: 312, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', completo: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
+            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       },
       { id: 2, tipo: 'Pagador', sexo: 'f', deficiente: false, nome: 'Luciana Pereira',
-        cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'igor@seucondominio.com.br',
+        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'igor@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
           { id: 987, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', completo: 'Quadra 7, Lote 10', bairro: 'Setor Central'
+            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
           { id: 789, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', completo: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
+            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       },
       { id: 3, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Fernando Luiz',
-        cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br',
+        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
           { id: 654, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', completo: 'Quadra 7, Lote 10', bairro: 'Setor Central'
+            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
           { id: 456, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', completo: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
+            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       },
       { id: 4, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Michael Jackson',
-        cpf: '000.000.000-01', nascimento: '10/10/2010', email: 'teste@seucondominio.com.br',
+        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
           { id: 147, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', completo: 'Quadra 7, Lote 10', bairro: 'Setor Central'
+            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
           { id: 741, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', completo: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
+            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       }
@@ -127,11 +127,6 @@ pagadoresFinanc.controller("PessoasIndexCtrl", ["formFactory",
     //     listCtrl.buscar()
     //   }
     // }
-
-    // vmIdx.listaPessoas.push(vmIdx.formFactory.adicionarPessoa())
-
-    // vmIdx.listaPessoas = vmIdx.formFactory.adicionarPessoa(pessoa)
-
 
     vmIdx.buscar = {
       filtroSimples: function() {
