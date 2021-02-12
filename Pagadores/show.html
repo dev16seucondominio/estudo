@@ -1,0 +1,63 @@
+<div class="sc-accordion-body ng-animation-slider" style="display: block;">
+  <div class="sc-p-lg">
+
+    <div class="col-xs-12 col-md-6 hidden" ng-show="pessoa.nome == NULL && pessoa.cpf == NULL && pessoa.rg == NULL  ">
+      <div class="sc-accordion-element sc-fieldset sc-bg-white">
+        <div class="sc-fieldset-head" ng-show="pessoa.nome">
+          <span class="sc-p-b-md sc-text-blue sc-text-bold">{{pessoa.nome}}</span>
+        </div>
+        <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue">
+          Complete o cadastro!
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+      <div class="sc-accordion-element sc-fieldset sc-bg-white">
+        <div class="sc-fieldset-head">
+          <span class="sc-p-b-md sc-text-blue sc-text-bold">{{pessoa.nome}}</span>
+        </div>
+        <div class="sc-text-gray">
+          <div class="sc-p-xs" ng-show="pessoa.cpf">
+            <i class="sc-p-r-md left sc-icon-homem-1"></i><div><span class="sc-text-bold">CPF:</span> {{pessoa.cpf}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.rg">
+            <i class="sc-p-r-md left sc-icon-cartao-1"></i><div><span class="sc-text-bold">RG:</span> {{pessoa.rg}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.prof">
+            <i class="sc-p-r-md left sc-icon-maleta"></i><div><span class="sc-text-bold">Profissão:</span> {{pessoa.prof}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.nasc">
+            <i class="sc-p-r-md left sc-icon-calendario-2"></i><div><span class="sc-text-bold">Nascimento:</span> {{pessoa.nasc}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.telefones.length">
+            <i class="sc-p-r-md left sc-icon-telefone-1"></i><div><span class="sc-text-bold">Telefones:</span>{{pessoa.telefone}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.email">
+            <i class="sc-p-r-md left sc-icon-carta-2"></i><div><span class="sc-text-bold">Email principal:</span> {{pessoa.email}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.emailalt">
+            <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.emailalt}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.enderecos.length">
+            <i class="sc-p-r-md left sc-icon-local"></i><div>{{pessoa.enderecos[0].logradouro}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.obs">
+            <i class="sc-p-r-md left sc-icon-arquivo-4"></i><div><span class="sc-text-bold">OBS:</span> {{pessoa.obs}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+      <div class="sc-accordion-element sc-fieldset sc-bg-white">
+        <div class="sc-fieldset-head">
+          <span class="sc-p-b-md sc-text-blue sc-text-bold">Anexos</span>
+        </div>
+        <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue">
+          Nenhum anexo disponível!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
