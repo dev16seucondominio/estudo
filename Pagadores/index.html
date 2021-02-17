@@ -11,7 +11,6 @@
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
 <body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as idxCtrl" ng-init="idxCtrl.init()" style="background-color: #fff ">
-
   <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
     <div style="height: 42px;">
       <img height="100%" class="sc-border-radius"
@@ -48,7 +47,7 @@
         </div>
         <div ng-include="'form.html'"></div>
       </li>
-      <!-- aqui é pessoas (lista) -->
+      <!-- Lista de pessoas -->
       <li ng-repeat="pessoa in idxCtrl.listaPessoas | filter:idxCtrl.listar as results track by pessoa.id"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
@@ -59,7 +58,16 @@
             <i class="sc-text-xl sc-icon sc-icon-homem-1"></i>
           </div>
           <div class="sc-accordion-elastic-col title">
-            <span class="sc-p-xs flex">{{pessoa.nome}}</span>
+            <span class="sc-p-xs flex">{{pessoa.nome}}
+              <span ng-show="pessoa.tipo.includes('Pagador')"
+                class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-blue">
+                Pagador
+              </span>
+              <span ng-show="pessoa.tipo.includes('Fornecedor')"
+                class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-yellow">
+                Fornecedor
+              </span>
+            </span>
           </div>
           <!-- Mais opções -->
           <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
@@ -75,7 +83,8 @@
                 </a>
               </li>
               <li>
-                <a sc-dropdown-close-menu="" ng-click="formCtrl.formCadastro.edit(pessoa)">
+                <a sc-dropdown-close-menu=""
+                  ng-click="idxCtrl.excluirRegistro(pessoa)">
                   <i class="sc-icon-lixeira-1"></i> Excluir
                 </a>
               </li>
@@ -86,18 +95,52 @@
               </li>
             </ul>
           </span>
-
         </div>
 
-        <div ng-include="'form.html'" ng-controller="formularioCtrl as formCtrl"
+        <!-- Include do form de cadastro, edição e show -->
+        <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="formularioCtrl as formCtrl"
           ng-if="pessoa.acc.opened && itemCtrl.formCtrl.opened && pessoa.editing"
           ng-init="idxCtrl.formFactory.init(pessoa)">
         </div>
-        <div ng-include="'show.html'" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
+        <div ng-include="'show.html'" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
         <div class="clear"></div>
       </li>
     </ul>
   </section>
+
+  <!-- Alertas -->
+
+  <div class="sc-alert" ng-show="scAlert.toggler.opened" ng-class="{'active': scAlert.toggler.opened, 'sc-alert-danger': scAlert.danger, 'sc-alert-warning': scAlert.warning}" style="">
+    <div class="sc-alert-box sc-box-shadow-z3">
+      <div class="sc-alert-close" ng-hide="scAlert.hideCloseButton">
+        <i ng-click="scAlert.close()" class="sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer"></i>
+      </div>
+      <h2 class="sc-alert-title" ng-bind-html="scAlert.title"></h2> <!-- TÍTULO DO ALERT -->
+      <div class="sc-alert-messages align-center">
+        <p ng-bind-html="scAlert.messages"></p> <!-- MENSAGEM DO ALERT -->
+      </div>
+      <div class="sc-alert-buttons">
+        <div ng-repeat="btn in scAlert.buttons" style="display: inline;">
+          <button ng-if="!(btn.url || btn.href)" type="button"
+            class="sc-btn sc-btn-{{btn.color}} sc-btn-block-only-xs sc-alert-button-focus"
+            ng-click="scAlert.btnAction(btn)" ng-bind="btn.label">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc-top-messages ng-animation-slider sc-bg-green" ng-class="scTopMessages.theme"
+    ng-click="scTopMessages.close()" ng-if="scTopMessages.toggler.opened" style="display: block;">
+    <div class="sc-text-white align-center sc-text-shadow-dark flex align-items-center">
+      <div class="sc-top-messages-msgs sc-cursor-default">
+        <p ng-repeat="msg in scTopMessages.messages track by $index" ng-bind="scTopMessages.messages"></p>
+      </div>
+      <div class="sc-top-messages-close-button">
+        <i class="sc-icon-fechar-1 sc-cursor-pointer"></i>
+      </div>
+    </div>
+  </div>
 
   <script type="text/javascript" src="./js/prototype.js"></script>
   <script type="text/javascript" src="./js/indexCtrl.js"></script>

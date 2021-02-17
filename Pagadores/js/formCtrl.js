@@ -4,7 +4,14 @@ pagadoresFinanc.controller("formularioCtrl",
 
     vmForm.init = function(baseFact, pessoa){
       console.log('estou iniciando com pessoa:', pessoa)
-      vmForm.params = angular.copy(pessoa)
+      if(pessoa) {
+        vmForm.params = angular.copy(pessoa)
+        vmForm.params.nasc = new Date(vmForm.params.nasc)
+      } else {
+        vmForm.params = {}
+        vmForm.params.enderecos = []
+        vmForm.params.contas = []
+      }
       vmForm.formFactory = baseFact
       console.log('fim init, params:', vmForm.params)
     }
@@ -100,38 +107,40 @@ pagadoresFinanc.controller("formularioCtrl",
       {id:1, key: 'documentos', label: 'Documentos'}
     ]
 
-    vmForm.enderecos = []
-
-    vmForm.contasBanc = []
-
     vmForm.formEnd = {
       add: function() {
-        vmForm.enderecos.push({id: (vmForm.enderecos.length) + 1})
+        vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1})
       },
       rmv: function(end) {
-        vmForm.enderecos.remove(end)
+        vmForm.params.enderecos.remove(end)
       }
     }
 
     vmForm.formConta = {
       add: function() {
-        vmForm.contasBanc.push({id: (vmForm.contasBanc.length) + 1})
+        vmForm.params.contas.push({id: (vmForm.params.contas.length) + 1})
       },
       rmv: function(conta) {
-        vmForm.contasBanc.remove(conta)
+        vmForm.params.contas.remove(conta)
+      },
+      setContaPrincipal: function(conta) {
+        conta.principal = vmForm.params.contas.filter(conta => (conta.principal))
       }
     }
 
     vmForm.formCadastro = {
       add: function(pessoa) {
-        vmForm.params.id = vmForm.formFactory.lista.length + 1
-        vmForm.formFactory.lista.unshift((vmForm.params))
+        if(vmForm.params.id == undefined) {
+          console.log('Adicionando Novo')
+          vmForm.params.id = vmForm.formFactory.lista.length + 1
+          vmForm.formFactory.lista.unshift(vmForm.params)
+        } else {
+          console.log('Editando')
+          vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
+          vmForm.params.acc.opened = true
+          vmForm.params.editing = false
+        }
         vmForm.formFactory.close()
-      },
-      edit: function(pessoa) {
-        console.log('Editing ' + vmForm.params)
-        vmForm.params = angular.copy(pessoa)
-        console.log('Editing ' + vmForm.params)
       }
     }
 

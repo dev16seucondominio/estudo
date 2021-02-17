@@ -1,7 +1,7 @@
 <div class="sc-accordion-body ng-animation-slider" ng-init="formCtrl.init(idxCtrl.formFactory, pessoa)">
-  <div class="sc-p-lg sc-accordion-element">
+  <div class="sc-p-lg sc-accordion-element ng-animation-slider">
     <form ng-submit="formCtrl.formCadastro.add(pessoa)">
-
+      <!-- DADOS GERAIS -->
       <div class="sc-fieldset form-pessoa fieldset-pessoa-dadosgerais">
         <div class="sc-fieldset-head">
           <span class="sc-p-b-md sc-text-blue sc-text-bold">Dados Gerais</span>
@@ -11,25 +11,35 @@
             <div class="sc-label">Tipo</div>
             <div class="sc-btn-group">
               <div class="sc-btn"
-                ng-click="idxCtrl.listaPessoas.tipo = !idxCtrl.listaPessoas.tipo"
-                ng-class="{'sc-btn-blue' : idxCtrl.listaPessoas.tipo}">Pagador</div>
+                ng-click="formCtrl.params.tipo = 'Pagador'"
+                ng-class="{'sc-btn-blue' : (formCtrl.params.tipo == 'Pagador')}">Pagador</div>
               <div class="sc-btn"
-                ng-click="idxCtrl.listaPessoas.tipo = !idxCtrl.listaPessoas.tipo"
-                ng-class="{'sc-btn-blue' : idxCtrl.listaPessoas.tipo}">Fornecedor</div>
+                ng-click="formCtrl.params.tipo = 'Fornecedor'"
+                ng-class="{'sc-btn-blue' : (formCtrl.params.tipo == 'Fornecedor')}">Fornecedor</div>
             </div>
           </div>
           <div class="fcol-xs-11em">
             <div class="sc-label">Pessoa</div>
             <div class="sc-btn-group">
-              <div class="sc-btn">Física</div>
-              <div class="sc-btn">Jurídica</div>
+              <div class="sc-btn"
+                ng-click="formCtrl.params.juridica = false"
+                ng-class="{'sc-btn-blue' : (formCtrl.params.juridica == false)}">Física</div>
+              <div class="sc-btn"
+                ng-click="formCtrl.params.juridica = true"
+                ng-class="{'sc-btn-blue' : formCtrl.params.juridica}">Jurídica</div>
             </div>
           </div>
           <div class="fcol-xs-11em">
             <div class="sc-label">Sexo</div>
             <div class="sc-btn-group">
-              <div class="sc-btn">Masc.</div>
-              <div class="sc-btn">Femin.</div>
+              <div class="sc-btn"
+                ng-click="formCtrl.params.sexo = 'm'"
+                ng-class="{'sc-btn-blue' : (formCtrl.params.sexo == 'm')}">Masc.</div>
+              <div class="sc-btn"
+                ng-click="formCtrl.params.sexo = 'f'"
+                ng-class="{'sc-btn-red' : (formCtrl.params.sexo == 'f')}"
+                ng-style="{'filter': (formCtrl.params.sexo == 'f' && 'hue-rotate(-25deg) brightness(1.1)')}">Femin.
+              </div>
             </div>
           </div>
           <div class="fcol-xs-7em">
@@ -37,7 +47,7 @@
               <div class="sc-label">Deficiente</div>
               <div class="sc-p-v-sm">
                 <span class="sc-toggle sc-toggle-false-blue">
-                  <input type="checkbox" style="">
+                  <input type="checkbox" style="" ng-model="formCtrl.params.deficiente">
                   <span label-false="não" label-true="sim">
                   </span>
                 </span>
@@ -90,7 +100,7 @@
             <label>
               <div class="sc-label">Identificador
                 <span class="sc-tooltip-md sc-m-l-xs" sc-tooltip="Usado no Controle de Acesso"><i class="sc-icon-info-2"></i></span>
-                <input class="sc-input-default sc-input-block" type="number">
+                <input class="sc-input-default sc-input-block" type="number" ng-model="formCtrl.params.iden">
               </div>
             </label>
           </div>
@@ -108,7 +118,7 @@
           </div>
         </div>
       </div>
-
+      <!-- ENDEREÇO -->
       <div class="sc-fieldset sc-fieldset-pessoa-endereco">
         <div class="sc-fieldset-head flex-row">
           <span class="sc-text-blue sc-text-bold">Endereços</span>
@@ -118,13 +128,13 @@
           </div>
         </div>
         <div class="flex-row-with-padding pessoa-endereco"
-          ng-repeat="end in formCtrl.enderecos track by end.id">
+          ng-repeat="end in formCtrl.params.enderecos track by end.id">
           <div class="fcol-xs-7em">
             <label>
               <div class="sc-label">Principal?</div>
               <div class="sc-p-v-sm">
                 <span class="sc-toggle">
-                  <input type="checkbox">
+                  <input type="checkbox" ng-model="end.principal">
                   <span label-false="não" label-true="sim"></span>
                 </span>
               </div>
@@ -133,14 +143,14 @@
           <div class="fcol-xs-100 fcol-sm-30 fcol-md-13em">
             <label>
               <div class="sc-label">Título do Endereço</div>
-              <input class="sc-input-default sc-input-block" type="text" placeholder="Casa, trabalho, etc...">
+              <input class="sc-input-default sc-input-block" type="text" placeholder="Casa, trabalho, etc..." ng-model="end.titulo">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-12em">
             <label>
               <div class="sc-label">CEP</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cep">
                 <div class="sc-btn sc-btn-blue">
                   <i class="sc-icon sc-icon-lupa-2"></i>
                 </div>
@@ -151,7 +161,7 @@
             <label>
               <div class="sc-label">Cidade</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cidade">
                 <div class="sc-btn sc-btn-blue">
                   <i class="sc-icon sc-icon-lupa-2"></i>
                 </div>
@@ -162,7 +172,7 @@
             <label>
               <div class="sc-label">Logradouro</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Rua João Alves">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Rua João Alves" ng-model="end.logradouro">
               </div>
             </label>
           </div>
@@ -170,7 +180,7 @@
             <label>
               <div class="sc-label">Número/Complemento</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="N° 31, Bloco 2, Ap. 103">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="N° 31, Bloco 2, Ap. 103" ng-model="end.complemento">
               </div>
             </label>
           </div>
@@ -178,7 +188,7 @@
             <label>
               <div class="sc-label">Bairro</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Setor Central">
+                <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Setor Central" ng-model="end.bairro">
               </div>
             </label>
           </div>
@@ -187,15 +197,19 @@
             <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
           </div>
           <div class="sc-border-b-dashed fcol-xs-100 sc-p-v-lg"
-            ng-if="formCtrl.enderecos.length > 1 && !$last">
+            ng-if="formCtrl.params.enderecos.length > 1 && !$last">
           </div>
-
+        </div>
+        <div class="sc-p-b-o">
+          <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
+            ng-hide="formCtrl.params.enderecos.length">Nenhum endereço cadastrado!
+          </div>
         </div>
       </div>
-
+      <!-- PERFIL PARA PAGAMENTO -->
       <div class="sc-fieldset">
         <div class="sc-fieldset-head flex-row">
-          <span class="sc-text-blue sc-text-bold">Perfil para Pagamento</span>
+          <span class="sc-text-blue sc-text-bold">Perfil para pagamento</span>
         </div>
 
         <div class="flex-row-with-padding align-items-flex-end">
@@ -256,7 +270,7 @@
 
         </div>
       </div>
-
+      <!-- CONTAS BANCÁRIAS -->
       <div class="sc-fieldset">
         <div class="sc-fieldset-head flex-row">
           <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
@@ -267,7 +281,19 @@
         </div>
 
         <div class="flex-row-with-padding align-items-flex-end"
-          ng-repeat="conta in formCtrl.contasBanc track by conta.id">
+          ng-repeat="conta in formCtrl.params.contas track by conta.id">
+
+          <div class="fcol-xs-7em">
+            <label>
+              <div class="sc-label">Principal?</div>
+              <div class="sc-p-v-sm">
+                <span class="sc-toggle">
+                  <input type="checkbox" ng-model="conta.principal">
+                  <span label-false="não" label-true="sim"></span>
+                </span>
+              </div>
+            </label>
+          </div>
 
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
             <label>
@@ -306,25 +332,25 @@
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
             <label>
               <div class="sc-label">Agência</div>
-              <input class="sc-input-default" style="max-width: 9em;" type="text">
+              <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.agencia">
               <b class="sc-text-gray sc-m-h-xs">-</b>
-              <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text">
+              <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dvAgencia">
             </label>
           </div>
 
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
             <label>
               <div class="sc-label">Número da Conta</div>
-              <input class="sc-input-default" style="max-width: 9em;" type="text">
+              <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.numConta">
               <b class="sc-text-gray sc-m-h-xs">-</b>
-              <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text">
+              <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dvConta">
             </label>
           </div>
 
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-22em">
             <label>
               <div class="sc-label">Nome da Pessoa</div>
-              <input class ="sc-input-default sc-input-block" type="text">
+              <input class ="sc-input-default sc-input-block" type="text" ng-value="formCtrl.params.nome" ng-model="conta.nome" >
             </label>
           </div>
 
@@ -332,15 +358,11 @@
             <label>
               <div class="sc-label">CPF/CNPJ</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text">
+                <input class="sc-input-default sc-input-block" type="text" ng-value="formCtrl.params.cpf" ng-model="conta.doc">
                 <button class="sc-btn sc-btn-blue" type="button">PF</button>
                 <button class="sc-btn" type="button">PJ</button>
               </div>
             </label>
-          </div>
-
-          <div class="fcol-xs-default">
-            <button class="sc-btn sc-btn-blue" type="button">Principal</button>
           </div>
 
           <div class="fcol-xs-3"
@@ -349,12 +371,16 @@
           </div>
 
           <div class="sc-border-b-solid sc-border-gray-light fcol-xs-100 sc-p-v-lg"
-            ng-if="formCtrl.contasBanc.length > 1 && !$last">
+            ng-if="formCtrl.params.contas.length > 1 && !$last">
           </div>
 
         </div>
+        <div class="sc-p-b-o">
+          <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
+            ng-hide="formCtrl.params.contas.length">Nenhuma conta cadastrada!</div>
+        </div>
       </div>
-
+      <!-- REAJUSTE CONTRATUAL -->
       <div class="sc-fieldset">
         <div class="sc-fieldset-head flex-row">
           <span class="sc-text-blue sc-text-bold">Reajuste Contratual</span>
@@ -420,7 +446,7 @@
           </div>
         </div>
       </div>
-
+      <!-- ANEXOS -->
       <div class="sc-fieldset">
         <div class="sc-fieldset-head flex flex-wrap align-items-center" style="padding-top: 0;padding-bottom: 0;min-height: 2.05em;">
           <span class="sc-text-blue sc-text-bold sc-m-r-lg">Anexos</span>
@@ -447,7 +473,7 @@
           <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue">Nenhum anexo disponível!</div>
         </div>
       </div>
-
+      <!-- BLOQUEAR INADIMPLENTE -->
       <div class="sc-fieldset">
         <div class="sc-fieldset-head flex">
           <span class="sc-text-blue sc-text-bold">Bloquear cliente inadimplente</span>
@@ -499,7 +525,7 @@
       <div class="right">
         <div class="sc-m-l-md sc-align-bottom">
           <button class="sc-btn sc-btn-red"
-            ng-click="idxCtrl.formFactory.close()"
+            ng-click="itemCtrl.accToggle(pessoa)"
             type="button">Cancelar</div>
         </button>
         <div class="sc-m-l-md sc-align-bottom">

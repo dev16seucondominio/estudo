@@ -1,32 +1,12 @@
 pagadoresFinanc = angular.module("pagadoresFinanc", ["sc.app.helpers"])
-
-// pagadoresFinanc.config([
-//   "ENV",
-//   "$locationProvider",
-//   "$routeProvider",
-//   "$controllerProvider",
-//   "$compileProvider",
-//   "$filterProvider",
-//   "$provide",
-//   "$animateProvider",
-//   '$sceDelegateProvider',
-//   "$httpProvider",
-//   '$rootScopeProvider',
-//   function(ENV, $locationProvider, $routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider, $sceDelegateProvider, $httpProvider, $rootScopeProvider) {
-
-//     app.lazy = {
-//       controller: $controllerProvider.register,
-//       directive: $compileProvider.directive,
-//       filter: $filterProvider.register,
-//       factory: $provide.factory,
-//       service: $provide.service,
-//       animation: $animateProvider.register,
-//     }
-//   }
-// ]);
-
-pagadoresFinanc.controller("PessoasIndexCtrl", ["formFactory",
-  function(formFactory) {
+pagadoresFinanc.run([
+  '$rootScope', 'scAlert', 'scTopMessages', function($rootScope, scAlert, scTopMessages) {
+    $rootScope.scAlert = scAlert;
+    $rootScope.scTopMessages = scTopMessages;
+  }
+])
+pagadoresFinanc.controller("PessoasIndexCtrl", [
+  "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages) {
     vmIdx = this
 
     vmIdx.formFactory = undefined
@@ -37,50 +17,51 @@ pagadoresFinanc.controller("PessoasIndexCtrl", ["formFactory",
     }
 
     vmIdx.listaPessoas = [
-      { id: 1, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Igor Santos',
-        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
-        telefone: '(62) 9 9674-5214',
+      { id: 1, tipo: [], sexo: 'm', deficiente: false, nome: 'Igor Santos',
+        cpf: '000.000.000-01', nasc: '07/01/2010', email: 'teste@seucondominio.com.br',
+        telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
+        rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
         enderecos: [
-          { id: 123, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
+          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
             logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
-          { id: 312, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
+          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
+            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
+          }
+        ], contas: []
+      },
+      { id: 2, tipo: [], sexo: 'f', deficiente: false, nome: 'Luciana Pereira',
+        cpf: '000.000.000-01', nasc: '07/02/2010', email: 'igor@seucondominio.com.br',
+        telefone: '(62) 9 9674-5214',
+        enderecos: [
+          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
+            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
+          },
+          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
             logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       },
-      { id: 2, tipo: 'Pagador', sexo: 'f', deficiente: false, nome: 'Luciana Pereira',
-        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'igor@seucondominio.com.br',
+      { id: 3, tipo: [], sexo: 'm', deficiente: false, nome: 'Fernando Luiz',
+        cpf: '000.000.000-01', nasc: '07/03/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
-          { id: 987, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
+          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
             logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
-          { id: 789, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
+          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
             logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
       },
-      { id: 3, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Fernando Luiz',
-        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
+      { id: 4, tipo: [], sexo: 'm', deficiente: false, nome: 'Michael Jackson',
+        cpf: '000.000.000-01', nasc: '07/04/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214',
         enderecos: [
-          { id: 654, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
+          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
             logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
           },
-          { id: 456, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
-          }
-        ]
-      },
-      { id: 4, tipo: 'Pagador', sexo: 'm', deficiente: false, nome: 'Michael Jackson',
-        cpf: '000.000.000-01', nasc: '10/10/2010', email: 'teste@seucondominio.com.br',
-        telefone: '(62) 9 9674-5214',
-        enderecos: [
-          { id: 147, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
-          },
-          { id: 741, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
+          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
             logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
         ]
@@ -137,9 +118,29 @@ pagadoresFinanc.controller("PessoasIndexCtrl", ["formFactory",
       }
     }
 
+    vmIdx.excluirRegistro = function(pessoa) {
+      scAlert.open({
+        title: 'Você tem certeza que deseja excluir essa pessoa?',
+        messages: 'Todos os dados serão perdidos!',
+        buttons: [
+          {
+            label: 'Não',
+            color: 'gray'
+          }, {
+            label: 'Sim',
+            color: 'yellow',
+            action: function() {
+              scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
+              vmIdx.listaPessoas.splice(vmIdx.listaPessoas.indexOf(pessoa), 1)
+            }
+          }
+        ]
+      })
+    }
+
     vmIdx.avancado = false;
 
     return vmIdx
 
   }
-]);
+])
