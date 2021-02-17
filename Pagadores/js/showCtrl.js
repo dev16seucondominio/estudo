@@ -11,6 +11,7 @@ pagadoresFinanc.controller("showCtrl",
 
     vmShow.accToggle = function(pessoa){
       pessoa.acc.opened = !pessoa.acc.opened
+      pessoa.editing = false
     }
 
     vmShow.formCtrl = {
@@ -27,11 +28,11 @@ pagadoresFinanc.controller("showCtrl",
       }
     }
 
-    vmShow.pessoa.endereco_principal = {
-      find: function(pessoa) {
-        pessoa.enderecos.principal
-      }
-    }
+    // vmShow.pessoa.endereco_principal = {
+    //   find: function(pessoa) {
+    //     pessoa.enderecos.principal
+    //   }
+    // }
 
     return vmShow
 
