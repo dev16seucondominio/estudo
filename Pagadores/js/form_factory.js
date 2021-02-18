@@ -1,6 +1,6 @@
 pagadoresFinanc.factory("formFactory", [
   function() {
-    base_obj = function() {
+    base_obj = function(pessoa) {
       return obj = {
         opened: false,
         new_record: false,
@@ -16,16 +16,8 @@ pagadoresFinanc.factory("formFactory", [
         close: function(){
           this.pessoa = {}
           this.opened = false
-        },
-
-        adicionarPessoa: function(pessoa) {
-          this.pessoa = pessoa
-          return this.pessoa
-        },
-
-        atualizarLista: function(lista, pessoa) {
-          angular.unshiftOrExtend(lista, pessoa)
         }
+
       }
     }
     return base_obj;
