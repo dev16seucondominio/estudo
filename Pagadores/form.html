@@ -1,6 +1,6 @@
 <div class="sc-accordion-body ng-animation-slider" ng-init="formCtrl.init(idxCtrl.formFactory, pessoa)">
   <div class="sc-p-lg sc-accordion-element ng-animation-slider">
-    <form ng-submit="formCtrl.formCadastro.add(pessoa)">
+    <form ng-submit="formCtrl.formCadastro.salvar(pessoa)">
       <!-- DADOS GERAIS -->
       <div class="sc-fieldset form-pessoa fieldset-pessoa-dadosgerais">
         <div class="sc-fieldset-head">
@@ -57,7 +57,7 @@
           <div class="fcol-xs-auto" style="min-width: 16em">
             <label>
               <div class="sc-label">Nome</div>
-              <input class="sc-input-default sc-input-block" ng-model="formCtrl.params.nome" type="text">
+              <input class="sc-input-default sc-input-block" ng-model="formCtrl.params.nome" ng-class="{'error' : formCtrl.erroNome}" type="text">
             </label>
           </div>
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-25 fcol-lg-20">
@@ -218,28 +218,25 @@
               <div class="sc-label">Operação</div>
               <div class="sc-input-group">
                 <select class="sc-input-default sc-input-block"
-                  ng-model="formCtrl.operacao"
-                  ng-options="operacoes.key as operacoes.label for operacoes in formCtrl.operacoes">
+                  ng-model="formCtrl.params.perfilPag.op"
+                  ng-options="operacoes as operacoes.label for operacoes in formCtrl.perfilPagamento.operacoes">
                   <option selected="selected" value>Selecione uma operação</option>
                 </select>
               </div>
             </label>
           </div>
-
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
             <label>
-              <div class="sc-label">Plano de contas</div>
+             <div class="sc-label">Plano de contas</div>
               <span sc-dropdown-menu="" class="sc-dropdown">
                 <div class="sc-input-group">
-                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <input ng-model="formCtrl.params.perfilPag.plano.nome" ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
                   <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
                 </div>
                 <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
                   <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-                    <li ng-repeat="planoDeContas in formCtrl.planoDeContas" ng-class="{'disabled': filtro.disabled}">
-                      <div>
-                        <span>{{planoDeContas.label}}</span>
-                      </div>
+                    <li ng-click="formCtrl.perfilPagamento.setPlano(planoDeContas)" ng-repeat="planoDeContas in formCtrl.perfilPagamento.listPlano">
+                      <span>{{planoDeContas.nome}}</span>
                     </li>
                   </div>
                 </ul>
@@ -252,22 +249,19 @@
               <div class="sc-label">Fundo</div>
               <span sc-dropdown-menu="" class="sc-dropdown">
                 <div class="sc-input-group">
-                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <input ng-model="formCtrl.params.perfilPag.fundo.nome" ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
                   <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
                 </div>
-                <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
-                  <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-                    <li ng-repeat="fundo in formCtrl.fundo" ng-class="{'disabled': filtro.disabled}">
-                      <div>
-                        <span>{{fundo.label}}</span>
-                      </div>
-                    </li>
-                  </div>
+                <ul class="sc-dropdown-menu ng-animation-slider typeahead-dropdown-menu" ng-show="menu.isOn">
+                  <div class="sc-scrollbar" style="max-height: 15em;overflow: auto;"></div>
+                  <li ng-click="formCtrl.perfilPagamento.setFundo(fundo)" ng-repeat="fundo in formCtrl.perfilPagamento.listFundo">
+                    <span>{{fundo.nome}}</span>
+                  </li>
                 </ul>
               </span>
             </label>
-          </div>
 
+          </div>
         </div>
       </div>
       <!-- CONTAS BANCÁRIAS -->
@@ -297,18 +291,16 @@
 
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
             <label>
-              <div class="sc-label">Banco</div>
+             <div class="sc-label">Banco</div>
               <span sc-dropdown-menu="" class="sc-dropdown">
                 <div class="sc-input-group">
-                  <input ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+                  <input ng-model="conta.banco.nome" ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
                   <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
                 </div>
                 <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
                   <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-                    <li ng-repeat="banco in formCtrl.banco" ng-class="{'disabled': filtro.disabled}">
-                      <div>
-                        <span>{{banco.label}}</span>
-                      </div>
+                    <li ng-click="formCtrl.contasBancarias.setBanco(banco, conta)" ng-repeat="banco in formCtrl.contasBancarias.listBancos">
+                      <span>{{banco.nome}}</span>
                     </li>
                   </div>
                 </ul>
@@ -321,8 +313,8 @@
               <div class="sc-label">Tipo da Conta</div>
               <div class="sc-input-group">
                 <select class="sc-input-default sc-input-block"
-                  ng-model="formCtrl.params.tipoConta"
-                  ng-options="tipoConta.key as tipoConta.label for tipoConta in formCtrl.tipoConta">
+                  ng-model="formCtrl.params.contas.tipoConta"
+                  ng-options="tipoConta.key as tipoConta.nome for tipoConta in formCtrl.contasBancarias.tiposConta">
                   <option selected="selected" value>Selecione</option>
                 </select>
               </div>
@@ -350,7 +342,7 @@
           <div class="fcol-xs-100 fcol-sm-50 fcol-md-22em">
             <label>
               <div class="sc-label">Nome da Pessoa</div>
-              <input class ="sc-input-default sc-input-block" type="text" ng-value="formCtrl.params.nome" ng-model="conta.nome" >
+              <input class ="sc-input-default sc-input-block" type="text" ng-model="conta.nome">
             </label>
           </div>
 
@@ -358,7 +350,7 @@
             <label>
               <div class="sc-label">CPF/CNPJ</div>
               <div class="sc-input-group">
-                <input class="sc-input-default sc-input-block" type="text" ng-value="formCtrl.params.cpf" ng-model="conta.doc">
+                <input class="sc-input-default sc-input-block" type="text" ng-model="conta.doc">
                 <button class="sc-btn sc-btn-blue" type="button">PF</button>
                 <button class="sc-btn" type="button">PJ</button>
               </div>
@@ -457,6 +449,8 @@
                 <span class="sc-text-lg"> Tirar foto</span>
               </button>
               <label class="sc-btn sc-btn-blue sc-btn-thin sc-text-sm sc-text-normal">
+                <input accept="image/x-icon, image/svg+xml, image/vnd.microsoft.icon, .doc,.docx,.xls,.xlsx,application/csv,application/excel,application/ms-excel,application/msexcel,application/msword,application/pdf,application/rtf,application/vnd.ms-excel,application/vnd.ms-excel.addin.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.template.macroEnabled.12,application/vnd.ms-powerpoint,application/vnd.ms-powerpoint.addin.macroEnabled.12,application/vnd.ms-powerpoint.presentation.macroEnabled.12,application/vnd.ms-powerpoint.slideshow.macroEnabled.12,application/vnd.ms-powerpoint.template.macroEnabled.12,application/vnd.ms-word.document.macroEnabled.12,application/vnd.ms-word.template.macroEnabled.12,application/vnd.msexcel,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/x-excel,application/x-msexcel,image/bmp,image/gif,image/jpeg,image/pjepg,image/png,image/x-png,text/comma-separated-values,text/csv,text/enriched,text/plain,video/x-msvideo,video/x-ms-wmv,video/quicktime,video/mp4,video/x-flv"
+                  type="file" style="display: none;">
                 <i class="sc-icon-clipe sc-m-r-sm"></i>
                 <span class="sc-text-lg"> Anexar</span>
               </label>
@@ -525,14 +519,16 @@
       <div class="right">
         <div class="sc-m-l-md sc-align-bottom">
           <button class="sc-btn sc-btn-red"
-            ng-click="itemCtrl.accToggle(pessoa)"
-            type="button">Cancelar</div>
-        </button>
-        <div class="sc-m-l-md sc-align-bottom">
+            ng-click="formCtrl.formFactory.close(pessoa)"
+            type="button">Cancelar
+          </button>
+          </div>
+          <div class="sc-m-l-md sc-align-bottom">
           <button class="sc-btn sc-btn-blue" type="submit">Salvar</button>
         </div>
       </div>
     </form>
+    <div class="clear"></div>
   </div>
 </div>
 

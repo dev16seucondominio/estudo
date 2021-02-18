@@ -11,7 +11,7 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
 
     vmIdx.formFactory = undefined
 
-    vmIdx.init = function(){
+    vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory() //instanciando a factory..
       vmIdx.formFactory.lista = vmIdx.listaPessoas
     }
@@ -28,7 +28,7 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
           { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
             logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
           }
-        ], contas: []
+        ], contas: [], perfilPag: {}
       },
       { id: 2, tipo: [], sexo: 'f', deficiente: false, nome: 'Luciana Pereira',
         cpf: '000.000.000-01', nasc: '07/02/2010', email: 'igor@seucondominio.com.br',

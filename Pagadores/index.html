@@ -97,9 +97,9 @@
           </span>
         </div>
 
-        <!-- Include do form de cadastro, edição e show -->
+        <!-- Include do form de edição e show -->
         <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="formularioCtrl as formCtrl"
-          ng-if="pessoa.acc.opened && itemCtrl.formCtrl.opened && pessoa.editing"
+          ng-if="pessoa.acc.opened && pessoa.editing"
           ng-init="idxCtrl.formFactory.init(pessoa)">
         </div>
         <div ng-include="'show.html'" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
@@ -130,7 +130,7 @@
     </div>
   </div>
 
-  <div class="sc-top-messages ng-animation-slider sc-bg-green" ng-class="scTopMessages.theme"
+  <div class="sc-top-messages ng-animation-slider" ng-class="scTopMessages.theme"
     ng-click="scTopMessages.close()" ng-if="scTopMessages.toggler.opened" style="display: block;">
     <div class="sc-text-white align-center sc-text-shadow-dark flex align-items-center">
       <div class="sc-top-messages-msgs sc-cursor-default">
