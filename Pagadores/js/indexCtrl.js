@@ -13,60 +13,20 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
 
     vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory() //instanciando a factory..
-      vmIdx.formFactory.lista = vmIdx.listaPessoas
+      vmIdx.formFactory.lista = vmIdx.pessoa.listaPessoas
     }
 
-    vmIdx.listaPessoas = [
+    vmIdx.pessoa = {
+      listaPessoas: [
       { id: 1, tipo: [], sexo: 'm', deficiente: false, nome: 'Igor Santos',
-        cpf: '000.000.000-01', nasc: '07/01/2010', email: 'teste@seucondominio.com.br',
+        doc: '000.000.000-01', nasc: '07/01/2010', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
         rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
-        enderecos: [
-          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
-          },
-          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
-          }
-        ], contas: [], perfilPag: {}
-      },
-      { id: 2, tipo: [], sexo: 'f', deficiente: false, nome: 'Luciana Pereira',
-        cpf: '000.000.000-01', nasc: '07/02/2010', email: 'igor@seucondominio.com.br',
-        telefone: '(62) 9 9674-5214',
-        enderecos: [
-          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
-          },
-          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
-          }
-        ]
-      },
-      { id: 3, tipo: [], sexo: 'm', deficiente: false, nome: 'Fernando Luiz',
-        cpf: '000.000.000-01', nasc: '07/03/2010', email: 'teste@seucondominio.com.br',
-        telefone: '(62) 9 9674-5214',
-        enderecos: [
-          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
-          },
-          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
-          }
-        ]
-      },
-      { id: 4, tipo: [], sexo: 'm', deficiente: false, nome: 'Michael Jackson',
-        cpf: '000.000.000-01', nasc: '07/04/2010', email: 'teste@seucondominio.com.br',
-        telefone: '(62) 9 9674-5214',
-        enderecos: [
-          { id: 1, principal: true, titulo: 'Casa', cep: '74370577', cidade: 'Goiânia',
-            logradouro: 'Rua Maria Luiz', complemento: 'Quadra 7, Lote 10', bairro: 'Setor Central'
-          },
-          { id: 2, principal: false, titulo: 'Trabaio', cep: '740000', cidade: 'Goiânia',
-            logradouro: 'Rua 84', complemento: 'Centro Comercial ANtonio JOão Sebba', bairro: 'Setor Sul'
-          }
-        ]
-      }
-    ]
+        enderecos: [], contas: [], perfilPagamento: {} }
+      ]
+    }
+
+
 
     vmIdx.OpcoesAvanc = [
       {label: 'Com endereço'},
@@ -82,32 +42,6 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
     ]
 
     vmIdx.listar = {}
-
-
-    // settings = {
-    //   contas: [
-    //   opcoes: [
-    //   ]
-    // }
-
-    // filtro = {
-    //   avancado: false,
-    //   params: []
-
-    //   opcoes: [
-    //   ]
-
-    //   open: {
-
-    //   }
-    //   close: {
-
-    //   }
-
-    //   exec: function{
-    //     listCtrl.buscar()
-    //   }
-    // }
 
     vmIdx.buscar = {
       filtroSimples: function() {
@@ -131,7 +65,7 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
             color: 'yellow',
             action: function() {
               scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
-              vmIdx.listaPessoas.splice(vmIdx.listaPessoas.indexOf(pessoa), 1)
+              vmIdx.pessoa.listaPessoas.splice(vmIdx.pessoa.listaPessoas.indexOf(pessoa), 1)
             }
           }
         ]

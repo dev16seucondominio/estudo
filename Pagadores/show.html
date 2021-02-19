@@ -1,7 +1,7 @@
 <div class="sc-accordion-body" style="display: block;">
   <div class="sc-p-lg">
 
-    <div class="col-xs-12 col-md-6 hidden" ng-show="pessoa.nome == NULL && pessoa.cpf == NULL && pessoa.rg == NULL  ">
+    <div class="col-xs-12 col-md-6" ng-show="!pessoa.doc && !pessoa.rg && !pessoa.prof && !pessoa.nasc && !pessoa.email && !pessoa.emailalt">
       <div class="sc-accordion-element sc-fieldset sc-bg-white">
         <div class="sc-fieldset-head" ng-show="pessoa.nome">
           <span class="sc-p-b-md sc-text-blue sc-text-bold">{{pessoa.nome}}</span>
@@ -12,14 +12,14 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-md-6">
+    <div class="col-xs-12 col-md-6" ng-show="pessoa.doc || pessoa.rg || pessoa.prof || pessoa.nasc || pessoa.email || pessoa.emailalt">
       <div class="sc-accordion-element sc-fieldset sc-bg-white">
         <div class="sc-fieldset-head">
           <span class="sc-p-b-md sc-text-blue sc-text-bold">{{pessoa.nome}}</span>
         </div>
         <div class="sc-text-gray">
-          <div class="sc-p-xs" ng-show="pessoa.cpf">
-            <i class="sc-p-r-md left sc-icon-homem-1"></i><div><span class="sc-text-bold">CPF:</span> {{pessoa.cpf}}</div>
+          <div class="sc-p-xs" ng-show="pessoa.doc">
+            <i class="sc-p-r-md left sc-icon-homem-1"></i><div><span class="sc-text-bold">CPF:</span> {{pessoa.doc}}</div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.rg">
             <i class="sc-p-r-md left sc-icon-cartao-1"></i><div><span class="sc-text-bold">RG:</span> {{pessoa.rg}}</div>
@@ -40,7 +40,14 @@
             <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.emailalt}}</div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.enderecos.length">
-            <i class="sc-p-r-md left sc-icon-local"></i><div>{{pessoa.enderecos[0].logradouro}}</div>
+            <i class="sc-p-r-md left sc-icon-local"></i>
+            <div>
+              <span ng-show="pessoa.enderecoPrincipal.logradouro">{{pessoa.enderecoPrincipal.logradouro}}, </span>
+              <span ng-show="pessoa.enderecoPrincipal.complemento">{{pessoa.enderecoPrincipal.complemento}}, </span>
+              <span ng-show="pessoa.enderecoPrincipal.bairro">{{pessoa.enderecoPrincipal.bairro}}, </span>
+              <span ng-show="pessoa.enderecoPrincipal.cidade">{{pessoa.enderecoPrincipal.cidade}}, </span>
+              <span ng-show="pessoa.enderecoPrincipal.cep">{{pessoa.enderecoPrincipal.cep}}</span>
+            </div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.obs">
             <i class="sc-p-r-md left sc-icon-arquivo-4"></i><div><span class="sc-text-bold">OBS:</span> {{pessoa.obs}}</div>
@@ -73,12 +80,12 @@
             <div>
               <b>Conta:</b>
               <span class="sc-m-l-sm">
-                <span>{{conta.banco}}</span>
+                <span>{{conta.banco.nome}}</span>
                 <span class="sc-p-h-sm">-</span>
-                <b>Ag:</b> {{conta.agencia}}
+                <b>Ag:</b> {{conta.agencia}} -
                 <span ng-show="conta.dvAgencia">{{conta.dvAgencia}}</span>
                 <span class="sc-p-h-sm">-</span>
-                <b>C/c:</b> {{conta.numConta}}
+                <b>C/c:</b> {{conta.numConta}} -
                 <span ng-show="conta.dvConta">{{conta.dvConta}}</span>
               </span>
             </div>
@@ -87,7 +94,7 @@
               <span class="sc-m-l-sm">
                 <span>{{conta.nome}}</span>
                 <span class="sc-p-h-sm">-</span>
-                <b>{{conta.doc}}</b>
+                <span><b>{{conta.doc}}</b></span>
               </span>
             </div>
           </div>

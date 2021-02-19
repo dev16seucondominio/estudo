@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
   <link rel="stylesheet" type="text/css" href="./css/uikit.css" />
   <link rel="stylesheet" type="text/css" href="./css/uikit-sample.css" />
-  <script type="text/javascript" src="js/modernizr.js"> </script>
+  <script type="text/javascript" src="./js/modernizr.js"> </script>
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
 <body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as idxCtrl" ng-init="idxCtrl.init()" style="background-color: #fff ">
@@ -48,7 +48,7 @@
         <div ng-include="'form.html'"></div>
       </li>
       <!-- Lista de pessoas -->
-      <li ng-repeat="pessoa in idxCtrl.listaPessoas | filter:idxCtrl.listar as results track by pessoa.id"
+      <li ng-repeat="pessoa in idxCtrl.pessoa.listaPessoas | filter:idxCtrl.listar as results track by pessoa.id"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
         ng-controller="showCtrl as itemCtrl"
@@ -89,7 +89,8 @@
                 </a>
               </li>
               <li>
-                <a sc-dropdown-close-menu="">
+                <a sc-dropdown-close-menu=""
+                  ng-click="idxCtrl.pessoa.enderecoPrincipal(pessoa, pessoa.enderecos)" >
                   <i class="sc-icon-historico"></i> Histórico
                 </a>
               </li>
