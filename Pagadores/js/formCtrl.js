@@ -13,33 +13,34 @@ pagadoresFinanc.controller("formularioCtrl", [
         vmForm.params = {}
         vmForm.params.enderecos = []
         vmForm.params.contas = []
-        vmForm.params.perfilPag = {}
-
+        vmForm.params.perfilPagamento = {}
+        vmForm.params.juridica = false
+        // vmForm.params.enderecoPrincipal = {principal: true}
       }
       vmForm.formFactory = baseFact
       console.log('fim init, params:', vmForm.params)
     }
 
     vmForm.perfilPagamento = {
-      operacoes: [
-        {id: 1, key: 'pix', label: 'Pix'},
-        {id: 2, key: 'boleto_titulo', label: 'Boleto - Título'},
-        {id: 3, key: 'boleto_convenio', label: 'Boleto - Convênio'},
-        {id: 4, key: 'cheque', label: 'Cheque'},
-        {id: 5, key: 'deposito', label: 'Depósito'},
-        {id: 6, key: 'saque', label: 'Saque'},
-        {id: 7, key: 'cartao_credito', label: 'Cartão Crédito'},
-        {id: 8, key: 'cartao_debito', label: 'Cartão Débito'},
-        {id: 9, key: 'debito_automatico', label: 'Débito Automático'},
-        {id: 10, key: 'tarifa', label: 'Tarifa'},
-        {id: 11, key: 'dinheiro', label: 'Dinheiro'},
-        {id: 12, key: 'rendimento', label: 'Rendimento'},
-        {id: 13, key: 'aplicacao', label: 'Aplicação'},
-        {id: 14, key: 'pagamento_eletronico', label: 'Pagamento Eletrônico'},
-        {id: 15, key: 'resgate', label: 'Resgate'},
-        {id: 16, key: 'tranferencia_ted', label: 'Tranferência - TED'},
-        {id: 17, key: 'tranferencia_doc', label: 'Tranferência - DOC'},
-        {id: 18, key: 'tranferencia_mesmo_banco', label: 'Tranferência - MESMO BANCO'}
+      listOperacoes: [
+        {id: 1, key: 'pix', nome: 'Pix'},
+        {id: 2, key: 'boleto_titulo', nome: 'Boleto - Título'},
+        {id: 3, key: 'boleto_convenio', nome: 'Boleto - Convênio'},
+        {id: 4, key: 'cheque', nome: 'Cheque'},
+        {id: 5, key: 'deposito', nome: 'Depósito'},
+        {id: 6, key: 'saque', nome: 'Saque'},
+        {id: 7, key: 'cartao_credito', nome: 'Cartão Crédito'},
+        {id: 8, key: 'cartao_debito', nome: 'Cartão Débito'},
+        {id: 9, key: 'debito_automatico', nome: 'Débito Automático'},
+        {id: 10, key: 'tarifa', nome: 'Tarifa'},
+        {id: 11, key: 'dinheiro', nome: 'Dinheiro'},
+        {id: 12, key: 'rendimento', nome: 'Rendimento'},
+        {id: 13, key: 'aplicacao', nome: 'Aplicação'},
+        {id: 14, key: 'pagamento_eletronico', nome: 'Pagamento Eletrônico'},
+        {id: 15, key: 'resgate', nome: 'Resgate'},
+        {id: 16, key: 'tranferencia_ted', nome: 'Tranferência - TED'},
+        {id: 17, key: 'tranferencia_doc', nome: 'Tranferência - DOC'},
+        {id: 18, key: 'tranferencia_mesmo_banco', nome: 'Tranferência - MESMO BANCO'}
       ],
       listPlano: [
         {id: 0, key: 'receitas', nome: '1 - RECEITAS'},
@@ -56,14 +57,67 @@ pagadoresFinanc.controller("formularioCtrl", [
         {id: 3, key: 'fundo_trabalhista', nome: '4 - FUNDO TRABALHISTA'}
       ],
       setPlano: function(planoDeContas) {
-        vmForm.params.perfilPag.plano = planoDeContas
+        vmForm.params.perfilPagamento.planoDeContas = planoDeContas
       },
       setFundo: function(fundo) {
-        vmForm.params.perfilPag.fundo = fundo
+        vmForm.params.perfilPagamento.fundo = fundo
       }
     }
 
-    vmForm.contasBancarias = {
+    vmForm.reajusteContratual = {
+      reajustar: function() {
+        vmForm.reajuste = !vmForm.reajuste
+      },
+      listCorrecao: [
+        {id: 0, key: 'inpc_ibge', nome: 'INPC (IBGE)'},
+        {id: 1, key: 'igp_di_fgv', nome: 'IGP-DI (FGV) - BR'},
+        {id: 2, key: 'ipa_m_fgv', nome: 'IPA-M (FGV) - BR'},
+        {id: 3, key: 'ipa_di_fgv', nome: 'IPA-DI (FGV) - BR'},
+        {id: 4, key: 'incc_m_fgv', nome: 'INCC-M (FGV) - BR'},
+        {id: 5, key: 'incc_di_fgv', nome: 'INCC-DI (FGV) - BR'},
+        {id: 6, key: 'tj_mg_tjmg', nome: 'TJ-MG (TJMG) - BR'},
+        {id: 7, key: 'poupanca_br', nome: 'Poupança - BR'},
+        {id: 8, key: 'ipc_di_fgv', nome: 'IPC-DI (FGV) - BR'},
+        {id: 9, key: 'salario_minimo', nome: 'Salário Mínimo - BR'},
+        {id: 10, key: 'encoge_718n', nome: 'ENCOGE (JEBR0718N) - BR'},
+        {id: 11, key: 'encoge_719n', nome: 'ENCOG (JEBR0719N) - BR'},
+        {id: 12, key: 'encoge_620n', nome: 'ENCOGE (JEBR0620N) - BR'},
+        {id: 13, key: 'tj_sp_tjsp', nome: 'TJ-SP (TJSP) - BR'},
+        {id: 14, key: 'encoge_820n', nome: 'ENCONGE (JEBR0820N) - BR'},
+        {id: 15, key: 'igp_m_fgv', nome: 'IGP-M (FGV) - BR'}
+      ],
+      listPeriodos: [
+        {id: 0, key: 'dias', nome: 'Dias', default: false},
+        {id: 1, key: 'meses', nome: 'Meses', selected: true},
+        {id: 2, key: 'Anos', nome: 'Anos', default: true}
+      ]
+    }
+
+    vmForm.anexos = [
+      {id:0, key: 'fotos', nome: 'Fotos'},
+      {id:1, key: 'documentos', nome: 'Documentos'}
+    ]
+
+    vmForm.anexarObj = {
+      anexar: new FileReader()
+    }
+
+    vmForm.formEnd = {
+      add: function() {
+        vmForm.params.enderecos <= 1 ?
+          vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1, principal: true}) :
+            vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1})
+      },
+      rmv: function(end) {
+        vmForm.params.enderecos.remove(end)
+      },
+      setEnderecoPrincipal: function(pessoa, end) {
+        pessoa.enderecoPrincipal = end.find(end => (end.principal))
+        console.log(pessoa.enderecoPrincipal)
+      }
+    }
+
+    vmForm.formConta = {
       listBancos: [
         {id: 0, key: 'caixa', nome: '104 - Caixa Econômica Federal'},
         {id: 1, key: 'inter', nome: '077 - Banco Inter'},
@@ -86,61 +140,19 @@ pagadoresFinanc.controller("formularioCtrl", [
         {id: 12, key: 'fundo_de_obras', nome: 'Fundo de Obras'},
         {id: 13, key: 'f_reserva_compesa', nome: 'Fundo de Reserva Compesa'}
       ],
-      setBanco: function(banco, conta) {
-        conta.banco = banco
-      },
-    }
-
-    vmForm.correcao = [
-      {id: 0, key: 'inpc_ibge', label: 'INPC (IBGE)'},
-      {id: 1, key: 'igp_di_fgv', label: 'IGP-DI (FGV) - BR'},
-      {id: 2, key: 'ipa_m_fgv', label: 'IPA-M (FGV) - BR'},
-      {id: 3, key: 'ipa_di_fgv', label: 'IPA-DI (FGV) - BR'},
-      {id: 4, key: 'incc_m_fgv', label: 'INCC-M (FGV) - BR'},
-      {id: 5, key: 'incc_di_fgv', label: 'INCC-DI (FGV) - BR'},
-      {id: 6, key: 'tj_mg_tjmg', label: 'TJ-MG (TJMG) - BR'},
-      {id: 7, key: 'poupanca_br', label: 'Poupança - BR'},
-      {id: 8, key: 'ipc_di_fgv', label: 'IPC-DI (FGV) - BR'},
-      {id: 9, key: 'salario_minimo', label: 'Salário Mínimo - BR'},
-      {id: 10, key: 'encoge_718n', label: 'ENCOGE (JEBR0718N) - BR'},
-      {id: 11, key: 'encoge_719n', label: 'ENCOG (JEBR0719N) - BR'},
-      {id: 12, key: 'encoge_620n', label: 'ENCOGE (JEBR0620N) - BR'},
-      {id: 13, key: 'tj_sp_tjsp', label: 'TJ-SP (TJSP) - BR'},
-      {id: 14, key: 'encoge_820n', label: 'ENCONGE (JEBR0820N) - BR'},
-      {id: 15, key: 'igp_m_fgv', label: 'IGP-M (FGV) - BR'}
-    ]
-
-    vmForm.periodos = [
-      {id: 0, key: 'dias', label: 'Dias', default: false},
-      {id: 1, key: 'meses', label: 'Meses', default: true},
-      {id: 2, key: 'Anos', label: 'Anos', default: true}
-    ]
-
-    vmForm.anexos = [
-      {id:0, key: 'fotos', label: 'Fotos'},
-      {id:1, key: 'documentos', label: 'Documentos'}
-    ]
-
-    vmForm.formEnd = {
       add: function() {
-        vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1})
-      },
-      rmv: function(end) {
-        vmForm.params.enderecos.remove(end)
-      }
-    }
-
-    vmForm.formConta = {
-      add: function() {
-        if(vmForm.params.cpf) {
-          vmForm.params.contas.push({
-            id: (vmForm.params.contas.length) + 1,
-            banco: vmForm.params.contas.banco,
-            nome: (angular.copy(vmForm.params.nome)),
-            doc: (angular.copy(vmForm.params.cpf))
-          })
-        } else {
-            vmForm.params.contas.push({id: (vmForm.params.contas.length) + 1, nome: (angular.copy(vmForm.params.nome)) })
+        if(vmForm.params.contas.length <= 1) {
+          if(vmForm.params.doc) {
+            vmForm.params.contas.push({
+              id: (vmForm.params.contas.length) + 1,
+              pj: false,
+              banco: vmForm.params.contas.banco,
+              nome: (angular.copy(vmForm.params.nome)),
+              doc: (angular.copy(vmForm.params.doc))
+            })
+          } else {
+              vmForm.params.contas.push({id: (vmForm.params.contas.length) + 1, nome: (angular.copy(vmForm.params.nome))})
+          }
         }
       },
       rmv: function(conta) {
@@ -148,7 +160,10 @@ pagadoresFinanc.controller("formularioCtrl", [
       },
       setContaPrincipal: function(conta) {
         conta.principal = vmForm.params.contas.filter(conta => (conta.principal))
-      }
+      },
+      setBanco: function(banco, conta) {
+        conta.banco = banco
+      },
     }
 
     vmForm.formCadastro = {
@@ -159,11 +174,15 @@ pagadoresFinanc.controller("formularioCtrl", [
         } else {
             if(!vmForm.params.id) {
               console.log('Adicionando Novo')
+              if(vmForm.params.email) vmForm.params.email = vmForm.params.email.toLowerCase()
+              if(vmForm.params.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(vmForm.params, vmForm.params.enderecos)
               vmForm.params.id = vmForm.formFactory.lista.length + 1
               vmForm.formFactory.lista.unshift(vmForm.params)
               vmForm.formFactory.close()
             } else {
                 console.log('Editando')
+                if(vmForm.params.email) vmForm.params.email = vmForm.params.email.toLowerCase()
+                if(vmForm.params.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(vmForm.params, vmForm.params.enderecos)
                 vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
                 vmForm.params.acc.opened = true
                 vmForm.params.editing = false
@@ -172,9 +191,6 @@ pagadoresFinanc.controller("formularioCtrl", [
           }
       }
     }
-
-
-    vmForm.reajuste = true
 
     return vmForm
 
