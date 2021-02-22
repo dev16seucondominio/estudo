@@ -3,30 +3,33 @@ Checklist: Tela Pagadores
 Formulário de cadastro:
 
   A fazer:
-    Apenas um tipo principal
     Anexar fotos/documentos
-    Cadastro de PJ
 
 
 
+    OK  Cadastro de PJ
+    OK  Apenas um tipo principal
     OK  Select do plano de contas, fundo e banco
     OK  Required nome
 
   A corrigir:
-    Campo de nascimento
     Botão de cancelar em novo cadastro
 
 
 
+    OK Campo de nascimento
     OK Adicionar selected na edição, caso haja operação ou tipo da conta
     OK  Select não enviando dados para lista original
 Filtro:
+
+  A fazer:
+    Busca avançada apenas quando clicar no botão de salvar
 
 Show:
 
   A fazer:
 
-
+    OK  Show de PJ e PF
     OK  Mostrar o endereço principal
   A corrigir:
-    Show contas bancárias
+    OK  Show contas bancárias

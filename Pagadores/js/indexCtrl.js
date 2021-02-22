@@ -19,7 +19,7 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
     vmIdx.pessoa = {
       listaPessoas: [
       { id: 1, tipo: [], sexo: 'm', deficiente: false, nome: 'Igor Santos',
-        doc: '000.000.000-01', nasc: '07/01/2010', email: 'teste@seucondominio.com.br',
+        doc: '00000000001', nasc: '', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
         rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
         enderecos: [], contas: [], perfilPagamento: {} }
@@ -41,8 +41,6 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
       {label: 'Com emails'}
     ]
 
-    vmIdx.listar = {}
-
     vmIdx.buscar = {
       filtroSimples: function() {
         vmIdx.listar = vmIdx.aplicarFiltro
@@ -51,6 +49,8 @@ pagadoresFinanc.controller("PessoasIndexCtrl", [
         vmIdx.listar = vmIdx.aplicarFiltroAvancado
       }
     }
+
+    vmIdx.listar = []
 
     vmIdx.excluirRegistro = function(pessoa) {
       scAlert.open({

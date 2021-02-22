@@ -51,7 +51,7 @@
 <div id="top-bar-filter" class="flex-row" style="z-index: 10; width: 100.9%">
   <div class="sc-bg-gray-lighter sc-p-lg ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4"
     ng-if="idxCtrl.avancado">
-    <form>
+    <form ng-submit="idxCtrl.buscar.filtroAvanc()">
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Nome</label>
         <input class="sc-input-default sc-input-block"
@@ -113,8 +113,7 @@
       <div class="clear"></div>
 
       <hr class="sc-hr-gray-light">
-      <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md sc-m-b-md"
-        ng-click="idxCtrl.buscar.filtroAvanc()">
+      <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md sc-m-b-md" type="submit">
         <div class="sc-btn-icon">
           <i class="sc-icon-lupa-2"></i>
         </div>

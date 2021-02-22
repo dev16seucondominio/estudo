@@ -8,14 +8,13 @@ pagadoresFinanc.controller("formularioCtrl", [
       console.log('estou iniciando com pessoa:', pessoa)
       if(pessoa) {
         vmForm.params = angular.copy(pessoa)
-        vmForm.params.nasc = new Date(vmForm.params.nasc)
       } else {
         vmForm.params = {}
+        vmForm.params.acc = {opened:false}
         vmForm.params.enderecos = []
         vmForm.params.contas = []
-        vmForm.params.perfilPagamento = {}
         vmForm.params.juridica = false
-        // vmForm.params.enderecoPrincipal = {principal: true}
+        vmForm.params.nasc |= {}
       }
       vmForm.formFactory = baseFact
       console.log('fim init, params:', vmForm.params)
@@ -93,6 +92,14 @@ pagadoresFinanc.controller("formularioCtrl", [
       ]
     }
 
+    vmForm.clienteInadimplente = {
+      listPeriodos: [
+        {id: 0, key: 'dias', nome: 'Dias', default: false},
+        {id: 1, key: 'meses', nome: 'Meses', selected: true},
+        {id: 2, key: 'Anos', nome: 'Anos', default: true}
+      ]
+    }
+
     vmForm.anexos = [
       {id:0, key: 'fotos', nome: 'Fotos'},
       {id:1, key: 'documentos', nome: 'Documentos'}
@@ -104,16 +111,23 @@ pagadoresFinanc.controller("formularioCtrl", [
 
     vmForm.formEnd = {
       add: function() {
-        vmForm.params.enderecos <= 1 ?
-          vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1, principal: true}) :
-            vmForm.params.enderecos.push({id: (vmForm.params.enderecos.length) + 1})
+        vmForm.params.enderecos.push({
+          id: (vmForm.params.enderecos.length) + 1,
+          principal: (vmForm.params.enderecos < 1 ? true : false)
+        })
       },
       rmv: function(end) {
         vmForm.params.enderecos.remove(end)
       },
       setEnderecoPrincipal: function(pessoa, end) {
         pessoa.enderecoPrincipal = end.find(end => (end.principal))
-        console.log(pessoa.enderecoPrincipal)
+        console.log('Endereço principal: ',pessoa.enderecoPrincipal)
+      },
+      setPrincipal: function(listEnd, end) {
+        for(i in listEnd) {
+          listEnd[i].principal = false
+        }
+        end.principal = true
       }
     }
 
@@ -141,19 +155,14 @@ pagadoresFinanc.controller("formularioCtrl", [
         {id: 13, key: 'f_reserva_compesa', nome: 'Fundo de Reserva Compesa'}
       ],
       add: function() {
-        if(vmForm.params.contas.length <= 1) {
-          if(vmForm.params.doc) {
-            vmForm.params.contas.push({
-              id: (vmForm.params.contas.length) + 1,
-              pj: false,
-              banco: vmForm.params.contas.banco,
-              nome: (angular.copy(vmForm.params.nome)),
-              doc: (angular.copy(vmForm.params.doc))
-            })
-          } else {
-              vmForm.params.contas.push({id: (vmForm.params.contas.length) + 1, nome: (angular.copy(vmForm.params.nome))})
-          }
-        }
+        vmForm.params.contas.push({
+          id: (vmForm.params.contas.length) + 1,
+          principal: (vmForm.params.contas.length < 1 ? true : false),
+          pj: false,
+          banco: vmForm.params.contas.banco,
+          doc: (vmForm.params.doc ? angular.copy(vmForm.params.doc) : ''),
+          nome: (angular.copy(vmForm.params.nome))
+        })
       },
       rmv: function(conta) {
         vmForm.params.contas.remove(conta)
@@ -164,6 +173,34 @@ pagadoresFinanc.controller("formularioCtrl", [
       setBanco: function(banco, conta) {
         conta.banco = banco
       },
+      setPrincipal: function(listaContas, conta) {
+        for(i in listaContas) {
+          listaContas[i].principal = false
+        }
+        conta.principal = true
+      }
+    }
+
+    vmForm.formatacao = function(pessoa){
+      if(pessoa.nasc) {
+        pessoa.nasc.d = pessoa.nasc.getDate()
+        pessoa.nasc.m = pessoa.nasc.getMonth() + 1
+        pessoa.nasc.y = pessoa.nasc.getFullYear()
+      }
+      if(pessoa.email) pessoa.email = pessoa.email.toLowerCase()
+
+      if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
+
+      if(pessoa.juridica) {
+        pessoa.rg = ''
+        pessoa.nasc = ''
+        pessoa.prof = ''
+        pessoa.sexo = ''
+        pessoa.deficiente = ''
+      } else {
+          pessoa.razaoSocial = ''
+          pessoa.contato = ''
+      }
     }
 
     vmForm.formCadastro = {
@@ -172,25 +209,24 @@ pagadoresFinanc.controller("formularioCtrl", [
           scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
           vmForm.erroNome = true
         } else {
-            if(!vmForm.params.id) {
-              console.log('Adicionando Novo')
-              if(vmForm.params.email) vmForm.params.email = vmForm.params.email.toLowerCase()
-              if(vmForm.params.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(vmForm.params, vmForm.params.enderecos)
-              vmForm.params.id = vmForm.formFactory.lista.length + 1
-              vmForm.formFactory.lista.unshift(vmForm.params)
-              vmForm.formFactory.close()
-            } else {
-                console.log('Editando')
-                if(vmForm.params.email) vmForm.params.email = vmForm.params.email.toLowerCase()
-                if(vmForm.params.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(vmForm.params, vmForm.params.enderecos)
-                vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
-                vmForm.params.acc.opened = true
-                vmForm.params.editing = false
-                vmForm.formFactory.close()
-              }
+          if(!vmForm.params.id) {
+            console.log('Adicionando Novo')
+            vmForm.formatacao(vmForm.params)
+            vmForm.params.id = vmForm.formFactory.lista.length + 1
+            vmForm.formFactory.lista.unshift(vmForm.params)
+          } else {
+              console.log('Editando')
+              vmForm.formatacao(vmForm.params)
+              vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
+              vmForm.params.acc.opened = true
+              vmForm.params.editing = false
           }
+          vmForm.formFactory.close()
+        }
       }
     }
+
+
 
     return vmForm
 

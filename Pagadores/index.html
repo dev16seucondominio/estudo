@@ -55,7 +55,8 @@
         ng-init="itemCtrl.init(pessoa)">
         <div ng-click="itemCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
-            <i class="sc-text-xl sc-icon sc-icon-homem-1"></i>
+            <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
+            <i class="sc-text-xl sc-icon sc-icon-fabrica" ng-show="pessoa.juridica"></i>
           </div>
           <div class="sc-accordion-elastic-col title">
             <span class="sc-p-xs flex">{{pessoa.nome}}

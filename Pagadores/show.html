@@ -19,7 +19,15 @@
         </div>
         <div class="sc-text-gray">
           <div class="sc-p-xs" ng-show="pessoa.doc">
-            <i class="sc-p-r-md left sc-icon-homem-1"></i><div><span class="sc-text-bold">CPF:</span> {{pessoa.doc}}</div>
+            <i class="sc-p-r-md left sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
+            <i class="sc-p-r-md left sc-icon-fabrica" ng-show="pessoa.juridica"></i>
+            <div>
+              <span class="sc-text-bold" ng-show="!pessoa.juridica">CPF:</span>
+              <span class="sc-text-bold" ng-show="pessoa.juridica">CNPJ:</span>
+               {{pessoa.doc}}</div>
+          </div>
+          <div class="sc-p-xs" ng-show="pessoa.contato">
+            <i class="sc-p-r-md left sc-icon-homem-1"></i><div><span class="sc-text-bold">Contato:</span> {{pessoa.contato}}</div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.rg">
             <i class="sc-p-r-md left sc-icon-cartao-1"></i><div><span class="sc-text-bold">RG:</span> {{pessoa.rg}}</div>
@@ -28,7 +36,7 @@
             <i class="sc-p-r-md left sc-icon-maleta"></i><div><span class="sc-text-bold">Profissão:</span> {{pessoa.prof}}</div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.nasc">
-            <i class="sc-p-r-md left sc-icon-calendario-2"></i><div><span class="sc-text-bold">Nascimento:</span> {{pessoa.nasc}}</div>
+            <i class="sc-p-r-md left sc-icon-calendario-2"></i><div><span class="sc-text-bold">Nascimento:</span> {{pessoa.nasc | date:"dd/MM/yyyy"}}</div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.telefones.length">
             <i class="sc-p-r-md left sc-icon-telefone-1"></i><div><span class="sc-text-bold">Telefones:</span>{{pessoa.telefone}}</div>
@@ -39,7 +47,7 @@
           <div class="sc-p-xs" ng-show="pessoa.emailalt">
             <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.emailalt}}</div>
           </div>
-          <div class="sc-p-xs" ng-show="pessoa.enderecos.length">
+          <div class="sc-p-xs" ng-show="pessoa.enderecoPrincipal.cidade">
             <i class="sc-p-r-md left sc-icon-local"></i>
             <div>
               <span ng-show="pessoa.enderecoPrincipal.logradouro">{{pessoa.enderecoPrincipal.logradouro}}, </span>
