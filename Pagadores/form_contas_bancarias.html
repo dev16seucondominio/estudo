@@ -2,20 +2,20 @@
   <div class="sc-fieldset-head flex-row">
     <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
     <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
-      ng-click="formCtrl.formConta.add()">
+      ng-click="PessoasFormCtrl.formConta.add()">
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
 
   <div class="flex-row-with-padding align-items-flex-end"
-    ng-repeat="conta in formCtrl.params.contas track by conta.id">
+    ng-repeat="conta in PessoasFormCtrl.params.contas track by conta.id">
 
     <div class="fcol-xs-7em">
       <label>
         <div class="sc-label">Principal?</div>
         <div class="sc-p-v-sm">
           <span class="sc-toggle">
-            <input type="checkbox" ng-model="conta.principal" ng-change="formCtrl.formConta.setPrincipal(formCtrl.params.contas, conta)">
+            <input type="checkbox" ng-model="conta.principal" ng-change="PessoasFormCtrl.formConta.setPrincipal(PessoasFormCtrl.params.contas, conta)">
             <span label-false="não" label-true="sim"></span>
           </span>
         </div>
@@ -32,7 +32,7 @@
           </div>
           <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="formCtrl.formConta.setBanco(banco, conta)" ng-repeat="banco in formCtrl.formConta.listBancos">
+              <li ng-click="PessoasFormCtrl.formConta.setBanco(banco, conta)" ng-repeat="banco in PessoasFormCtrl.formConta.listBancos">
                 <span>{{banco.nome}}</span>
               </li>
             </div>
@@ -47,7 +47,7 @@
         <div class="sc-input-group">
           <select class="sc-input-default sc-input-block"
             ng-model="conta.tipoConta"
-            ng-options="tipoConta.key as tipoConta.nome for tipoConta in formCtrl.formConta.tiposConta">
+            ng-options="tipoConta.key as tipoConta.nome for tipoConta in PessoasFormCtrl.formConta.tiposConta">
             <option selected="selected" value>Selecione</option>
           </select>
         </div>
@@ -91,17 +91,17 @@
     </div>
 
     <div class="fcol-xs-3"
-      ng-click="formCtrl.formConta.rmv(conta)">
+      ng-click="PessoasFormCtrl.formConta.rmv(conta)">
       <i class="sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg"></i>
     </div>
 
     <div class="sc-border-b-solid sc-border-gray-light fcol-xs-100 sc-p-v-lg"
-      ng-if="formCtrl.params.contas.length > 1 && !$last">
+      ng-if="PessoasFormCtrl.params.contas.length > 1 && !$last">
     </div>
 
   </div>
   <div class="sc-p-b-o">
     <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
-      ng-hide="formCtrl.params.contas.length">Nenhuma conta cadastrada!</div>
+      ng-hide="PessoasFormCtrl.params.contas.length">Nenhuma conta cadastrada!</div>
   </div>
 </div>

@@ -8,14 +8,14 @@
           <span class="sc-text-lg"> Tirar foto</span>
         </button>
         <label class="sc-btn sc-btn-blue sc-btn-thin sc-text-sm sc-text-normal">
-          <input type="file" ng-model="formCtrl.params.anexos.arquivo" ng-click="formCtrl.anexarObj.anexar" style="display: none;">
+          <input type="file" ng-model="PessoasFormCtrl.params.anexos.arquivo" ng-click="PessoasFormCtrl.anexarObj.anexar" style="display: none;">
           <i class="sc-icon-clipe sc-m-r-sm"></i>
           <span class="sc-text-lg"> Anexar</span>
         </label>
       </div>
       <select class="sc-input-default sc-p-v-o sc-m-v-sm"
-        ng-model="formCtrl.params.anexos.tipo"
-        ng-options="anexos.key as anexos.nome for anexos in formCtrl.anexos"
+        ng-model="PessoasFormCtrl.params.anexos.tipo"
+        ng-options="anexos.key as anexos.nome for anexos in PessoasFormCtrl.anexos.tiposAnexo"
         style="font-size: 0.833333em; min-height: 1.7em;">
         <option selected="selected" value>Selecione</option>
       </select>
