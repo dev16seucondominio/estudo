@@ -1,4 +1,4 @@
-pagadoresFinanc.controller("showCtrl",
+pagadoresFinanc.controller("PessoaCtrl",
   function() {
     vmShow = this
 

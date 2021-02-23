@@ -1,4 +1,4 @@
-pagadoresFinanc.controller("formularioCtrl", [
+pagadoresFinanc.controller("PessoasFormCtrl", [
   "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages) {
     vmForm = this
 
@@ -15,6 +15,7 @@ pagadoresFinanc.controller("formularioCtrl", [
         vmForm.params.contas = []
         vmForm.params.juridica = false
         vmForm.params.nasc |= {}
+        vmForm.params.perfilPagamento = {}
       }
       vmForm.formFactory = baseFact
       console.log('fim init, params:', vmForm.params)
@@ -100,13 +101,11 @@ pagadoresFinanc.controller("formularioCtrl", [
       ]
     }
 
-    vmForm.anexos = [
-      {id:0, key: 'fotos', nome: 'Fotos'},
-      {id:1, key: 'documentos', nome: 'Documentos'}
-    ]
-
-    vmForm.anexarObj = {
-      anexar: new FileReader()
+    vmForm.anexos = {
+      tiposAnexo: [
+        {id:0, key: 'fotos', nome: 'Fotos'},
+        {id:1, key: 'documentos', nome: 'Documentos'}
+      ]
     }
 
     vmForm.formEnd = {
@@ -225,8 +224,6 @@ pagadoresFinanc.controller("formularioCtrl", [
         }
       }
     }
-
-
 
     return vmForm
 
