@@ -1,44 +1,49 @@
 <div class="flex-row sc-p-md">
   <div class="sc-p-r-xl left">
-    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="idxCtrl.formFactory.init(pessoa = {})">
+    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PessoasCtrl.formFactory.init(pessoa = {})">
       <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
       <div class="sc-btn-text">Cadastrar Pessoa</div>
     </button>
   </div>
 
   <div class="col-xs-4 col-md-4">
-    <form class="sc-input-group">
+    <form class="sc-input-group" ng-submit="PessoasCtrl.filtro.exec('simples')">
       <input class="sc-input-default" type="text"
-        ng-model="idxCtrl.aplicarFiltro"
+        ng-model="PessoasCtrl.filtro.params.q"
         placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone"
-        ng-disabled="idxCtrl.avancado">
-      <button class="sc-btn sc-btn-blue"
-        ng-click="idxCtrl.buscar.filtroSimples()">
+        ng-disabled="PessoasCtrl.settings.filtro.avancado">
+
+      <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.preenchido"
+        ng-click="PessoasCtrl.filtro.limpar()" type="button">
+        <i class="sc-icon-fechar-1"></i>
+      </button>
+
+      <button class="sc-btn sc-btn-blue" type="submit">
         <i class="sc-icon-lupa-2"></i>
       </button>
-      <button class="sc-btn" ng-click="idxCtrl.avancado = !idxCtrl.avancado"
-        ng-class="{'sc-btn-gray': idxCtrl.avancado}">
+      <button class="sc-btn" ng-click="PessoasCtrl.settings.filtro.avancado = !PessoasCtrl.settings.filtro.avancado"
+        ng-class="{'sc-btn-gray': PessoasCtrl.settings.filtro.avancado}" type="button">
       <i class="sc-icon-filtro-2"></i>
       </button>
     </form>
   </div>
 
   <div class="sc-btn-group left">
-    <div class="sc-btn">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica == false}" ng-click="PessoasCtrl.filtro.togglePf()">
       <span>Pessoa Física</span>
-    </div>
-    <div class="sc-btn">
+    </button>
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica}" ng-click="PessoasCtrl.filtro.togglePj()">
       <span>Pessoa Jurídica</span>
-    </div>
+    </button>
   </div>
 
   <div class="sc-btn-group left sc-p-l-xl">
-    <div class="sc-btn">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Pagador'}" ng-click="PessoasCtrl.filtro.buscarTipo('Pagador')">
       <span>Pagadores</span>
-    </div>
-    <div class="sc-btn">
+    </button>
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Fornecedor'}" ng-click="PessoasCtrl.filtro.buscarTipo('Fornecedor')">
       <span>Fornecedores</span>
-    </div>
+    </button>
   </div>
 
   <div class="fcol-xs-auto"></div>
@@ -48,32 +53,32 @@
   </button>
 </div>
 
-<div id="top-bar-filter" class="flex-row" style="z-index: 10; width: 100.9%">
-  <div class="sc-bg-gray-lighter sc-p-lg ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4"
-    ng-if="idxCtrl.avancado">
-    <form ng-submit="idxCtrl.buscar.filtroAvanc()">
+<div id="top-bar-filter" class="flex-row sc-p-h-lg" style="z-index: 10;">
+  <div class="sc-bg-gray-lighter ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4 sc-p-lg"
+    ng-if="PessoasCtrl.settings.filtro.avancado" style="width: 100%">
+    <form ng-submit="PessoasCtrl.filtro.exec('avancado')">
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Nome</label>
         <input class="sc-input-default sc-input-block"
           type="text"
-          ng-model="idxCtrl.aplicarFiltroAvancado.nome">
+          ng-model="PessoasCtrl.filtro.params.nome">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">CPF/CNPJ</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="idxCtrl.aplicarFiltroAvancado.doc"
+          ng-model="PessoasCtrl.filtro.params.doc"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Telefone</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="idxCtrl.aplicarFiltroAvancado.telefone"
+          ng-model="PessoasCtrl.filtro.params.telefone"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">E-mail</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="idxCtrl.aplicarFiltroAvancado.email"
+          ng-model="PessoasCtrl.filtro.params.email"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
@@ -88,9 +93,10 @@
           <option value="reajuste">Reajuste em</option>
         </select>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-3 sc-p-h-md sc-p-b-md">
-        <label class="sc-label">Opções</label>
-        <span sc-dropdown-menu="" class="sc-dropdown">
+
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <div class="sc-label">Opções</div>
+        <div class="sc-dropdown" sc-dropdown-menu="">
           <button type="button" class="sc-btn sc-btn-blue" ng-click="menu.toggle()" style="width: 100%">
             Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
           </button>
@@ -99,16 +105,18 @@
               <input placeholder="Busque uma opção" type="text">
             </li>
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-repeat="opcao in idxCtrl.OpcoesAvanc" ng-class="{'disabled': opcao.disabled}">
+              <li ng-repeat="opcao in PessoasCtrl.settings.filtro.listOpcoes" ng-click="PessoasCtrl.filtro.opcoes.set(opcao)">
                 <div>
-                  <i ng-class="opcao.active ? 'sc-icon-visto-4' : 'sc-icon-quadrado-1'" class="sc-icon sc-icon-quadrado-1"></i>
-                  <span class="ng-binding">{{opcao.label}}</span>
+                  <i ng-class="opcao.active ? 'sc-icon-visto-3' : 'sc-icon-quadrado-1'"></i>
+                  <span>{{opcao.label}}</span>
                 </div>
               </li>
             </div>
           </ul>
-        </span>
+        </div>
       </div>
+
+
 
       <div class="clear"></div>
 

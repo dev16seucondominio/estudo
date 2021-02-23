@@ -15,6 +15,7 @@ pagadoresFinanc.factory("formFactory", [
 
         close: function(){
           this.pessoa = {}
+          this.editing = false
           this.opened = false
         }
 

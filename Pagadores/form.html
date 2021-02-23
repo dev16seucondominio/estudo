@@ -1,24 +1,24 @@
-<div class="sc-accordion-body ng-animation-slider" ng-init="formCtrl.init(idxCtrl.formFactory, pessoa)">
+<div class="sc-accordion-body ng-animation-slider" ng-init="PessoasFormCtrl.init(PessoasCtrl.formFactory, pessoa)">
   <div class="sc-p-lg sc-accordion-element ng-animation-slider">
-    <form ng-submit="formCtrl.formCadastro.salvar(pessoa)">
+    <form ng-submit="PessoasFormCtrl.formCadastro.salvar(pessoa)">
       <!-- DADOS GERAIS -->
-      <div ng-include="'dadosGerais.html'"></div>
+      <div ng-include="'dados_gerais.html'"></div>
       <!-- ENDEREÇO -->
-      <div ng-include="'formEndereco.html'"></div>
+      <div ng-include="'form_endereco.html'"></div>
       <!-- PERFIL PARA PAGAMENTO -->
-      <div ng-include="'formPerfilPagamentos.html'"></div>
+      <div ng-include="'form_perfil_pagamentos.html'"></div>
       <!-- CONTAS BANCÁRIAS -->
-      <div ng-include="'formContasBancarias.html'"></div>
+      <div ng-include="'form_contas_bancarias.html'"></div>
       <!-- REAJUSTE CONTRATUAL -->
-      <div ng-include="'formReajusteContratual.html'"></div>
+      <div ng-include="'form_reajuste_contratual.html'"></div>
       <!-- ANEXOS -->
-      <div ng-include="'formAnexos.html'"></div>
+      <div ng-include="'form_anexos.html'"></div>
       <!-- BLOQUEAR INADIMPLENTE -->
-      <div ng-include="'formBloquearInadimplente.html'"></div>
+      <div ng-include="'form_bloquear_inadimplente.html'"></div>
 
       <div class="right">
         <div class="sc-m-l-md sc-align-bottom">
-          <button class="sc-btn sc-btn-red" ng-click="formCtrl.formFactory.close(pessoa)" type="button">
+          <button class="sc-btn sc-btn-red" ng-click="PessoasFormCtrl.formFactory.close(pessoa)" type="button">
             Cancelar
           </button>
           </div>

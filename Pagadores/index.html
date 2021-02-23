@@ -3,6 +3,7 @@
 <head>
   <title>Pessoas - Financeiro </title>
   <meta charset="UTF-8">
+  <link rel="shortcut icon" href="https://www.seucondominio.com.br/favicon.ico" >
   <link rel="stylesheet" type="text/css" href="./css/prototype.css">
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
   <link rel="stylesheet" type="text/css" href="./css/uikit.css" />
@@ -10,7 +11,7 @@
   <script type="text/javascript" src="./js/modernizr.js"> </script>
   <script type="text/javascript" scr="./node_modules/angular/angular.min.js"></script>
 </head>
-<body ng-app="pagadoresFinanc" ng-controller="PessoasIndexCtrl as idxCtrl" ng-init="idxCtrl.init()" style="background-color: #fff ">
+<body ng-app="pagadoresFinanc" ng-controller="PessoasCtrl as PessoasCtrl" ng-init="PessoasCtrl.init()" style="background-color: #fff ">
   <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
     <div style="height: 42px;">
       <img height="100%" class="sc-border-radius"
@@ -35,9 +36,9 @@
       <li class="sc-acc-blue ng-animation-slider sc-bg-gray-lighter"
         ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
         style="display: block;"
-        ng-if="idxCtrl.formFactory.opened && idxCtrl.formFactory.new_record"
-        ng-controller="formularioCtrl as formCtrl">
-        <div class="sc-accordion-head sc-text-blue" ng-click="idxCtrl.formFactory.close()">
+        ng-if="PessoasCtrl.formFactory.opened && PessoasCtrl.formFactory.new_record"
+        ng-controller="PessoasFormCtrl as PessoasFormCtrl">
+        <div class="sc-accordion-head sc-text-blue" ng-click="PessoasCtrl.formFactory.close()">
           <div class="sc-accordion-col-3 align-center">
             <i class="sc-text-xl sc-icon-mais-1"></i>
           </div>
@@ -48,12 +49,12 @@
         <div ng-include="'form.html'"></div>
       </li>
       <!-- Lista de pessoas -->
-      <li ng-repeat="pessoa in idxCtrl.pessoa.listaPessoas | filter:idxCtrl.listar as results track by pessoa.id"
+      <li ng-repeat="pessoa in PessoasCtrl.pessoas.listaPessoas | filter:PessoasCtrl.filtro.listar as results track by pessoa.id"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
-        ng-controller="showCtrl as itemCtrl"
-        ng-init="itemCtrl.init(pessoa)">
-        <div ng-click="itemCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
+        ng-controller="PessoaCtrl as PessoaCtrl"
+        ng-init="PessoaCtrl.init(pessoa)">
+        <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
             <i class="sc-text-xl sc-icon sc-icon-fabrica" ng-show="pessoa.juridica"></i>
@@ -79,19 +80,19 @@
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="itemCtrl.formCtrl.open(pessoa); idxCtrl.formFactory.init(pessoa)">
+                  ng-click="PessoaCtrl.formCtrl.open(pessoa); PessoasCtrl.formFactory.init(pessoa)">
                   <i class="sc-icon-lapis"></i> Editar
                 </a>
               </li>
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="idxCtrl.excluirRegistro(pessoa)">
+                  ng-click="PessoasCtrl.pessoas.excluirRegistro(pessoa)">
                   <i class="sc-icon-lixeira-1"></i> Excluir
                 </a>
               </li>
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="idxCtrl.pessoa.enderecoPrincipal(pessoa, pessoa.enderecos)" >
+                  ng-click="PessoasCtrl.pessoas.enderecoPrincipal(pessoa, pessoa.enderecos)" >
                   <i class="sc-icon-historico"></i> Histórico
                 </a>
               </li>
@@ -100,9 +101,9 @@
         </div>
 
         <!-- Include do form de edição e show -->
-        <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="formularioCtrl as formCtrl"
+        <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="PessoasFormCtrl as PessoasFormCtrl"
           ng-if="pessoa.acc.opened && pessoa.editing"
-          ng-init="idxCtrl.formFactory.init(pessoa)">
+          ng-init="PessoasCtrl.formFactory.init(pessoa)">
         </div>
         <div ng-include="'show.html'" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
         <div class="clear"></div>

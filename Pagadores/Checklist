@@ -33,3 +33,78 @@ Show:
     OK  Mostrar o endereço principal
   A corrigir:
     OK  Show contas bancárias
+
+
+    1) Nomes de arquivos usamos o padrão 'snake_case' ao invés de 'camelCase' OK
+    2) Usando o VMController do angular, não use nomes genêricos como 'idxCtrl', 'itemCtrl', 'formCtrl'..
+      use:
+        para index: 'PessoasCtrl'
+        para Show:  'PessoaCtrl'
+        para form:  'PessoasFormCtrl'
+      Colocar o nome do controlador, pois se tiver 2 objetos alinhados com o mesmo nome pode gerar confusão, ex.:
+        <div ng-controller="PessoasIndexCtrl as idxCtrl">
+          <p>Sou controlador da Pessoa</p>
+          <div ng-controller="BoletosIndexCtrl as idxCtrl">
+            <p>Sou controlador de boletos</p>
+            <p>Mas perceba que o 'idxCtrl' é sobrescrito, e agora não temos mais acesso ao controlador de pessoas</p>
+          <div>
+        <div>
+    3) Use Objetos para guardar configurações, nunca jogue na raiz do controller, ex.:
+      NÃO faça isso:
+        vmIdx.OpcoesAvanc = [ # NÃO faça objetos na raiz
+          {label: 'Com endereço'}, # NÃO use somente label, use uma 'key' para salvar nas pessoas, se mudar o label a busca para de pegar!
+          {label: 'Sem endereço'},
+          {label: 'Endereço completo'},
+          {label: 'Endereço Incompleto'},
+          {label: 'Sem CPF/CNPJ'},
+          {label: 'Com CPF/CNPJ'},
+          {label: 'Sem bloqueio inadimplente'},
+          {label: 'Com bloqueio inadimplente'},
+          {label: 'Sem emails'},
+          {label: 'Com emails'}
+        ]
+      FAÇA isso:
+        vmIdx.settings = {
+          filtro: {
+            default: {}, # objeto padrão do filtro usado para busca (normalmente é o filtro que é usado para carregar a página inicial)
+            opcoes: [
+              { key: 'com_endereco', label: 'Com endereço' },
+              { key: 'sem_endereco', label: 'Sem endereço' },
+              { key: '...',          label: 'Endereço completo' },
+              { key: '...',          label: 'Endereço Incompleto' },
+              { key: '...',          label: 'Sem CPF/CNPJ' },
+              { key: '...',          label: 'Com CPF/CNPJ' },
+              { key: '...',          label: 'Sem bloqueio inadimplente' },
+              { key: '...',          label: 'Com bloqueio inadimplente' },
+              { key: '...',          label: 'Sem emails' },
+              { key: '...',          label: 'Com emails '}
+            ],
+            ....
+          },
+        }
+    4) Objetos de busca para trabalhar com tudo, não separadamente:
+      NÃO Faça isso:
+        vmIdx.listar = {}
+        vmIdx.buscar = {
+          filtroSimples: function() {
+            vmIdx.listar = vmIdx.aplicarFiltro
+          },
+          filtroAvanc: function() {
+            vmIdx.listar = vmIdx.aplicarFiltroAvancado
+          }
+        }
+        vmIdx.avancado = false;
+      FAÇA isso:
+        vmIdx.filtro = {
+          listar: {},
+          params: {}, # usado para preencher os campos
+          exec: function(tipo) {
+            if (tipo == 'simples') {
+              @listar = @params.q # use 'q' para buscar por texto
+            } else {
+              delete(@params.q) # limpando a busca simples, isso vai depender de cada tela, mas de modo geral limpe
+              @listar = @params
+            }
+          }
+        }
+    OBS: Use os exemplos acima para corrigir as demais estruturas
