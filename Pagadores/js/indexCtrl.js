@@ -23,12 +23,12 @@ pagadoresFinanc.controller("PessoasCtrl", [
         doc: '00000000001', nasc: '', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
         rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
-        obs: 'Lindo d+ nosa sem hora', enderecos: [], contas: [], perfilPagamento: {} },
+        obs: 'Lindo d+ nosa sem hora', enderecos: [{principal: true, id: 1}, {principal: false, id: 2}], contas: [], perfilPagamento: {} },
       { id: 2, sexo: 'm', deficiente: false, nome: 'LUCAS Santos',
         doc: '00000000001', nasc: '', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
         rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
-        obs: 'Lindo d+ nosa sem hora', enderecos: [], contas: [], perfilPagamento: {} },
+        obs: 'Lindo d+ nosa sem hora', enderecos: [{principal: true, id: 1}, {principal: false, id: 2}], contas: [], perfilPagamento: {} },
       { id: 3, sexo: 'm', deficiente: false, nome: 'ERICK Santos',
         doc: '00000000001', nasc: '', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: false, sexo: 'm',
@@ -63,7 +63,7 @@ pagadoresFinanc.controller("PessoasCtrl", [
         doc: '00000000001', nasc: '', email: 'teste@seucondominio.com.br',
         telefone: '(62) 9 9674-5214', tipo: 'Pagador', juridica: true, sexo: 'm',
         rg: '6165357', prof: 'Estudante', iden: 25, emailalt: 'igorsantos@gmail.com',
-        obs: 'Lindo d+ nosa sem hora', enderecos: [], contas: [], perfilPagamento: {} }
+        obs: 'aaaaaa', enderecos: [], contas: [], perfilPagamento: {} }
       ],
       excluirRegistro: function(pessoa) {
         scAlert.open({
@@ -122,7 +122,7 @@ pagadoresFinanc.controller("PessoasCtrl", [
         }
       },
       limpar: function() {
-        this.listar = {}
+        this.listar = []
         this.params = {}
         this.preenchido = false
       },
@@ -139,11 +139,14 @@ pagadoresFinanc.controller("PessoasCtrl", [
         set: function(opcao) {
           console.log(opcao)
           opcao.active = !opcao.active
+          if(opcao.key == 'com_endereco') this.comEndereco()
         },
-        comEndereco: function(pessoa) {
-          if (pessoa.enderecos.length > 0) {
-            return pessoa
-          } //filter:PessoasCtrl.filtro.opcoes.comEndereco
+        comEndereco: function() {
+          vmIdx.filtro.listar = vmIdx.pessoas.listaPessoas.filter(pessoa => (pessoa.enderecos.length))
+          // if (pessoa.enderecos.length > 0) {
+          //   console.log('Pessoa com endereço: ',pessoa)
+          //   return pessoa
+          // } //filter:PessoasCtrl.filtro.opcoes.comEndereco
         }
       }
     }

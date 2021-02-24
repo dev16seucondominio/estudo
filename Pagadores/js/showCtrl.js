@@ -28,12 +28,6 @@ pagadoresFinanc.controller("PessoaCtrl",
       }
     }
 
-    // vmShow.pessoa.endereco_principal = {
-    //   find: function(pessoa) {
-    //     pessoa.enderecos.principal
-    //   }
-    // }
-
     return vmShow
 
   }
