@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'cpf_utils'
+gem 'faker'
+gem 'lerolero_generator'
+gem 'documentos_br'
