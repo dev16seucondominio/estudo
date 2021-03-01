@@ -1,22 +1,22 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Description:</strong>
+  <strong><%= Coin.human_attribute_name(:description)%></strong>
   <%= @coin.description %>
 </p>
 
 <p>
-  <strong>Acronym:</strong>
+  <strong><%= Coin.human_attribute_name(:acronym)%></strong>
   <%= @coin.acronym %>
 </p>
 
 <p>
-  <strong>Url image:</strong>
+  <strong><%= Coin.human_attribute_name(:url_image)%></strong>
   <%= @coin.url_image %>
   <br>
-  <strong>Image:</strong>
+  <strong>Imagem:</strong>
   <%= image_tag @coin.url_image, size:"25x25" %>
 </p>
 
-<%= link_to 'Edit', edit_coin_path(@coin) %> |
-<%= link_to 'Back', coins_path %>
+<%= link_to t('links.edit'), edit_coin_path(@coin) %> |
+<%= link_to t('links.back'), coins_path %>

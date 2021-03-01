@@ -1,6 +1,6 @@
 pt-BR:
+  locale: 'Português'
   hello: 'Olá mundo'
-
   links:
     edit: 'Editar'
     show: 'Mostrar'
