@@ -1,0 +1,16 @@
+<h1>Bem-vindo ao <%= nome_aplicacao %></h1>
+
+<p>O idioma usado nessa aplicação é: <%= language(I18n.locale) %></p>
+<p><strong>Data:</strong> <%= Date.today %></p>
+
+<%= render "menu" %>
+
+<p>
+  Você está em ambiente de <%= ambiente_rails %>
+</p>
+<p>
+  Nome: <%= @nome %>
+</p>
+<p>
+  Curso: <%= @curso %>
+</p>
