@@ -1,23 +1,13 @@
-<p>
-  <%= link_to 'Português', root_path(locale: 'pt-BR')%>
-</p>
-<p>
-  <%= link_to 'English', root_path(locale: 'en')%>
-</p>
-
-<h1>Bem-vindo ao <%= nome_aplicacao %></h1>
+<div class="jumbotron">
+  <h1 class="display-4"><%=t('welcome.title')%></h1>
+  <p class="lead"><%=t('welcome.msg')%></p>
+  <hr class="my-4">
+  <p><%=t('welcome.menu')%></p>
+  <p class="lead">
+    <%= render "menu" %>
+  </p>
+</div>
 
 <p>O idioma usado nessa aplicação é: <%= t('locale') %></p>
 <p><strong>Data:</strong> <%= Date.today %></p>
 
-<%= render "menu" %>
-
-<p>
-  Você está em ambiente de <%= ambiente_rails %>
-</p>
-<p>
-  Nome: <%= @nome %>
-</p>
-<p>
-  Curso: <%= @curso %>
-</p>

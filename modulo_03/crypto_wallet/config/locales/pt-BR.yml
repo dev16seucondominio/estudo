@@ -1,4 +1,8 @@
 pt-BR:
+  welcome:
+   title: 'Seja Bem-vindo!'
+   msg: 'Esse é o Crypto Wallet, 100% confiável e 0% de scam, pode confiar'
+   menu: 'Selecione uma das opções abaixo:'
   locale: 'Português'
   hello: 'Olá mundo'
   links:
@@ -7,3 +11,14 @@ pt-BR:
     delete: 'Deletar'
     back: 'Voltar'
     home: 'Início'
+  new:
+    coin: 'Nova moeda'
+    mining_type: 'Novo tipo de mineração'
+  editing:
+    coin: 'Editando moeda'
+    mining_type: 'Editando tipo de mineração'
+  showing:
+    coin: 'Mostrando moeda'
+    mining_type: 'Mostrando tipo de mineração'
+  msg:
+    confirm: 'Tem certeza?'

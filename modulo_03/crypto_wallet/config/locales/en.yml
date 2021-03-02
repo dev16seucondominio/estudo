@@ -30,6 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  welcome:
+   title: 'Welcome!'
+   msg: 'This is Crypto Wallet, 100% trustful and 0% scam, u can trust'
+   menu: 'Choose one of above options:'
   locale: 'English'
   hello: "Hello world"
   links:
@@ -38,5 +42,15 @@ en:
     delete: 'Delete'
     back: 'Back'
     home: 'Home'
-
+  new:
+    coin: 'New coin'
+    mining_type: 'New mining type'
+  editing:
+    coin: 'Editing coin'
+    mining_type: 'Editing mining type'
+  showing:
+    coin: 'Showing coin'
+    mining_type: 'Showing mining type'
+  msg:
+    confirm: 'Are you sure?'
 
