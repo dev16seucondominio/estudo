@@ -1,0 +1,34 @@
+
+<!-- saved from url=(0145)https://www.seucondominio.com.br/assets/gerenciar/cd/commons/sc-date-picker-7bfa14fcaf4cd572dd7a43ed5dbcfee9061e1e5b7cabd50ed8b64efc87eb6a03.html -->
+<html class="js-focus-visible" data-js-focus-visible=""><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><style type="text/css">
+@font-face {
+  font-weight: 400;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Book-cd7d2bcec649b1243839a15d5eb8f0a3.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Medium-d74eac43c78bd5852478998ce63dceb3.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 700;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Bold-83b8ceaf77f49c7cffa44107561909e4.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-style:  normal;
+  font-family: 'Circular-Loom';
+
+  src: url('https://cdn.loom.com/assets/fonts/circular/CircularXXWeb-Black-bf067ecb8aa777ceb6df7d72226febca.woff2') format('woff2');
+}</style></head><body><div class="sc-month-picker" ng-class="{&#39;loading&#39;: servCtrl.loading()}" ng-keydown="handleKeyDown($event)" sc-stop-click=""><div class="box-label"><div class="sc-arrow-dec-month" ng-class="{&#39;sc-icon-spin&#39;: servCtrl.loading(), &#39;blocked&#39;: servCtrl.blocked()}" ng-click="prev()"></div><div class="sc-current-month" ng-click="servCtrl.changeDate()" style="{{ servCtrl.disabled() ? &#39;cursor: not-allowed;&#39; : &#39;&#39; }}">{{ getFullLabel() }}</div><div class="sc-arrow-inc-month" ng-class="{&#39;sc-icon-spin&#39;: servCtrl.loading(), &#39;blocked&#39;: servCtrl.blocked()}" ng-click="next()"></div></div><div class="box-dropdown"><div class="sc-month-picker-dropdown" ng-animation-slider="" ng-class="{&#39;period-picker&#39;: type == &#39;period&#39;}" ng-if="servCtrl.onChange"><div class="sc-month-picker-item {{ typeDate }} {{ type }}" ng-repeat="typeDate in getTypesDate()"><div class="sc-year-box"><div ng-if="servCtrl.currentChange[typeDate] == &#39;year&#39;"></div><div ng-if="servCtrl.currentChange[typeDate] != &#39;year&#39;"><span class="sc-input-year sc-cursor-pointer" ng-click="servCtrl.changeDate(&#39;month&#39;, typeDate)" ng-if="[&#39;date&#39;, &#39;period&#39;, &#39;all&#39;].include(servCtrl.period)">{{ servCtrl.getMonth(typeDate) }}</span><span class="sc-input-year sc-m-h-xs" ng-if="[&#39;date&#39;, &#39;period&#39;, &#39;all&#39;].include(servCtrl.period)">/</span><span class="sc-input-year sc-cursor-pointer" ng-click="servCtrl.changeDate(&#39;year&#39;, typeDate)">{{ servCtrl.getYear(typeDate) }}</span></div><div class="flex align-items-baseline"><a class="sc-arrow-year left" ng-click="servCtrl.prev(typeDate)"></a><a class="sc-circle-year center" ng-click="servCtrl.setToday(typeDate)"></a><a class="sc-arrow-year right" ng-click="servCtrl.next(typeDate)"></a></div></div><div class="sc-days-mini-calendar" ng-show="servCtrl.allowChanged.date &amp;&amp; servCtrl.currentChange[typeDate] == &#39;date&#39;"><div class="sc-days-name-mini-calendar"><a ng-repeat="dayName in daysMinName track by $index">{{ dayName }}</a></div><div class="sc-days-numbers-mini-calendar"><a ng-class="{&#39;today&#39;: dayObj.today, &#39;active&#39;: dayObj.current, &#39;day-in-current-month&#39;: dayObj.dayInCurrentMonth, &#39;holiday&#39;: dayObj.holiday}" ng-click="servCtrl.setChange(dayObj, typeDate, { toggleDate: true })" ng-repeat="dayObj in servCtrl.list[typeDate].daysOfMonthObj track by $index" sc-tooltip="{{dayObj.info}}"><span>{{ dayObj.day }}</span></a></div></div><div class="sc-months-mini-calendar" ng-show="servCtrl.allowChanged.month &amp;&amp; servCtrl.currentChange[typeDate] == &#39;month&#39;"><a ng-class="{&#39;today&#39;: monthObj.today, &#39;active&#39;: monthObj.current}" ng-click="servCtrl.setChange(monthObj, typeDate, { toggleDate: true })" ng-repeat="monthObj in servCtrl.list[typeDate].monthsOfYearObj track by $index">{{ monthObj.label }}</a></div><div class="sc-years-mini-calendar sc-scrollbar sc-stop-scroll" ng-show="servCtrl.allowChanged.year &amp;&amp; servCtrl.currentChange[typeDate] == &#39;year&#39;"><a ng-class="{&#39;today&#39;: yearObj.today, &#39;active&#39;: yearObj.current}" ng-click="servCtrl.setChange(yearObj, typeDate, { toggleDate: true })" ng-repeat="yearObj in servCtrl.list[typeDate].yearsObj track by $index">{{ yearObj.year }}</a></div></div><div class="sc-actions-mini-calendar" ng-class="{&#39;active&#39;: servCtrl.setActions}" ng-if="servCtrl.dropdown.length &gt; 1" ng-show="servCtrl.setActions"><div><div ng-class="{&#39;active&#39;: servCtrl.period == periodType.period}" ng-click="servCtrl.setPeriodType(periodType)" ng-repeat="periodType in servCtrl.dropdown">{{periodType.label_key}}</div></div><div><div class="confirm" ng-click="servCtrl.apply()">Aplicar</div></div></div><div ng-if="servCtrl.dropdown.length &gt; 1"><div class="sc-handle-actions-mini-calendar" ng-class="{&#39;arrow-left&#39;: servCtrl.setActions, &#39;arrow-right&#39;: !servCtrl.setActions}" ng-click="servCtrl.setActions = !servCtrl.setActions"></div></div></div></div></div></body><loom-container id="lo-engage-ext-container"><div></div><loom-shadow classname="resolved"></loom-shadow></loom-container></html>
