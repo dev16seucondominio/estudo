@@ -1,0 +1,18 @@
+<h1>Site::Welcome#index</h1>
+<p>Find me in app/views/site/welcome/index.html.erb</p>
+
+<% if user_signed_in? %>
+  <p>Usuário logado na secreta</p>
+  <label>Email do usuário</label>
+  <%= current_user.email %>
+<% else %>
+  <p>Usuário fora da secreta</p>
+<% end %>
+
+<% if admin_signed_in? %>
+  <p>Adm on, atenção</p>
+  <label>Email do admin</label>
+  <%= current_admin.email %>
+<% else %>
+  <p>Adn off, pode badernar</p>
+<% end %>
