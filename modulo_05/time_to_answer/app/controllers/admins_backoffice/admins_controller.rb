@@ -2,6 +2,13 @@ class AdminsBackoffice::AdminsController < AdminsBackofficeController
   before_action :verify_password, only: [:update]
   before_action :set_admin, only: [:edit, :update, :destroy]
 
+  def edit
+  end
+
+  def set_admin
+    @admin = Admin.find(params[:id])
+  end
+
   def index
     @admins = Admin.all.page(params[:page]).per(5)
   end
@@ -10,42 +17,47 @@ class AdminsBackoffice::AdminsController < AdminsBackofficeController
     @admin = Admin.new()
   end
 
+
+
   def create
-    @admin = Admin.new(params_admin)
-    if @admin.save()
-      redirect_to admins_backoffice_admins_path, notice: "Administrador cadastrado com sucesso"
+    st, resp = AdminsBackoffice::AdminsService.create(params_admin)
+    case st
+    when :success then redirect_to admins_backoffice_admins_path, resp
     else
+      @admin = resp
       render :new
     end
   end
 
   def destroy
-    if @admin.destroy
-      redirect_to admins_backoffice_admins_path, notice: "Administrador excluído com sucesso"
+    st, resp = AdminsBackoffice::AdminsService.destroy(params_admin)
+    case st
+    when :success then redirect_to admins_backoffice_admins_path, resp
     else
+      @admin = resp
       render :index
     end
   end
 
-  def edit
-  end
 
   def update
-    if @admin.update(params_admin)
-      redirect_to admins_backoffice_admins_path, notice: "Administrador atualizado com sucesso"
+    st, resp = AdminsBackoffice::AdminsService.update(params_admin)
+    case st
+    when :success then redirect_to admins_backoffice_admins_path, resp
     else
+      @admin = resp
       render :edit
     end
   end
 
   private
 
-  def set_admin
-    @admin = Admin.find(params[:id])
-  end
+
 
   def params_admin
-    params.require(:admin).permit(:email, :password, :password_confirmation)
+    attrs = [ :id, :email, :password, :password_confirmation]
+    resp = params.require(:admin).permit(attrs)
+    resp
   end
 
   def verify_password
