@@ -1,0 +1,42 @@
+<h1><%= t(action_name) %></h1>
+
+<% if @question.errors.any? %>
+  <div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+    <ul>
+      <% @question.errors.full_messages.each do |erro| %>
+        <li><%= erro %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Dados Gerais</h6>
+  </div>
+  <div class="card-body">
+    <%= form_with(model: [ :admins_backoffice, @question ], local: true) do |form| %>
+      <div class="form-group row">
+        <div class="col-sm-12 mb-3 mb-sm-0">
+          <%= form.label :description %>
+          <%= form.text_area :description, class:"form-control form-control-user", placeholder:"Descrição" %>
+        </div>
+        <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
+          <%= form.label :subject %>
+          <%= form.collection_select(:subject_id, @subjects, :id, :description, {}, { class:"form-control form-control-user" }) %>
+        </div>
+        <div class="col-sm-6 mb-3 mb-sm-0" style="display: none;">
+          <%= form.label :id %>
+          <%= form.text_field :id %>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-user btn-block">
+        <%= t(action_name) %> Pergunta
+      </button>
+      <hr>
+    <% end %>
+
+  </div>
+</div>
+

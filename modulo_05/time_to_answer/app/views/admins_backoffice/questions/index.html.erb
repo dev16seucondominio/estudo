@@ -1,0 +1,51 @@
+<h1>Listagem de Perguntas</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3 row">
+    <h6 class="m-0 font-weight-bold text-primary">Perguntas</h6>
+    <%= link_to new_admins_backoffice_question_path, class:"btn btn-success btn-icon-split ml-auto" do %>
+    <span class="icon text-white-50">
+      <i class="fas fa-plus"></i>
+    </span>
+    <span class="text">Cadastrar nova</span>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <!-- <th>Criado em</th>
+            <th>Atualizado em</th> -->
+            <th>Assunto</th>
+            <th colspan="2">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @questions.each do |question| %>
+          <tr>
+            <td><%= question.id %></td>
+            <td><%= question.description.truncate(50) %></td>
+            <!-- <td><%= l(question.created_at, format: :long) %></td>
+            <td><%= l(question.updated_at, format: :long) %></td> -->
+            <td><%= question.subject.description.truncate(30) %></td>
+            <td><%= link_to edit_admins_backoffice_question_path(question) do%> <i class="fa fa-pen"></i> <% end %></td>
+            <td><%= link_to admins_backoffice_question_path(question), method: :delete, data: { confirm: "Tem certeza? "} do%> <i class="fa fa-trash"></i> <% end %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="ml-auto">
+    <%= paginate @questions %>
+  </div>
+</div>
+
