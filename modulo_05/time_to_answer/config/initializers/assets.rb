@@ -13,10 +13,10 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 
 # /app/assets
-Rails.application.config.assets.precompile += %w( admin.js admin.css admins_backoffice.js admins_backoffice.css users_backoffice.js users_backoffice.css)
+Rails.application.config.assets.precompile += %w( admin.js admin.css admins_backoffice.js admins_backoffice.css users_backoffice.js users_backoffice.css site.css site.js )
 
 # /lib/assets
-Rails.application.config.assets.precompile += %w( sb-admin-2.js sb-admin-2.css custom.js custom.css )
+Rails.application.config.assets.precompile += %w( sb-admin-2.js sb-admin-2.css custom.js custom.css navbar-top-fixed.css bootstrap.min.css )
 
 # /vendor/assets
 Rails.application.config.assets.precompile += %w( jquery-2.2.3/dist/jquery.js font-awesome-4.6.3/css/font-awesome )

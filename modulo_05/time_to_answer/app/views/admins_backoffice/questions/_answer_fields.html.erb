@@ -1,0 +1,8 @@
+<div class="nested-fields col-sm-6 mt-3 mb-3 mb-sm-0">
+  <div class="">
+    <%= f.label :description %>
+    <%= f.text_field :description, class:"form-control form-control-user", placeholder:"Descrição" %>
+    <%= f.check_box :correct %> Correta?
+    <%= link_to_remove_association('Remover', f) %>
+  </div>
+</div>

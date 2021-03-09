@@ -1,0 +1,24 @@
+<% @questions.each do |question| %>
+
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title"><%= question.description %></h5>
+  </div>
+  <div class="card-body">
+    <span>
+      <% question.answers.each do |answer| %>
+        <p class="card-text"><%= answer.description %></p>
+      <% end %>
+    </span>
+  </div>
+</div>
+
+<% end %>
+
+<br>
+
+<div class="row">
+  <div class="ml-auto">
+    <%= paginate @questions %>
+  </div>
+</div>
