@@ -32,13 +32,10 @@
         </div>
 
         <div id="answers" class="col-sm-6 mt-3 mb-3 mb-sm-0">
-
           <%= form.fields_for :answers do |answer| %>
             <%= render partial: "answer_fields", locals: {f: answer } %>
           <% end %>
-
           <%= link_to_add_association "Adicionar resposta", form, :answers, class:"btn btn-primary btn-user btn-block" %>
-
         </div>
 
       </div>

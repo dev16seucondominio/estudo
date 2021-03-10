@@ -21,5 +21,18 @@
   <%= javascript_include_tag 'users_backoffice' %>
   <%= javascript_include_tag 'application' %>
 
+  <% unless resource.errors.empty? %>
+    <% resource.errors.full_messages.each do |msg| %>
+      <%= javascript_tag do %>
+        $.bootstrapGrowl('<%= msg %>', {
+          type: 'danger',
+          align: 'right',
+          allow_dismiss: true,
+          stackup_spacing: 10
+        });
+      <%end%>
+    <%end%>
+  <%end%>
+
 </body>
 </html>

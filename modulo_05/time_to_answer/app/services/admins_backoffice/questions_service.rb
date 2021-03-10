@@ -3,7 +3,7 @@ class AdminsBackoffice::QuestionsService
   def self.create(params)
     question = Question.new(params)
     if question.save
-      [:success, notice: "Assunto cadastrado com sucesso"]
+      [:success, notice: "Pergunta cadastrado com sucesso"]
     else
       [:error, question]
     end
@@ -15,7 +15,7 @@ class AdminsBackoffice::QuestionsService
     question.assign_attributes(params)
 
     if question.save
-      [:success, notice: "Assunto atualizado com sucesso"]
+      [:success, notice: "Pergunta atualizado com sucesso"]
     else
       [:error, question]
     end
@@ -27,7 +27,7 @@ class AdminsBackoffice::QuestionsService
       [:error, question]
     else
       if question.destroy
-        [:success, notice: "Assunto excluído com sucesso"]
+        [:success, notice: "Pergunta excluído com sucesso"]
       else
         [:error, question]
       end
