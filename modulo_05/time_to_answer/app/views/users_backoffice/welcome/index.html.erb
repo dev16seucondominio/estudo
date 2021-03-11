@@ -1,6 +1,24 @@
-<h1>UsersBackoffice::Welcome#index</h1>
-<p>Find me in app/views/users_backoffice/welcome/index.html.erb</p>
-
-<%= link_to 'quitar', destroy_user_session_path, method: :delete %>
-<br>
-<%= link_to 'home', root_path %>
+<h1>Seja bem vindo</h1>
+<div class="row col-md-12" style="display: inline-block;">
+  <div class="tile_count">
+    <div class="col-md-6 col-sm-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-check-square-o"></i> Total de acertos</span>
+      <div class="count"><%= @user_statistic.right_questions%></div>
+      <span class="count_bottom">Só isso?</span>
+    </div>
+    <div class="col-md-6 col-sm-6  tile_stats_count">
+      <span class="count_top"><i class="fa fa-close"></i> Total de erros</span>
+      <div class="count"><%= @user_statistic.wrong_questions%></div>
+      <span class="count_bottom">Estude mais</span>
+    </div>
+  </div>
+</div>
+<div class="row col-md-12">
+  <div class="tile_count col-md-6">
+    <div class="col-md-6 col-sm-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-comments"></i> Total de perguntas</span>
+      <div class="count"><%= @user_statistic.total_questions%></div>
+      <span class="count_bottom"> Responda mais</span>
+    </div>
+  </div>
+</div>

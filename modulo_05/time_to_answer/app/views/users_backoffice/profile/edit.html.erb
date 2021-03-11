@@ -1,12 +1,7 @@
 <div class="row">
   <div class="col-md-12 col-sm-12 ">
-    <div class="x_panel">
       <div class="x_title">
         <h2>Dados Gerais</h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-        </ul>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
@@ -43,6 +38,27 @@
               <%= form.text_field :email, class:"form-control form-control-user", placeholder:"Email", readonly: true %>
             </div>
           </div>
+          <div class="ln_solid"></div>
+          <%= form.fields_for :user_profile do |profile_form| %>
+            <div class="item form-group">
+              <%= profile_form.label :address, class:"col-form-label col-md-3 col-sm-3 label-align" %>
+              <div class="col-md-6 col-sm-6 ">
+                <%= profile_form.text_field :address, class:"form-control form-control-user", placeholder:"Endereço"%>
+              </div>
+            </div>
+            <div class="item form-group">
+              <%= profile_form.label :gender, class:"col-form-label col-md-3 col-sm-3 label-align" %>
+              <div class="col-md-6 col-sm-6 ">
+                <%= profile_form.text_field :gender, class:"form-control form-control-user", placeholder:"Gênero"%>
+              </div>
+            </div>
+            <div class="item form-group">
+              <%= profile_form.label :birthdate, class:"col-form-label col-md-3 col-sm-3 label-align" %>
+              <div class="col-md-6 col-sm-6 ">
+                <%= profile_form.date_field :birthdate, class:"form-control form-control-user", placeholder:"Data de aniversário"%>
+              </div>
+            </div>
+          <% end %>
           <div class="item form-group">
             <%= form.label :password, class:"col-form-label col-md-3 col-sm-3 label-align" %>
             <div class="col-md-6 col-sm-6 ">
@@ -64,6 +80,6 @@
 
         <% end %>
       </div>
-    </div>
+
   </div>
 </div>

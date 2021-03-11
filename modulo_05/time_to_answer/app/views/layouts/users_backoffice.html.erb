@@ -30,11 +30,11 @@
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="https://colorlib.com/polygon/gentelella/images/img.jpg" alt="..." class="img-circle profile_img">
+              <%= link_to image_tag(avatar_url, alt:"...", class:"img-circle profile_img"), '#',  "data-toggle":"modal", "data-target":"#exampleModal" %>
             </div>
             <div class="profile_info">
               <span>Bem vindo,</span>
-              <h2>Igor Santos</h2>
+              <h2><%= current_user.first_name %></h2>
             </div>
           </div>
           <!-- /menu profile quick info -->
@@ -71,7 +71,7 @@
               <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <img src="https://colorlib.com/polygon/gentelella/images/img.jpg" alt="">
+                    <%= image_tag avatar_url, alt:""%>
                     <%= current_user.email %>
                   </a>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
@@ -103,6 +103,38 @@
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <%= form_with(url: users_backoffice_profile_path, model: current_user, local: true) do |form| %>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Foto de perfil</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <%= form.fields_for :user_profile do |profile_form| %>
+              <div class="form-group">
+                <%= profile_form.label :avatar %>
+                <%= image_tag(avatar_url, alt:"...", class:"img-circle profile_img") %>
+                <%= profile_form.file_field :avatar %>
+              </div>
+            <%end%>
+          </div>
+          <div class="col-sm-6 mb-3 mb-sm-0" style="display: none;">
+            <%= form.label :id %>
+            <%= form.text_field :id %>
+          </div>
+          <div class="modal-footer">
+            <%= form.submit "Salvar", class:"btn btn-primary" %>
+          </div>
+        <%end%>
+        </div>
       </div>
     </div>
 
