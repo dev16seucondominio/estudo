@@ -82,13 +82,28 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    elasticsearch (7.11.2)
+      elasticsearch-api (= 7.11.2)
+      elasticsearch-transport (= 7.11.2)
+    elasticsearch-api (7.11.2)
+      multi_json
+    elasticsearch-transport (7.11.2)
+      faraday (~> 1)
+      multi_json
     erubi (1.10.0)
     execjs (2.7.0)
     faker (2.16.0)
       i18n (>= 1.6, < 2)
+    faraday (1.3.0)
+      faraday-net_http (~> 1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords
+    faraday-net_http (1.0.1)
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hashie (4.1.0)
+    hiredis (0.6.3)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     io-like (0.3.1)
@@ -126,6 +141,8 @@ GEM
     mini_portile2 (2.5.0)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multi_json (1.15.0)
+    multipart-post (2.1.1)
     nio4r (2.5.5)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
@@ -180,10 +197,12 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.2.5)
     regexp_parser (2.1.1)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    ruby2_keywords (0.0.4)
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sass (3.7.4)
@@ -197,6 +216,10 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    searchkick (4.4.4)
+      activemodel (>= 5)
+      elasticsearch (>= 6)
+      hashie
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -215,6 +238,8 @@ GEM
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    trix (0.10.1)
+      rails
     ttfunk (1.7.0)
     tty-cursor (0.7.1)
     tty-spinner (0.9.3)
@@ -250,6 +275,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   devise
   faker
+  hiredis
   jbuilder (~> 2.5)
   kaminari
   kaminari-i18n
@@ -258,11 +284,14 @@ DEPENDENCIES
   puma (~> 3.11)
   rails (~> 5.2.4, >= 5.2.4.5)
   rails-i18n (~> 5.1)
+  redis
   sass-rails (~> 5.0)
+  searchkick
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
+  trix
   tty-spinner
   tzinfo-data
   uglifier (>= 1.3.0)

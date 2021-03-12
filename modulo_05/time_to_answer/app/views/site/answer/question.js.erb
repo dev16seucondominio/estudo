@@ -1,9 +1,9 @@
-var elemento = document.getElementById('submit_<%= @answer.question_id %>');
+var elemento = document.getElementById('submit_<%= @question_id %>');
 elemento.classList.remove('btn-primary');
 elemento.classList.remove('btn-danger');
 elemento.classList.remove('btn-success');
 
-if (<%= @answer[:correct] %>) {
+if (<%= @correct %>) {
   elemento.classList.add('btn-success');
   $.bootstrapGrowl('Resposta correta', {
     type: 'success',
