@@ -1,0 +1,14 @@
+Each não altera o array original
+Ao carregar grandes quantidades de dados, é recomendado utilizar o find_each // Transfer.all.find_each(batch_size: 5) {}
+each_with_index {
+  hash = Hash.new
+  ['Igor', 'João', 'Maria'].each_with_index { |nome, index| hash[nome] = index }
+}
+
+metodo sum é usado para somar valores, também pode ser usado junto com filtro.
+
+find_or_create_by metodo usado para procurar algum atributo na lista, caso ache é feito apenas um select. caso não ache, é
+feito um insert:
+
+user = User.find_or_create_by(id: 1) // Select
+user = User.find_or_create_by(id: 999) // Insert

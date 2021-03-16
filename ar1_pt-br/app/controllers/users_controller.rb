@@ -45,6 +45,8 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+    rescue ActiveRecord::StaleObjectError
+      redirect_to users_path, notice: 'Registro não encontrado'
   end
 
   # DELETE /users/1 or /users/1.json
