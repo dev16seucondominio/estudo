@@ -1,0 +1,79 @@
+
+<ul class="sc-accordion">
+  <!-- aqui é novo cadastro -->
+  <li class="sc-acc-blue ng-animation-slider sc-bg-gray-lighter"
+    ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
+    style="display: block;"
+    ng-if="PessoasCtrl.formFactory.opened && PessoasCtrl.formFactory.new_record"
+    ng-controller="PessoasFormCtrl as PessoasFormCtrl">
+    <div class="sc-accordion-head sc-text-blue" ng-click="PessoasCtrl.formFactory.close()">
+      <div class="sc-accordion-col-3 align-center">
+        <i class="sc-text-xl sc-icon-mais-1"></i>
+      </div>
+      <div class="sc-accordion-elastic-col title">
+        <div class="sc-p-xs">Nova Pessoa</div>
+      </div>
+    </div>
+    <div ng-include="'form.html'"></div>
+  </li>
+  <!-- Lista de pessoas -->
+  <li ng-repeat="pessoa in PessoasCtrl.pessoas.listaPessoas | filter:PessoasCtrl.filtro.listar as results track by pessoa.id"
+    class="sc-bg-gray-lighter"
+    ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
+    ng-controller="PessoaCtrl as PessoaCtrl"
+    ng-init="PessoaCtrl.init(pessoa)">
+    <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
+      <div class="sc-accordion-col-3 align-center sc-divider">
+        <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
+        <i class="sc-text-xl sc-icon sc-icon-fabrica" ng-show="pessoa.juridica"></i>
+      </div>
+      <div class="sc-accordion-elastic-col title">
+        <span class="sc-p-xs flex">{{pessoa.nome}}
+          <span ng-show="pessoa.tipo.includes('Pagador')"
+            class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-blue">
+            Pagador
+          </span>
+          <span ng-show="pessoa.tipo.includes('Fornecedor')"
+            class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-yellow">
+            Fornecedor
+          </span>
+        </span>
+      </div>
+      <!-- Mais opções -->
+      <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
+        <i class="sc-icon-reticiencias-v sc-badge-hover-gray"
+          ng-class="{'sc-badge-hover-white': pessoa.acc.opened, 'sc-badge-active': menu.opened}"
+          ng-click="menu.toggle()">
+        </i>
+        <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+          <li>
+            <a sc-dropdown-close-menu=""
+              ng-click="PessoaCtrl.formCtrl.open(pessoa); PessoasCtrl.formFactory.init(pessoa)">
+              <i class="sc-icon-lapis"></i> Editar
+            </a>
+          </li>
+          <li>
+            <a sc-dropdown-close-menu=""
+              ng-click="PessoasCtrl.pessoas.excluirRegistro(pessoa)">
+              <i class="sc-icon-lixeira-1"></i> Excluir
+            </a>
+          </li>
+          <li>
+            <a sc-dropdown-close-menu=""
+              ng-click="PessoasCtrl.pessoas.enderecoPrincipal(pessoa, pessoa.enderecos)" >
+              <i class="sc-icon-historico"></i> Histórico
+            </a>
+          </li>
+        </ul>
+      </span>
+    </div>
+
+    <!-- Include do form de edição e show -->
+    <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="PessoasFormCtrl as PessoasFormCtrl"
+      ng-if="pessoa.acc.opened && pessoa.editing"
+      ng-init="PessoasCtrl.formFactory.init(pessoa)">
+    </div>
+    <div ng-include="'show.html'" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
+    <div class="clear"></div>
+  </li>
+</ul>
