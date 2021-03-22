@@ -1,0 +1,81 @@
+console.log('teste')
+app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
+.config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false,
+  });
+
+  function carregarFiles(obj) {
+    return {
+      load: ['$q', '$rootScope', function($q, $rootScope) {
+        var head = document.getElementsByTagName('head')[0];
+        var deffered = $q.defer()
+
+        createElementsBy = function(moduleList, tagName, moduleType, fun){
+          if (!moduleList || moduleList.length == 0){ return }
+
+          $('head '+tagName+'[id="'+moduleType+'"]').remove();
+
+          moduleList.forEach(function(path){
+            var el = document.createElement(tagName);
+            el.id = moduleType;
+
+            switch(tagName){
+              case 'link':
+                el.rel = "stylesheet";
+                el.href = path;
+              case 'script':
+                el.src = path;
+            }
+
+            head.insertBefore(el, head.lastChild);
+          });
+        };
+
+        if (obj.js && obj.js.length > 0)   { createElementsBy(obj.js, 'script', 'js'); }
+        if (obj.css && obj.css.length > 0) { createElementsBy(obj.css, 'link', 'css'); }
+// http://errors.angularjs.org/1.8.2/$injector/modulerr?p0=pagadoresApp&p1=Error%3A%20%5B%24injector%3Amodulerr%5D%20http%3A%2F%2Ferrors.angularjs.org%2F1.8.2%2F%24injector%2Fmodulerr%3Fp0%3DngResource%26p1%3DError%253A%2520%255B%2524injector%253Anomod%255D%2520http%253A%252F%252Ferrors.angularjs.org%252F1.8.2%252F%2524injector%252Fnomod%253Fp0%253DngResource%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A8%253A168%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A503%250A%2520%2520%2520%2520at%2520b%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A25)%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A277%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A201%250A%2520%2520%2520%2520at%2520r%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A9%253A76)%250A%2520%2520%2520%2520at%2520g%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A49)%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A233%250A%2520%2520%2520%2520at%2520r%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A9%253A76)%250A%2520%2520%2520%2520at%2520g%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A49)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A8%3A168%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A491%0A%20%20%20%20at%20r%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A9%3A76)%0A%20%20%20%20at%20g%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A49)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A233%0A%20%20%20%20at%20r%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A9%3A76)%0A%20%20%20%20at%20g%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A49)%0A%20%20%20%20at%20fb%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A48%3A153)%0A%20%20%20%20at%20c%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A23%3A57)%0A%20%20%20%20at%20Wc%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A23%3A370
+        setTimeout(() => {
+          $rootScope.$apply(function() { deffered.resolve(); })
+        }, 600)
+
+        return deffered.promise;
+      }]
+    }
+  }
+
+  objDefault = {
+    templateUrl: "<%= asset_path('pagadores/index.html') %>",
+    resolve : carregarCssJs({
+      js: [
+        "<%= asset_path('templates.js') %>",
+        "<%= asset_path('pagadores/resources/pagadores.js') %>",
+        "<%= asset_path('pagadores/controllers/index.js') %>",
+        "<%= asset_path('pagadores/controllers/show.js') %>",
+        "<%= asset_path('pagadores/controllers/form.js') %>",
+      ],
+    })
+  }
+
+  $routeProvider
+  .when('/', objDefault)
+  .otherwise(objDefault);
+
+  app.lazy = {
+    controller: $controllerProvider.register,
+    directive: $compileProvider.register,
+    filter: $filterProvider.register,
+    factory: $provide.factory,
+    service: $provide.service
+  };
+})
+
+
+.run(function($rootScope, scAlert, scTopMessages) {
+  $rootScope.scAlert = scAlert
+  $rootScope.scTopMessages = scTopMessages
+});
+
+
+

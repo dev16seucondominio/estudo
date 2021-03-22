@@ -12,5 +12,10 @@
 //
 //= require rails-ujs
 //= require activestorage
-//= require turbolinks
-//= require_tree .
+
+//= require angular/angular.min
+//= require angular/angular-route.min
+//= require angular/angular-resource.min
+
+//= require_tree ./seucondominio
+//= require app

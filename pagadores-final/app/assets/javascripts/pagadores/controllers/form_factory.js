@@ -1,4 +1,5 @@
-pagadoresFinanc.factory("formFactory", [
+angular.module('pagadoresApp').lazy
+.factory("formFactory", [
   function() {
     base_obj = function(pessoa) {
       return obj = {

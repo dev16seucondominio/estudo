@@ -1,4 +1,5 @@
-pagadoresFinanc.controller("PessoaCtrl",
+angular.module('pagadoresApp').lazy
+.controller("PessoaCtrl",
   function() {
     vmShow = this
 

@@ -1,4 +1,5 @@
-pagadoresFinanc.controller("PessoasFormCtrl", [
+angular.module('pagadoresApp').lazy
+.controller("PessoasFormCtrl", [
   "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages) {
     vmForm = this
 

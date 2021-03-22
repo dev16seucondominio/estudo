@@ -1,13 +1,10 @@
-pagadoresFinanc = angular.module("pagadoresFinanc", ["sc.app.helpers"])
-pagadoresFinanc.run([
-  '$rootScope', 'scAlert', 'scTopMessages', function($rootScope, scAlert, scTopMessages) {
-    $rootScope.scAlert = scAlert;
-    $rootScope.scTopMessages = scTopMessages;
-  }
-])
-pagadoresFinanc.controller("PessoasCtrl", [
-  "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages) {
+angular.module("pagadoresApp").lazy
+.controller("PessoasCtrl", [
+  "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages, Templates) {
     vmIdx = this
+
+    vmIdx.templates = Templates
+    // vmIdx.templates.pagadores.show .... bate no arquivo html do show
 
     vmIdx.formFactory = undefined
 
