@@ -11,11 +11,13 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require utilidades/jquery
 //= require activestorage
 
-//= require angular/angular.min
-//= require angular/angular-route.min
-//= require angular/angular-resource.min
+//= require angular/angular
+//= require angular/angular-route
+//= require angular/angular-resource
+//= require angular/angular-sanitize
 
 //= require_tree ./seucondominio
 //= require app

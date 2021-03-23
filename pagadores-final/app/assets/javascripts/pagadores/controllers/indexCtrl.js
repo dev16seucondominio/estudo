@@ -1,12 +1,12 @@
 angular.module("pagadoresApp").lazy
 .controller("PessoasCtrl", [
-  "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages, Templates) {
+  "formFactory", "scAlert", "scTopMessages", "Templates", function(formFactory, scAlert, scTopMessages, Templates) {
     vmIdx = this
 
-    vmIdx.templates = Templates
     // vmIdx.templates.pagadores.show .... bate no arquivo html do show
+    vmIdx.templates = Templates;
 
-    vmIdx.formFactory = undefined
+    vmIdx.formFactory = undefined;
 
     vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory() //instanciando a factory..

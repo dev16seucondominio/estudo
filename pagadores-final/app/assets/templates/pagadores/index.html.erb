@@ -8,7 +8,7 @@
 
   <section id="top-bar" class="sc-bg-gray-lighter" style="height: 52px;">
     <div id="top-bar-content">
-      <div ng-include="'top_bar_content.html'"></div>
+      <div ng-include="'<%= asset_path('pagadores/top_bar_content.html') %>'"></div>
     </div>
   </section>
 
@@ -33,7 +33,7 @@
             <div class="sc-p-xs">Nova Pessoa</div>
           </div>
         </div>
-        <div ng-include="'form.html'"></div>
+        <div ng-include="PessoasCtrl.templates.pagadores.form"></div>
       </li>
       <!-- Lista de pessoas -->
       <li ng-repeat="pessoa in PessoasCtrl.pessoas.listaPessoas | filter:PessoasCtrl.filtro.listar as results track by pessoa.id"
@@ -62,7 +62,7 @@
           <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
             <i class="sc-icon-reticiencias-v sc-badge-hover-gray"
               ng-class="{'sc-badge-hover-white': pessoa.acc.opened, 'sc-badge-active': menu.opened}"
-              ng-click="menu.toggle()">
+              ng-click="menu.isOn = !menu.isOn">
             </i>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
@@ -88,11 +88,12 @@
         </div>
 
         <!-- Include do form de edição e show -->
-        <div ng-include="'form.html'" class="ng-animation-slider" ng-controller="PessoasFormCtrl as PessoasFormCtrl"
+        <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider" 
+          ng-controller="PessoasFormCtrl as PessoasFormCtrl"
           ng-if="pessoa.acc.opened && pessoa.editing"
           ng-init="PessoasCtrl.formFactory.init(pessoa)">
         </div>
-        <div ng-include="'show.html'" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
+        <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
         <div class="clear"></div>
       </li>
     </ul>

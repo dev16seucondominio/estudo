@@ -1,0 +1,49 @@
+<div class="sc-fieldset">
+  <div class="sc-fieldset-head flex">
+    <span class="sc-text-blue sc-text-bold">Bloquear cliente inadimplente</span>
+    <label class="sc-toggle sc-text-sm sc-m-l-lg">
+      <input ng-model="PessoasFormCtrl.params.bloquearCliente" type="checkbox">
+      <span label-false="Não" label-true="Sim"></span>
+    </label>
+  </div>
+  <div class="sc-p-b-o">
+    <div class="flex-row-with-padding align-items-center" ng-if="PessoasFormCtrl.params.bloquearCliente">
+      <div class="fcol-xs-default">
+        <span class="sc-text-blue">A partir de</span>
+      </div>
+      <div class="fcol-xs-default">
+        <input class="sc-input-default" ng-model="PessoasFormCtrl.params.blockInadimplente.frequencia" max="99" min="0" placeholder="Ex. 1" style="width: 5em;" type="number">
+        <select class="sc-input-default"
+          ng-model="PessoasFormCtrl.params.blockInadimplente.periodo"
+          ng-options="periodos.key as periodos.nome for periodos in PessoasFormCtrl.clienteInadimplente.listPeriodos">
+          <option value label="Selecione"></option>
+        </select>
+      </div>
+      <div class="fcol-xs-default">
+        <label class="sc-toggle">
+          <input ng-model="PessoasFormCtrl.params.blockInadimplente.depois" type="checkbox">
+          <span label-false="Antes" label-true="Depois"></span>
+        </label>
+      </div>
+      <div class="fcol-xs-default">
+        <span class="sc-text-blue"> do vencimento</span>
+      </div>
+      <div class="fcol-xs-100 sx-m-t-lg">
+        <div sc-dropdown-menu style="max-width: 25em; position: relative;">
+          <div class="sc-label">Clientes</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" placeholder="Digite um cliente" type="text">
+            <i class="sc-btn sc-btn-blue sc-icon-lupa-2"></i>
+            <div class="sc-btn sc-relative">
+              <i class="sc-icon sc-icon-visto-1"></i>
+              <span class="sc-badge sc-badge-fixed sc-bg-yellow" style="display: none">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-if="!PessoasFormCtrl.params.bloquearCliente" class="sc-text-thin sc-p-md sc-p-t-xs sc-text-lg align-center sc-text-blue">
+      O cliente não será bloqueado
+    </div>
+  </div>
+</div>

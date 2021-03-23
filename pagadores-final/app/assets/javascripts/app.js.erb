@@ -1,12 +1,15 @@
-console.log('teste')
-app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
+// criando a instancia do app, com as diretivas, services e o que mais for necessario
+app = angular.module('pagadoresApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.scTopMessages', 'sc.commons.service.scAlert', 'sc.commons.filters.nl2br'])
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
   $locationProvider.html5Mode({
+    // esse cara aqui eh o responsavel por prover as rotas do seu projeto... todas. nao chegou nessa parte ainda, depois te explico melhor, mas aqui eh so pra liberacao de rotas
     enabled: true,
     requireBase: false,
   });
 
   function carregarFiles(obj) {
+    // esse cara aqui eh o bixao que carrega o js e css de acordo com o modulo acessado.
+    // aqui eh a funcao, observe o uso
     return {
       load: ['$q', '$rootScope', function($q, $rootScope) {
         var head = document.getElementsByTagName('head')[0];
@@ -15,7 +18,7 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
         createElementsBy = function(moduleList, tagName, moduleType, fun){
           if (!moduleList || moduleList.length == 0){ return }
 
-          $('head '+tagName+'[id="'+moduleType+'"]').remove();
+          $('head '+tagName+'[id="'+moduleType+'"]').remove(); // se ja tiver arquivs carregados ele remove... por isso conseguimos acessar modulos sem recarregar a pagina no sistema... ele so remove do modulo antigo e faz a requisicao pra carregar os novos
 
           moduleList.forEach(function(path){
             var el = document.createElement(tagName);
@@ -31,11 +34,15 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
 
             head.insertBefore(el, head.lastChild);
           });
+
+          // aqui ele literalmente monta a tag inteira <... rel="..." src="..."> os ... sao os parametros
         };
 
         if (obj.js && obj.js.length > 0)   { createElementsBy(obj.js, 'script', 'js'); }
         if (obj.css && obj.css.length > 0) { createElementsBy(obj.css, 'link', 'css'); }
-// http://errors.angularjs.org/1.8.2/$injector/modulerr?p0=pagadoresApp&p1=Error%3A%20%5B%24injector%3Amodulerr%5D%20http%3A%2F%2Ferrors.angularjs.org%2F1.8.2%2F%24injector%2Fmodulerr%3Fp0%3DngResource%26p1%3DError%253A%2520%255B%2524injector%253Anomod%255D%2520http%253A%252F%252Ferrors.angularjs.org%252F1.8.2%252F%2524injector%252Fnomod%253Fp0%253DngResource%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A8%253A168%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A503%250A%2520%2520%2520%2520at%2520b%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A25)%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A27%253A277%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A201%250A%2520%2520%2520%2520at%2520r%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A9%253A76)%250A%2520%2520%2520%2520at%2520g%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A49)%250A%2520%2520%2520%2520at%2520http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A233%250A%2520%2520%2520%2520at%2520r%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A9%253A76)%250A%2520%2520%2520%2520at%2520g%2520(http%253A%252F%252Flocalhost%253A3000%252Fassets%252Fangular%252Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%253Fbody%253D1%253A44%253A49)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A8%3A168%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A491%0A%20%20%20%20at%20r%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A9%3A76)%0A%20%20%20%20at%20g%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A49)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A233%0A%20%20%20%20at%20r%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A9%3A76)%0A%20%20%20%20at%20g%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A44%3A49)%0A%20%20%20%20at%20fb%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A48%3A153)%0A%20%20%20%20at%20c%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A23%3A57)%0A%20%20%20%20at%20Wc%20(http%3A%2F%2Flocalhost%3A3000%2Fassets%2Fangular%2Fangular.min.self-4a32b5f15857301ebb047e57f44cfc6eb9fb44c1561c157e039653d378e6cc2e.js%3Fbody%3D1%3A23%3A370
+
+        // esse bloco constroi um elemento <link> no head, a partir dos parametros enviados
+
         setTimeout(() => {
           $rootScope.$apply(function() { deffered.resolve(); })
         }, 600)
@@ -46,20 +53,29 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
   }
 
   objDefault = {
-    templateUrl: "<%= asset_path('pagadores/index.html') %>",
-    resolve : carregarCssJs({
+    templateUrl: "<%= asset_path('pagadores/index.html') %>", // a template index da rota (nao do projeto inteiro, somente da rota q bateu. o index do projeto eh o application.html.erb, onde ficam as diretivas, o body, head... . as demais templates sao incluidas nesse cara, ele eh o html base do projeto)
+    resolve : carregarFiles({
+      // o obj default, por sua vez, chama a funcao que carrega os js e css necessarios pro modulo. ele nao ira carregar elementos de outros modulos
       js: [
         "<%= asset_path('templates.js') %>",
         "<%= asset_path('pagadores/resources/pagadores.js') %>",
-        "<%= asset_path('pagadores/controllers/index.js') %>",
-        "<%= asset_path('pagadores/controllers/show.js') %>",
-        "<%= asset_path('pagadores/controllers/form.js') %>",
+        "<%= asset_path('pagadores/controllers/indexCtrl.js') %>",
+        "<%= asset_path('pagadores/controllers/showCtrl.js') %>",
+        "<%= asset_path('pagadores/controllers/formCtrl.js') %>",
+        "<%= asset_path('pagadores/controllers/formFactory.js') %>",
       ],
     })
   }
 
+  // mano, ali tá falando que não tá achando assets/angular, mas a pasta deveria ser assets/javasscasda/angular
+  // ss pero esse arquivo aí é big fodase, at porque eu o exclui ontem... nem ta na pasta mais, ta carregando da puta que pariu
+
   $routeProvider
+  // routeProvider, batendo e listando as rotas (urls) do projeto.
+  // como vc pd ver, eh um switch case, q espera por uma rota e retorna um obj de "config"
   .when('/', objDefault)
+  // qnd bate na rota "/", carrega o objDefault
+  // recaptulando... qnd bate na rota acima, chama o obj default
   .otherwise(objDefault);
 
   app.lazy = {
@@ -69,12 +85,15 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource'])
     factory: $provide.factory,
     service: $provide.service
   };
+  // esse lazy aqui eh pra evitar problema de carregamento... alguns elementos podem ser carregados antes mesmo de serem declarados, ai o app nao reconhece e nao acha as dependencias nunca
+  // o app eh criado e instanciado por inteiro, pra so depois ser "inicializado". da pra notar que usamos .lazy em todos os ctrls e factorys
 })
 
 
 .run(function($rootScope, scAlert, scTopMessages) {
   $rootScope.scAlert = scAlert
   $rootScope.scTopMessages = scTopMessages
+  // aqui eh apenas uma referenciacao direta na rootScope, pra nao termos q ficar chamando scAlert e scTopMesssages pelo "Nome completo"...
 });
 
 
