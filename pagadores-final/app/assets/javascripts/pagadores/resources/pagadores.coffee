@@ -7,8 +7,11 @@ angular.module('pagadoresApp').lazy
 
 		$resource 'http://localhost:3000/pagadores/:id.json', { id: "@id" }, # resource principal do modulo... dela vc deriva e cria outras.... pagadores/delete, pagadores/post....
 			list:
-				# o list eh o mais simples e praticamente obrigatorio. tbm chamado de index (server-side) eh o primeiro metodo a ser chamado no carregamento da tela... trás tudo que for necessario, bem como configuracoes e a listagem padrao dos registros (lista de pagadores, lista de espacos comuns... depende do modulo)
 				method: 'GET'
+				# o list já t feito, ele trabalha como o index da requisicao. a funcao dele é primariamente carregar a lista de registros da ltea, atraves do metodo http GET
+				# ele vai bater na rota, que tambem configuramos ontem
+				# cara apanga meu comentario :pqp:
+				# o list eh o mais simples e praticamente obrigatorio. tbm chamado de index (server-side) eh o primeiro metodo a ser chamado no carregamento da tela... trás tudo que for necessario, bem como configuracoes e a listagem padrao dos registros (lista de pagadores, lista de espacos comuns... depende do modulo)
 
 			# outro exemplo bem comum eh o save ou post, usado pra enviar registros ao banco de dados
 			save:

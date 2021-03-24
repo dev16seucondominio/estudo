@@ -1,7 +1,20 @@
 angular.module("pagadoresApp").lazy
 .controller("PessoasCtrl", [
-  "formFactory", "scAlert", "scTopMessages", "Templates", function(formFactory, scAlert, scTopMessages, Templates) {
+  "formFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, scAlert, scTopMessages, Templates, Pagador) {
     vmIdx = this
+
+    // assim como Template, a resource Pagadores vai trabalhar como uma factory, retornando um obj de metodos...
+    // Pra template vc acessava como Template.method_key, ex: Template.form, Template.form_enderecos...
+    // pra resource, eh a msm coisa. 
+    // primeiro tu o nome da resource inclui ali
+    // pera, o nome é List ou index? 
+    // nenhum dos dois. qual eh o NOME da factory de templates?
+
+    // com a inclusao, vc consegue chamar os metodos....
+    // Pagador.list, Pagador.submit, Pagador.destroy....
+
+    // pra estruturacao do codigo, a gente costuma fazer um metodo que carrega tudo que tem que ser carregado assim q abrimos a tela
+    // esse metodo gealmente eh o init
 
     // vmIdx.templates.pagadores.show .... bate no arquivo html do show
     vmIdx.templates = Templates;
@@ -9,10 +22,67 @@ angular.module("pagadoresApp").lazy
     vmIdx.formFactory = undefined;
 
     vmIdx.init = function(pessoa){
+      // aqui dentro vc faz coisas e carrega coisas, sóóóóóóó q preferencialmente separando as logicas...
+      vmIdx.listCtrl.init() // init de listagem, carrega a lista // carrega aqui, depois q executa vai pro proximo
+      vmIdx.settings.loadSettings() // metodo que carrega as configuracoes da tela... // exceuta vai p proximo
+      vmIdx.meuObj.minhaFuncaoInit() // qualquer coisa q vcc precise fazer // ....
       vmIdx.formFactory = new formFactory() //instanciando a factory..
       vmIdx.formFactory.lista = vmIdx.pessoas.listaPessoas
       vmIdx.filtro.listar = angular.copy(vmIdx.settings.filtro.default)
     }
+
+    vmIdx.listCtrl = {// geralmente o listCtrl eh o obj responsavel pelo gerenciamoento da listagem de registros da tela... como ééééééééééh uma tela de pgadores, logo ele cuida da listagem de pagadoes
+      list: [],
+      carregando: false,
+
+      init: function(){
+        // aqui vc precisa de um params para fazer a listagem especifica... vamos supor q vc queira carregar apenas os pagadores do cliente 2, entao tu passa o id do dlciente + demais parametros (opcoes de filtro, por exemplo - com cpf, sem cpf..)
+        // costumamos ter um ctrl pra filtro tbmn, mas nao sera necessario no seu caso agora 
+        // calma, o settings load não tem a função de trazer essas coisas? que coisas? filtros, planos de contas, fundos, sim mai q q tem?
+        // nunzei, por um momento achei que teria aqui tb, mas acho que me equivogay
+        // entao... o init da tela vai carregar tudo, n vai? 
+        // a gente costuma definir uns parametros bem default no proprio js + uma dependencia do sistema q pega os dados da sessao de usuario (user id, cliente, roles (permissoes), etc...)
+        // aqui vc s usa os dados pra montar o params abaixmo
+        // entendi.
+        params = { cliente_id: 2 }
+        // o @ que vc tinha colocado aqui é o this, né?
+        // ss fon trap, costume
+        // minto, né nao. o @ chama o metodo do ctrl atual, de acordo com o nivel
+        // this fora do obj vc acessa o vmIdx
+        // @ vc acessa algo dentro do obj
+        // a gente usa @ aqui no coffee, nem sei se aqui vai funfar mas vamo descobrir em breve]
+        // spoiler: não vai
+        // acho que é o this mesmo, para esse caso 
+        // n tem problema dps ajeita isso, vamo pro beck agora hehe boay
+        @exec() // monto os params e chamo um exec pra fazer a requisicao
+      },
+       exec: function(params) { // bruh javascript puro eh coisa de gay, eu e meus manos usamos coffee
+        this.carregando = true // pra exibir alguma mensagem ou icone de carregamento... ou usar como precisar
+        Pagador.list(params),
+        // qse um bloco de switch case.. onData = data, onError = response
+        //ia perguntar isso, pq a sintaxe parece com switch case, mas não tem um data falando que tem erro ou
+        // um response falando que deu certo? nao, s se for algum programador maluco fazendo isso, pq esse eh o modelo de boa pratica das linguagens, onde tu iria encontrar algo parecido em 90% dos projetos q usam por ai.. eh nativo das linguagens
+          (data)=> 
+            vmIdx.listCtrl.list = angular.extend(data.list)
+            this.carregando = false// extend pra sobreescrever/mesclar a lista, a nao ser vc precise dela vazia antes de jogar os pagadores da requisicao...
+            // data eh um obj { list: {} , key: {} , outra_key: {} }
+            // achei que data/response era apenas para falar que tá tudo certo ou tá tudo errado
+            // imaginei que a list chegaria em params.list
+            // pera la amigao, params eh o que vc manda pro servidor... n faz sentido o servidor de rerotnar o proprio params com a lista dentro 
+            // quando carregar vc vai querer fazer coisas... // esse data eh nativo. significa que a requisicao resultou em alguma coisa. qualquer coisa... lista, obj, registro unico... se tem data, é pq a requisicao teve sucesso
+            // a mais basica dela eh pegar a lista que recebemos do servidor e colocar na lista do nosso ctrl de pessoas...
+          // se nao tiver data...
+          // (response)=> 
+          //   // aqui, supondo q vc recebe uma mensagem de erro, tu ja chama o sctopmessages e faz a putaria // se cair no bloco de response, geralmente eh alguma mensagem de erro (a requisicao foi feita com sucesso mas retornou erro)
+          //   errors = []
+          //   scTopMessages.openDanger errors if errors.any()
+          //   this.carregando = false
+
+            // essa eh bascaimente a estrutura no front... no back eh so montar a listagem ou busca no metodo index, primeiro no controller e depois no service...
+       }
+    }
+
+
 
     vmIdx.pessoas = {
       listaPessoas: [
@@ -99,6 +169,9 @@ angular.module("pagadoresApp").lazy
           {label: 'Sem emails', active: false, key: 'sem_email'},
           {label: 'Com emails', active: false, key: 'com_email'}
         ]
+      },
+      loadSettings: function(){
+        console.log('aaaaaaaaaaaaaa')
       }
     }
 

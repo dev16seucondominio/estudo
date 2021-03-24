@@ -1,0 +1,2 @@
+class Pagador < ApplicationRecord
+end

@@ -12,6 +12,7 @@
 //
 //= require rails-ujs
 //= require utilidades/jquery
+//= require utilidades/modernizr
 //= require activestorage
 
 //= require angular/angular
