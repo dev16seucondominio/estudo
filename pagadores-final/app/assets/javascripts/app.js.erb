@@ -8,8 +8,6 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
   });
 
   function carregarFiles(obj) {
-    // esse cara aqui eh o bixao que carrega o js e css de acordo com o modulo acessado.
-    // aqui eh a funcao, observe o uso
     return {
       load: ['$q', '$rootScope', function($q, $rootScope) {
         var head = document.getElementsByTagName('head')[0];

@@ -36,7 +36,7 @@
         <div ng-include="PessoasCtrl.templates.pagadores.form"></div>
       </li>
       <!-- Lista de pessoas -->
-      <li ng-repeat="pessoa in PessoasCtrl.pessoas.listaPessoas | filter:PessoasCtrl.filtro.listar as results track by pessoa.id"
+      <li ng-repeat="pessoa in PessoasCtrl.listCtrl.list | filter:PessoasCtrl.filtro.listar as results"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
         ng-controller="PessoaCtrl as PessoaCtrl"
@@ -88,7 +88,7 @@
         </div>
 
         <!-- Include do form de edição e show -->
-        <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider" 
+        <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
           ng-controller="PessoasFormCtrl as PessoasFormCtrl"
           ng-if="pessoa.acc.opened && pessoa.editing"
           ng-init="PessoasCtrl.formFactory.init(pessoa)">

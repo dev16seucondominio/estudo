@@ -4,8 +4,7 @@ Rails.application.routes.draw do
   root 'pagadores#index'
 
   #  esse aqui eh parceiro da resource, mas ja no server side... aqui vc define as rotas esperadas pelo servidor, usando as mesmas keys q vc usar no resource.coffee
-  														# index = list
+                              # index = list
   resources :pagadores, only: [:index, :show, :destroy]
-  # depois refazemos o bloco aqui de baixo, nao eh necessario agora
 
 end
