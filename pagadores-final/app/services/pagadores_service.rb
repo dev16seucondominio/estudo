@@ -13,10 +13,27 @@ class PagadoresService
   end
 
   def self.show(params)
-    puts "-----------------------------#{params}"
-    pagador = Pagador.where(id: params[:id]).map(&:to_frontend_obj)
-    resp = {list: pagador}
+    pagador = Pagador.find(params[:id])
+
+    resp = {pagador: pagador.to_frontend_obj}
+
     [:success, resp]
+  end
+
+  def self.update(params)
+    pagador = Pagador.find(params[:id])
+
+    pagador.assign_attributes(params)
+
+    pagador.save
+
+    resp = {pagador: pagador}
+
+    [:success, resp]
+  end
+
+  def params_pagador
+    params.require(:pagador).permit(:id, :email, :nasc, :prof, :nome, :tipo, :sexo, :juridica, :telefone, :emialalt, :obs, :deficiente, :iden)
   end
 
 end

@@ -1,6 +1,6 @@
 angular.module('pagadoresApp').lazy
 .controller("PessoasFormCtrl", [
-  "formFactory", "scAlert", "scTopMessages", function(formFactory, scAlert, scTopMessages) {
+  "formFactory", "scAlert", "scTopMessages", "Pagador", function(formFactory, scAlert, scTopMessages, Pagador) {
     vmForm = this
 
     vmForm.carregandoData = false
@@ -8,10 +8,11 @@ angular.module('pagadoresApp').lazy
     vmForm.init = function(baseFact, pessoa){
       console.log('estou iniciando com pessoa:', pessoa)
       if(pessoa) {
-        vmForm.params = angular.copy(pessoa)
+        // vmForm.params = angular.copy(pessoa)
+        vmForm.carregarInfos.exec(pessoa)
       } else {
         vmForm.params = {}
-        vmForm.params.acc = {opened:false}
+        vmForm.params.opened = false
         vmForm.params.enderecos = []
         vmForm.params.contas = []
         vmForm.params.juridica = false
@@ -20,6 +21,28 @@ angular.module('pagadoresApp').lazy
       }
       vmForm.formFactory = baseFact
       console.log('fim init, params:', vmForm.params)
+    }
+
+    vmForm.carregarInfos = {
+      exec: function(pessoa) {
+        params = {}
+        params.id = pessoa.id
+        return Pagador.show(params, (function(_this) {
+          return function(data, resp, arg) {
+            vmForm.params = angular.copy(data.pagador)
+            return _this.carregando = true
+          }
+        })(this))
+      },
+      update: function(pessoa) {
+        params = {}
+        params.id = pessoa.id
+        return Pagador.update(params, (function(_this) {
+          return function(data, resp, arg) {
+            return _this.carregando = true
+          }
+        })(this))
+      }
     }
 
     vmForm.perfilPagamento = {
@@ -41,7 +64,7 @@ angular.module('pagadoresApp').lazy
         {id: 15, key: 'resgate', nome: 'Resgate'},
         {id: 16, key: 'tranferencia_ted', nome: 'Tranferência - TED'},
         {id: 17, key: 'tranferencia_doc', nome: 'Tranferência - DOC'},
-        {id: 18, key: 'tranferencia_mesmo_banco', nome: 'Tranferência - MESMO BANCO'}
+        {id: 18, key: 'tranferencia_mesmo_banco', nome: 'Tranferência - MESMO BANCO'},
       ],
       listPlano: [
         {id: 0, key: 'receitas', nome: '1 - RECEITAS'},
@@ -49,13 +72,13 @@ angular.module('pagadoresApp').lazy
         {id: 2, key: 'taxa_de_condominio', nome: '1.1.1 - Taxa de Condomínio'},
         {id: 3, key: 'despesas', nome: '2 - DESPESAS'},
         {id: 4, key: 'despesas_trabalhistas', nome: '2.1 - DESPESAS TRABALHISTAS'},
-        {id: 5, key: 'salarios', nome: '2.1.1 - Salários'}
+        {id: 5, key: 'salarios', nome: '2.1.1 - Salários'},
       ],
       listFundo: [
         {id: 0, key: 'caixa', nome: '1 - CAIXA'},
         {id: 1, key: 'fundo_de_reserva', nome: '2 - FUNDO DE RESERVA'},
         {id: 2, key: 'fundo_de_obras', nome: '3 - FUNDO DE OBRAS'},
-        {id: 3, key: 'fundo_trabalhista', nome: '4 - FUNDO TRABALHISTA'}
+        {id: 3, key: 'fundo_trabalhista', nome: '4 - FUNDO TRABALHISTA'},
       ],
       setPlano: function(planoDeContas) {
         vmForm.params.perfilPagamento.planoDeContas = planoDeContas
@@ -205,24 +228,25 @@ angular.module('pagadoresApp').lazy
 
     vmForm.formCadastro = {
       salvar: function(pessoa) {
-        if(!vmForm.params.nome) {
-          scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
-          vmForm.erroNome = true
-        } else {
-          if(!vmForm.params.id) {
-            console.log('Adicionando Novo')
-            vmForm.formatacao(vmForm.params)
-            vmForm.params.id = vmForm.formFactory.lista.length + 1
-            vmForm.formFactory.lista.unshift(vmForm.params)
-          } else {
-              console.log('Editando')
-              vmForm.formatacao(vmForm.params)
-              vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
-              vmForm.params.acc.opened = true
-              vmForm.params.editing = false
-          }
-          vmForm.formFactory.close()
-        }
+        vmForm.carregarInfos.update(vmForm.params)
+        // if(!vmForm.params.nome) {
+        //   scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
+        //   vmForm.erroNome = true
+        // } else {
+        //   if(!vmForm.params.id) {
+        //     console.log('Adicionando Novo')
+        //     vmForm.formatacao(vmForm.params)
+        //     vmForm.params.id = vmForm.formFactory.lista.length + 1
+        //     vmForm.formFactory.lista.unshift(vmForm.params)
+        //   } else {
+        //       console.log('Editando')
+        //       vmForm.formatacao(vmForm.params)
+        //       vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
+        //       vmForm.params.opened = true
+        //       vmForm.params.editing = false
+        //   }
+        //   vmForm.formFactory.close()
+        // }
       }
     }
 

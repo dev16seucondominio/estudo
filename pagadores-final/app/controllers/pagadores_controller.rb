@@ -1,4 +1,6 @@
 class PagadoresController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   # list = get = index, por padrao a gente usa index no controller, na resource/route blz nao sei se eh exatamente qualquer um, mas so manter nesse padrao q nao da erro sdpofpasdokfpofkapfkasdasdasdpoaksd
   # como eu disse antes, o index eh o metodo chamado assim q a tela eh aberta/carregada... eh a primeira requisicao
   def index # index = list
@@ -17,9 +19,23 @@ class PagadoresController < ApplicationController
     end
   end
 
+  def update
+    puts "--------------------------------#{get_params}"
+    status, resp = PagadoresService.update(get_params)
+
+    case status
+    when :success then render json: resp, status: :ok
+    when :error then render json: { errors: resp }, status: :error
+    end
+  end
+
+
   def show
-    puts 'asdasdasdasdasdas'
     status, resp = PagadoresService.show(get_params)
-    render json: resp
+
+    case status
+    when :success then render json: resp, status: :ok
+    when :error then render json: { errors: resp }, status: :error
+    end
   end
 end

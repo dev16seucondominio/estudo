@@ -5,23 +5,23 @@ class Pagador < ApplicationRecord
     attrs[:id] = id
     attrs[:nome] = nome
     attrs[:tipo] = tipo
+    attrs[:juridica] = juridica
     attrs
   end
 
   def to_frontend_obj
     attrs = slim_obj
-    attrs = [:juridica]
-    attrs = [:sexo]
-    attrs = [:deficiente]
-    attrs = [:doc]
-    attrs = [:rg]
-    attrs = [:nasc]
-    attrs = [:prof]
-    attrs = [:email]
-    attrs = [:emailalt]
-    attrs = [:iden]
-    attrs = [:telefone]
-    attrs = [:obs]
+    attrs[:sexo] = sexo
+    attrs[:deficiente] = deficiente
+    attrs[:doc] = doc
+    attrs[:rg] = rg
+    attrs[:nasc] = nasc
+    attrs[:prof] = prof
+    attrs[:email] = email
+    attrs[:emailalt] = emailalt
+    attrs[:iden] = iden
+    attrs[:telefone] = telefone
+    attrs[:obs] = obs
     attrs
   end
 

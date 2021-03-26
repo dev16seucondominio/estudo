@@ -38,7 +38,7 @@
       <!-- Lista de pessoas -->
       <li ng-repeat="pessoa in PessoasCtrl.listCtrl.list | filter:PessoasCtrl.filtro.listar as results"
         class="sc-bg-gray-lighter"
-        ng-class="{'sc-acc-blue' : pessoa.acc.opened}"
+        ng-class="{'sc-acc-blue' : pessoa.opened}"
         ng-controller="PessoaCtrl as PessoaCtrl"
         ng-init="PessoaCtrl.init(pessoa)">
         <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
@@ -61,7 +61,7 @@
           <!-- Mais opções -->
           <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
             <i class="sc-icon-reticiencias-v sc-badge-hover-gray"
-              ng-class="{'sc-badge-hover-white': pessoa.acc.opened, 'sc-badge-active': menu.opened}"
+              ng-class="{'sc-badge-hover-white': pessoa.opened, 'sc-badge-active': menu.opened}"
               ng-click="menu.isOn = !menu.isOn">
             </i>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
@@ -90,10 +90,10 @@
         <!-- Include do form de edição e show -->
         <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
           ng-controller="PessoasFormCtrl as PessoasFormCtrl"
-          ng-if="pessoa.acc.opened && pessoa.editing"
+          ng-if="pessoa.opened && pessoa.editing"
           ng-init="PessoasCtrl.formFactory.init(pessoa)">
         </div>
-        <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-if="pessoa.acc.opened && !pessoa.editing"></div>
+        <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-if="pessoa.opened && !pessoa.editing"></div>
         <div class="clear"></div>
       </li>
     </ul>

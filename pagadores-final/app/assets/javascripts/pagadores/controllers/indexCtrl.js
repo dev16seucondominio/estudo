@@ -3,19 +3,13 @@ angular.module("pagadoresApp").lazy
   "formFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, scAlert, scTopMessages, Templates, Pagador) {
     vmIdx = this
 
-    // assim como Template, a resource Pagadores vai trabalhar como uma factory, retornando um obj de metodos...
-    // Pra template vc acessava como Template.method_key, ex: Template.form, Template.form_enderecos..
-
-    // pra estruturacao do codigo, a gente costuma fazer um metodo que carrega tudo que tem que ser carregado assim q abrimos a tela
-
     vmIdx.templates = Templates
 
     vmIdx.formFactory = undefined
 
     vmIdx.init = function(pessoa){
-      // aqui dentro vc faz coisas e carrega coisas, só q preferencialmente separando as logicas...
-      vmIdx.settings.loadSettings() // metodo que carrega as configuracoes da tela... // exceuta vai p proximo
-      vmIdx.formFactory = new formFactory() //instanciando a factory..
+      vmIdx.settings.loadSettings()
+      vmIdx.formFactory = new formFactory()
       vmIdx.formFactory.lista = vmIdx.pessoas.listaPessoas
       vmIdx.filtro.listar = angular.copy(vmIdx.settings.filtro.default)
       vmIdx.listCtrl.init()
