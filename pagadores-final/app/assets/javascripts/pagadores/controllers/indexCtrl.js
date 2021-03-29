@@ -7,12 +7,10 @@ angular.module("pagadoresApp").lazy
 
     vmIdx.formFactory = undefined
 
-    vmIdx.init = function(pessoa){
-      vmIdx.settings.loadSettings()
+    vmIdx.init = function(pagador){
       vmIdx.formFactory = new formFactory()
-      vmIdx.formFactory.lista = vmIdx.pessoas.listaPessoas
       vmIdx.filtro.listar = angular.copy(vmIdx.settings.filtro.default)
-      vmIdx.listCtrl.init()
+      vmIdx.listCtrl.init(pagador)
     }
 
     vmIdx.listCtrl = {
@@ -27,6 +25,7 @@ angular.module("pagadoresApp").lazy
         return Pagador.list(params, (function(_this) {
           return function(data, resp, arg) {
             vmIdx.listCtrl.list = angular.extend(data.list)
+            vmIdx.formFactory.lista = vmIdx.listCtrl.list
             return _this.carregando = false
           }
         })(this))

@@ -1,50 +1,38 @@
 angular.module('pagadoresApp').lazy
-.controller("PessoaCtrl", ["Pagador", function(Pagador) {
+.controller("PessoaCtrl", ["formFactory", "Pagador", function(formFactory, Pagador) {
   vmShow = this
 
-  vmShow.formFact = undefined
+  // vmShow.formFact = undefined
   // vmShow.pessoa = undefined
 
-  vmShow.init = function(pessoa){
-    pessoa.opened = false
-    vmShow.params = pessoa
+  vmShow.init = function(pessoa, baseFact){
+    
+    vmShow.formFactory = baseFact
   }
 
 
   vmShow.accToggle = function(pessoa){
-    pessoa.opened = true
-    if(vmShow.pessoaAntiga) {
-      vmShow.pessoaAntiga.opened = false
-    }
-    if (pessoa == vmShow.pessoaAntiga){
-      pessoa.opened = false
-    }
+    pessoa.opened = !pessoa.opened
     pessoa.editing = false
-    pessoa.carregado = false
-    vmShow.carregarPagador.exec(pessoa)
-    vmShow.pessoaAntiga = pessoa
+    vmShow.carregarPagador(pessoa)
   }
 
-  vmShow.a = function(){
-    console.log(vmShow.carregarPagador.pessoaAtual)
-  }
-
-  vmShow.carregarPagador = {
-    pessoaAtual: {},
-    carregando: false,
-    exec: function(pagador) {
-      if (vmShow.carregando) return
-      vmShow.carregarPagador.carregando = true
-      params = {}
-      params.id = pagador.id
-      return Pagador.show(params, (function(_this) {
-        return function(data, resp, arg) {
-          vmShow.carregarPagador.pessoaAtual = angular.copy(data.pagador)
-          vmShow.carregarPagador.pessoaAtual.carregado = true
-          return _this.carregando = true
+  vmShow.carregarPagador = function(pagador) {
+    if (pagador.carregado) return
+    params = {id: pagador.id}
+    return Pagador.show(params, (function(_this) {
+      return function(data, resp, arg) {
+        for(i in vmShow.formFactory.lista) {
+          if(vmShow.formFactory.lista[i].id == pagador.id){
+            vmShow.formFactory.lista[i] = angular.extend(data.pagador)
+            vmShow.formFactory.lista[i].carregado = true
+            vmShow.formFactory.lista[i].opened = true
+          }
         }
-      })(this))
-    }
+        return _this.carregando = true
+      }
+    })(this))
+    
   }
 
   vmShow.formCtrl = {

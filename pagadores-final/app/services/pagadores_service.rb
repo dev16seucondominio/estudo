@@ -32,8 +32,4 @@ class PagadoresService
     [:success, resp]
   end
 
-  def params_pagador
-    params.require(:pagador).permit(:id, :email, :nasc, :prof, :nome, :tipo, :sexo, :juridica, :telefone, :emialalt, :obs, :deficiente, :iden)
-  end
-
 end

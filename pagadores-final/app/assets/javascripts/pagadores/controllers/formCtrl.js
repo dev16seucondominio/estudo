@@ -228,25 +228,25 @@ angular.module('pagadoresApp').lazy
 
     vmForm.formCadastro = {
       salvar: function(pessoa) {
-        vmForm.carregarInfos.update(vmForm.params)
-        // if(!vmForm.params.nome) {
-        //   scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
-        //   vmForm.erroNome = true
-        // } else {
-        //   if(!vmForm.params.id) {
-        //     console.log('Adicionando Novo')
-        //     vmForm.formatacao(vmForm.params)
-        //     vmForm.params.id = vmForm.formFactory.lista.length + 1
-        //     vmForm.formFactory.lista.unshift(vmForm.params)
-        //   } else {
-        //       console.log('Editando')
-        //       vmForm.formatacao(vmForm.params)
-        //       vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
-        //       vmForm.params.opened = true
-        //       vmForm.params.editing = false
-        //   }
-        //   vmForm.formFactory.close()
-        // }
+        // vmForm.carregarInfos.update(vmForm.params)
+        if(!vmForm.params.nome) {
+          scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
+          vmForm.erroNome = true
+        } else {
+          if(!vmForm.params.id) {
+            console.log('Adicionando Novo')
+            vmForm.formatacao(vmForm.params)
+            vmForm.params.id = vmForm.formFactory.lista.length + 1
+            vmForm.formFactory.lista.unshift(vmForm.params)
+          } else {
+              console.log('Editando')
+              vmForm.formatacao(vmForm.params)
+              vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
+              vmForm.params.opened = true
+              vmForm.params.editing = false
+          }
+          vmForm.formFactory.close()
+        }
       }
     }
 

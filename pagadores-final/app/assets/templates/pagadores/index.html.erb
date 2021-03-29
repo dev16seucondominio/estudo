@@ -40,7 +40,7 @@
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.opened}"
         ng-controller="PessoaCtrl as PessoaCtrl"
-        ng-init="PessoaCtrl.init(pessoa)">
+        ng-init="PessoaCtrl.init(pessoa, PessoasCtrl.formFactory)">
         <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
@@ -79,7 +79,7 @@
               </li>
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="PessoasCtrl.pessoas.enderecoPrincipal(pessoa, pessoa.enderecos)" >
+                  ng-click="" >
                   <i class="sc-icon-historico"></i> Histórico
                 </a>
               </li>

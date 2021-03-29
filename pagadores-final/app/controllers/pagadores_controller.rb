@@ -20,7 +20,7 @@ class PagadoresController < ApplicationController
   end
 
   def update
-    puts "--------------------------------#{get_params}"
+    puts "-------------------------------#{get_params}"
     status, resp = PagadoresService.update(get_params)
 
     case status
