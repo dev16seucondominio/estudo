@@ -212,7 +212,7 @@ angular.module('pagadoresApp').lazy
       }
       if(pessoa.email) pessoa.email = pessoa.email.toLowerCase()
 
-      if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
+      // if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
 
       if(pessoa.juridica) {
         pessoa.rg = ''
@@ -228,25 +228,36 @@ angular.module('pagadoresApp').lazy
 
     vmForm.formCadastro = {
       salvar: function(pessoa) {
-        // vmForm.carregarInfos.update(vmForm.params)
-        if(!vmForm.params.nome) {
-          scTopMessages.openDanger("Nome não pode ser vazio!", {timeOut: 3000})
-          vmForm.erroNome = true
+        if (!this.isValido()){ return }
+        vmForm.formatacao(vmForm.params)
+        vmForm.params.opened  = true
+        vmForm.params.editing = false
+        vmForm.params.carregado = true
+        if(!vmForm.params.id) {
+          console.log('Adicionando Novo')
+          vmForm.params.id = vmForm.formFactory.lista.length + 1
+          vmForm.formFactory.lista.unshift(vmForm.params)
+          Pagador.save(vmForm.params)
         } else {
-          if(!vmForm.params.id) {
-            console.log('Adicionando Novo')
-            vmForm.formatacao(vmForm.params)
-            vmForm.params.id = vmForm.formFactory.lista.length + 1
-            vmForm.formFactory.lista.unshift(vmForm.params)
-          } else {
-              console.log('Editando')
-              vmForm.formatacao(vmForm.params)
-              vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
-              vmForm.params.opened = true
-              vmForm.params.editing = false
-          }
-          vmForm.formFactory.close()
+          console.log('Editando')
+          vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
+          Pagador.save(vmForm.params)
         }
+        vmForm.formFactory.close()
+      },
+      isValido: function() {
+        errors = []
+        if(!vmForm.params.nome) {
+          errors.push("Nome não pode ser vazio!")
+          vmForm.erroNome = true
+          // o melhor nesse caso era usar um objeto vmForm.errors para salvar as keys com erros
+          // ex.:
+          // Sempre que iniciar, vmForm.errors = {}
+          // Se nome for errado, então: vmForm.errors.nome = true
+        }
+        if (errors.empty()) { return true }
+        scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})
+        return false
       }
     }
 

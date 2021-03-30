@@ -10,8 +10,9 @@ angular.module('pagadoresApp').lazy
         method: 'GET'
       save:
         method: 'POST'
+        url: 'http://localhost:3000/pagadores/save.json'
       show:
         method: 'GET'
-      update:
-        method: 'PATCH'
+      destroy:
+        method: 'DELETE'
 ]

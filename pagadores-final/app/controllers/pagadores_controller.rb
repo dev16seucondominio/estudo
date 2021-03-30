@@ -19,9 +19,17 @@ class PagadoresController < ApplicationController
     end
   end
 
-  def update
-    puts "-------------------------------#{get_params}"
-    status, resp = PagadoresService.update(get_params)
+  def save
+    status, resp = PagadoresService.save(params_pagador)
+
+    case status
+    when :success then render json: resp, status: :ok
+    when :error then render json: { errors: resp }, status: :error
+    end
+  end
+
+  def destroy
+    status, resp = PagadoresService.destroy(params_pagador)
 
     case status
     when :success then render json: resp, status: :ok
@@ -38,4 +46,10 @@ class PagadoresController < ApplicationController
     when :error then render json: { errors: resp }, status: :error
     end
   end
+
+  def params_pagador
+    params.permit(:id, :tipo, :juridica, :sexo,:deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+      :emailalt, :iden, :telefone, :obs, :razaoSocial, :contato)
+  end
+
 end

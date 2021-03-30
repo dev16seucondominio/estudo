@@ -20,16 +20,40 @@ class PagadoresService
     [:success, resp]
   end
 
-  def self.update(params)
-    pagador = Pagador.find(params[:id])
 
-    pagador.assign_attributes(params)
+  def self.save(params)
 
-    pagador.save
+    pagador = Pagador.where(id: params[:id]).first
 
-    resp = {pagador: pagador}
+    puts "#{params}"
 
-    [:success, resp]
+    if pagador.blank?
+      pagador = Pagador.new(params)
+      if pagador.save
+        [:success, notice: "Pagador cadastrado com sucesso"]
+      else
+        [:error, pagador]
+      end
+    else
+      if pagador.save
+        [:success, notice: "Pagador atualizado com sucesso"]
+      else
+        [:error, pagador]
+      end
+    end
+  end
+
+  def self.destroy(params)
+    pagador = Pagador.where(id: params[:id]).first
+    if pagador.blank?
+      [:error, pagador]
+    else
+      if pagador.destroy
+        [:success, notice: "Pagador excluído com sucesso"]
+      else
+        [:error, pagador]
+      end
+    end
   end
 
 end

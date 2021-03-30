@@ -46,7 +46,8 @@ angular.module("pagadoresApp").lazy
               color: 'yellow',
               action: function() {
                 scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
-                vmIdx.pessoas.listaPessoas.splice(vmIdx.pessoas.listaPessoas.indexOf(pessoa), 1)
+                vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
+                Pagador.destroy(pessoa)
               }
             }
           ]
