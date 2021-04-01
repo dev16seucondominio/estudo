@@ -20,8 +20,7 @@ class PagadoresController < ApplicationController
   end
 
   def save
-    raise params
-    status, resp, pagador = PagadoresService.save(params_pagador)
+    status, resp = PagadoresService.save(params_pagador)
 
     case status
     when :success then render json: resp, status: :ok
@@ -30,7 +29,7 @@ class PagadoresController < ApplicationController
   end
 
   def destroy
-    status, resp = PagadoresService.destroy(params_pagador)
+    status, resp = PagadoresService.destroy(params)
 
     case status
     when :success then render json: resp, status: :ok

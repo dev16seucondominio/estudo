@@ -6,9 +6,7 @@ angular.module('pagadoresApp').lazy
     vmForm.carregandoData = false
 
     vmForm.init = function(baseFact, pessoa){
-      console.log('estou iniciando com pessoa:', pessoa)
       if(pessoa) {
-        // vmForm.params = angular.copy(pessoa)
         vmForm.carregarInfos.exec(pessoa)
       } else {
         vmForm.params = {}
@@ -226,7 +224,6 @@ angular.module('pagadoresApp').lazy
           function(data){
             if(!vmForm.params.id) {
               console.log('Adicionando Novo')
-              console.log("data.pagador: ", data.pagador)
               vmForm.formFactory.close()
               vmForm.formFactory.lista.unshift(vmForm.params)
             } else {
@@ -236,12 +233,11 @@ angular.module('pagadoresApp').lazy
                   itemPagador = vmForm.formFactory.lista[i]
                   vmForm.formFactory.close()
                   itemPagador = angular.extend(vmForm.params)
-                  console.log("Parametros quando acaba:", vmForm.params)
                 }
               }
             }
           }, function(response){
-            console.log("Deu erro.")
+            scTopMessages.openDanger("Registro excluído não com sucesso!", {timeOut: 3000})
           }
         )
       },

@@ -12,13 +12,14 @@
 //
 //= require rails-ujs
 //= require utilidades/jquery
-//= require utilidades/modernizr
+//= require utilidades/modernizr.js
 //= require activestorage
 
 //= require angular/angular
 //= require angular/angular-route
 //= require angular/angular-resource
 //= require angular/angular-sanitize
+//= require angular/angular-animate
 
 //= require_tree ./seucondominio
 //= require app

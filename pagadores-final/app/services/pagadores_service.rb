@@ -27,8 +27,6 @@ class PagadoresService
 
     pagador.assign_attributes(params)
 
-    raise pagador
-
     resp = {
       pagador: pagador.to_frontend_obj
     }
@@ -50,11 +48,14 @@ class PagadoresService
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first
+
+    puts "=======================#{params}"
+
     if pagador.blank?
       [:error, pagador]
     else
       if pagador.destroy
-        [:success, notice: "Pagador excluído com sucesso"]
+        [:success, pagador]
       else
         [:error, pagador]
       end
