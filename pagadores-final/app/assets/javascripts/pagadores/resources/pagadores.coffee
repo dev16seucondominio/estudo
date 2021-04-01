@@ -11,6 +11,7 @@ angular.module('pagadoresApp').lazy
       save:
         method: 'POST'
         url: 'http://localhost:3000/pagadores/save.json'
+        transformRequest: encapsulateData
       show:
         method: 'GET'
       destroy:

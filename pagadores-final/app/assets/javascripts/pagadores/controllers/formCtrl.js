@@ -20,26 +20,15 @@ angular.module('pagadoresApp').lazy
         vmForm.params.perfilPagamento = {}
       }
       vmForm.formFactory = baseFact
-      console.log('fim init, params:', vmForm.params)
     }
 
     vmForm.carregarInfos = {
       exec: function(pessoa) {
-        params = {}
-        params.id = pessoa.id
+        params = pessoa
+        console.log('adasdasdada', params)
         return Pagador.show(params, (function(_this) {
           return function(data, resp, arg) {
             vmForm.params = angular.copy(data.pagador)
-            return _this.carregando = true
-          }
-        })(this))
-      },
-      update: function(pessoa) {
-        params = {}
-        params.id = pessoa.id
-        return Pagador.update(params, (function(_this) {
-          return function(data, resp, arg) {
-            return _this.carregando = true
           }
         })(this))
       }
@@ -233,27 +222,34 @@ angular.module('pagadoresApp').lazy
         vmForm.params.opened  = true
         vmForm.params.editing = false
         vmForm.params.carregado = true
-        if(!vmForm.params.id) {
-          console.log('Adicionando Novo')
-          vmForm.params.id = vmForm.formFactory.lista.length + 1
-          vmForm.formFactory.lista.unshift(vmForm.params)
-          Pagador.save(vmForm.params)
-        } else {
-          console.log('Editando')
-          vmForm.formFactory.lista.splice(vmForm.formFactory.lista.indexOf(pessoa), 1, vmForm.params)
-          Pagador.save(vmForm.params)
-        }
-        vmForm.formFactory.close()
+        Pagador.save( vmForm.params,
+          function(data){
+            if(!vmForm.params.id) {
+              console.log('Adicionando Novo')
+              console.log("data.pagador: ", data.pagador)
+              vmForm.formFactory.close()
+              vmForm.formFactory.lista.unshift(vmForm.params)
+            } else {
+              console.log('Editando')
+              for (i in vmForm.formFactory.lista) {
+                if(vmForm.formFactory.lista[i].id == vmForm.params.id){
+                  itemPagador = vmForm.formFactory.lista[i]
+                  vmForm.formFactory.close()
+                  itemPagador = angular.extend(vmForm.params)
+                  console.log("Parametros quando acaba:", vmForm.params)
+                }
+              }
+            }
+          }, function(response){
+            console.log("Deu erro.")
+          }
+        )
       },
       isValido: function() {
         errors = []
         if(!vmForm.params.nome) {
           errors.push("Nome não pode ser vazio!")
           vmForm.erroNome = true
-          // o melhor nesse caso era usar um objeto vmForm.errors para salvar as keys com erros
-          // ex.:
-          // Sempre que iniciar, vmForm.errors = {}
-          // Se nome for errado, então: vmForm.errors.nome = true
         }
         if (errors.empty()) { return true }
         scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})

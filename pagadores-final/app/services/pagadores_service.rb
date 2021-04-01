@@ -23,22 +23,27 @@ class PagadoresService
 
   def self.save(params)
 
-    pagador = Pagador.where(id: params[:id]).first
+    pagador = Pagador.where(id: params[:id]).first || Pagador.new()
 
-    puts "#{params}"
+    pagador.assign_attributes(params)
+
+    raise pagador
+
+    resp = {
+      pagador: pagador.to_frontend_obj
+    }
 
     if pagador.blank?
-      pagador = Pagador.new(params)
       if pagador.save
-        [:success, notice: "Pagador cadastrado com sucesso"]
+        [:success, resp]
       else
-        [:error, pagador]
+        [:error, resp]
       end
     else
       if pagador.save
-        [:success, notice: "Pagador atualizado com sucesso"]
+        [:success, resp]
       else
-        [:error, pagador]
+        [:error, resp]
       end
     end
   end

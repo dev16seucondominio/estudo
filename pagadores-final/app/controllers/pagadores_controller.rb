@@ -20,7 +20,8 @@ class PagadoresController < ApplicationController
   end
 
   def save
-    status, resp = PagadoresService.save(params_pagador)
+    raise params
+    status, resp, pagador = PagadoresService.save(params_pagador)
 
     case status
     when :success then render json: resp, status: :ok
@@ -48,7 +49,7 @@ class PagadoresController < ApplicationController
   end
 
   def params_pagador
-    params.permit(:id, :tipo, :juridica, :sexo,:deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+    params.require(:pagador).permit(:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
       :emailalt, :iden, :telefone, :obs, :razaoSocial, :contato)
   end
 
