@@ -20,7 +20,7 @@
   <section id="pessoas">
     <ul class="sc-accordion">
       <!-- aqui é novo cadastro -->
-      <li class="sc-acc-blue ng-animation-slider sc-bg-gray-lighter"
+      <li class="sc-acc-blue ng-animation sc-bg-gray-lighter"
         ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
         style="display: block;"
         ng-if="PessoasCtrl.formFactory.opened && PessoasCtrl.formFactory.new_record"
@@ -66,7 +66,7 @@
           <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
             <i class="sc-icon-reticiencias-v sc-badge-hover-gray"
               ng-class="{'sc-badge-hover-white': pessoa.opened, 'sc-badge-active': menu.opened}"
-              ng-click="menu.isOn = !menu.isOn">
+              ng-click="menu.toggle()">
             </i>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>

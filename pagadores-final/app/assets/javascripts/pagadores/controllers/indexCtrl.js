@@ -21,12 +21,10 @@ angular.module("pagadoresApp").lazy
         this.exec(params)
       },
       exec: function(params) {
-        this.carregando = false;
         return Pagador.list(params, (function(_this) {
           return function(data, resp, arg) {
             vmIdx.listCtrl.list = angular.extend(data.list)
             vmIdx.formFactory.lista = vmIdx.listCtrl.list
-            return _this.carregando = false
           }
         })(this))
       }
@@ -45,13 +43,21 @@ angular.module("pagadoresApp").lazy
               label: 'Sim',
               color: 'yellow',
               action: function() {
-                scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
-                vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
-                Pagador.destroy(pessoa)
+                vmIdx.pessoas.execExcluirRegistro(pessoa)
               }
             }
           ]
         })
+      },
+      execExcluirRegistro: function(pessoa){
+        Pagador.destroy(pessoa,
+          function(data){
+            scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
+            vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
+          }, function(response){
+            scTopMessages.openDanger("Registro não excluído!", {timeOut: 3000})
+          }
+        )
       }
     }
 

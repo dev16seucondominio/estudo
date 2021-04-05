@@ -14,7 +14,7 @@ angular.module('pagadoresApp').lazy
           pessoa.editing = true
         },
 
-        close: function(){
+        close: function(pessoa){
           this.pessoa = {}
           this.editing = false
           this.opened = false

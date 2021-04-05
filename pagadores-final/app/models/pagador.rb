@@ -24,6 +24,8 @@ class Pagador < ApplicationRecord
     attrs[:razaoSocial] = razaoSocial
     attrs[:contato] = contato
     attrs[:obs] = obs
+    attrs[:razaoSocial] = razaoSocial
+    attrs[:contato] = contato
     attrs
   end
 

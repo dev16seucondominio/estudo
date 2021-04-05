@@ -29,7 +29,7 @@ class PagadoresController < ApplicationController
   end
 
   def destroy
-    status, resp = PagadoresService.destroy(params_pagador)
+    status, resp = PagadoresService.destroy(params)
 
     case status
     when :success then render json: resp, status: :ok
@@ -48,7 +48,7 @@ class PagadoresController < ApplicationController
   end
 
   def params_pagador
-    params.permit(:id, :tipo, :juridica, :sexo,:deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+    params.require(:pagador).permit(:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
       :emailalt, :iden, :telefone, :obs, :razaoSocial, :contato)
   end
 
