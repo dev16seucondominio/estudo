@@ -21,6 +21,8 @@ class Pagador < ApplicationRecord
     attrs[:emailalt] = emailalt
     attrs[:iden] = iden
     attrs[:telefone] = telefone
+    attrs[:razaoSocial] = razaoSocial
+    attrs[:contato] = contato
     attrs[:obs] = obs
     attrs
   end
