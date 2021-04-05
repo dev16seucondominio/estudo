@@ -49,7 +49,7 @@ class PagadoresController < ApplicationController
 
   def params_pagador
     params.require(:pagador).permit(:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
-      :emailalt, :iden, :telefone, :obs, :razaoSocial, :contato)
+      :emailalt, :iden, :telefone, :obs, :razao_social, :contato)
   end
 
 end

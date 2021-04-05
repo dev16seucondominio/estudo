@@ -57,16 +57,15 @@
                 Fornecedor
               </span>
             </span>
-            <span ng-show="pessoa.novo"
-              class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-green">
-              Novo
+            <span class="sc-text-white sc-p-v-xs sc-p-h-md sc-bg-green sc-text-xs sc-text-normal sc-border-radius sc-m-l-md ng-scope" ng-if="pessoa.novo">
+              NOVO
             </span>
           </div>
           <!-- Mais opções -->
           <span class="sc-dropdown pull-right" sc-dropdown-menu="" sc-stop-click="">
             <i class="sc-icon-reticiencias-v sc-badge-hover-gray"
               ng-class="{'sc-badge-hover-white': pessoa.opened, 'sc-badge-active': menu.opened}"
-              ng-click="menu.toggle()">
+              ng-click="menu.isOn = !menu.isOn">
             </i>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
@@ -94,7 +93,7 @@
         <!-- Include do form de edição e show -->
         <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
           ng-controller="PessoasFormCtrl as PessoasFormCtrl"
-          ng-if="pessoa.opened && pessoa.editing"
+          ng-if="pessoa.editing"
           ng-init="PessoasCtrl.formFactory.init(pessoa)">
         </div>
         <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-if="pessoa.opened && !pessoa.editing"></div>

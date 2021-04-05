@@ -16,5 +16,4 @@ angular.module('pagadoresApp').lazy
         method: 'GET'
       destroy:
         method: 'DELETE'
-        transformRequest: encapsulateData
 ]

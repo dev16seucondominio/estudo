@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2021_03_31_194811) do
-=======
-ActiveRecord::Schema.define(version: 2021_04_01_115318) do
->>>>>>> f81db5e130ddea406c9b5b54cecac43dcf52222c
+ActiveRecord::Schema.define(version: 2021_04_05_213536) do
 
   create_table "pagadors", force: :cascade do |t|
     t.string "nome"
@@ -33,7 +29,7 @@ ActiveRecord::Schema.define(version: 2021_04_01_115318) do
     t.string "obs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "razaoSocial"
+    t.string "razao_social"
     t.string "contato"
   end
 

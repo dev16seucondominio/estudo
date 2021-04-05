@@ -27,39 +27,24 @@ class PagadoresService
 
     pagador.assign_attributes(params)
 
-    resp = {
-      pagador: pagador.to_frontend_obj
-    }
-
-    if pagador.blank?
-      if pagador.save
-        [:success, resp]
-      else
-        [:error, resp]
-      end
+    if pagador.save
+      resp = { pagador: pagador.to_frontend_obj }
+      [:success, resp]
     else
-      if pagador.save
-        [:success, resp]
-      else
-        [:error, resp]
-      end
+      [:error, resp]
     end
+    
   end
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first
 
-    puts "=======================#{params}"
-
-    if pagador.blank?
-      [:error, pagador]
+    if pagador.destroy
+      [:success, pagador]
     else
-      if pagador.destroy
-        [:success, pagador]
-      else
-        [:error, pagador]
-      end
+      [:error, pagador]
     end
+    
   end
 
 end

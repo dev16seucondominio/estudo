@@ -55,7 +55,8 @@ angular.module("pagadoresApp").lazy
             scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
             vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
           }, function(response){
-            scTopMessages.openDanger("Registro não excluído!", {timeOut: 3000})
+            console.log(response)
+            scTopMessages.openDanger("Registro não encontrado!", {timeOut: 3000})
           }
         )
       }
