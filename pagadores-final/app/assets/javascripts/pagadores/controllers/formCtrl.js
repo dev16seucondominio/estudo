@@ -246,8 +246,9 @@ angular.module('pagadoresApp').lazy
               for (i in vmForm.formFactory.lista) {
                 if(vmForm.formFactory.lista[i].id == vmForm.params.id){
                   vmForm.itemPagador = vmForm.formFactory.lista[i]
-                  vmForm.formFactory.close()
                   angular.extend(vmForm.itemPagador, vmForm.params)
+                  scTopMessages.openSuccess("Registro editado com sucesso!", {timeOut: 3000})
+                  vmForm.formFactory.close()
                 }
               }
             }

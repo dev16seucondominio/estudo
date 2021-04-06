@@ -1,5 +1,8 @@
 class Pagador < ApplicationRecord
 
+  has_many :enderecos
+  accepts_nested_attributes_for :enderecos
+
   def slim_obj
     attrs = {}
     attrs[:id] = id
@@ -23,6 +26,7 @@ class Pagador < ApplicationRecord
     attrs[:telefone] = telefone
     attrs[:razao_social] = razao_social
     attrs[:contato] = contato
+    attrs[:enderecos] = enderecos
     attrs[:obs] = obs
     attrs
   end

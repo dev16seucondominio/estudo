@@ -33,6 +33,7 @@ class PagadoresController < ApplicationController
 
     case status
     when :success then render json: resp, status: :ok
+    when :not_found then render json: { errors: resp }, status: :not_found
     when :error then render json: { errors: resp }, status: :error
     end
   end
@@ -49,7 +50,7 @@ class PagadoresController < ApplicationController
 
   def params_pagador
     params.require(:pagador).permit(:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
-      :emailalt, :iden, :telefone, :obs, :razao_social, :contato)
+      :emailalt, :iden, :telefone, :obs, :razao_social, :contato, enderecos_attributes: [:id, :titulo])
   end
 
 end

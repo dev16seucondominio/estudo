@@ -31,18 +31,23 @@ class PagadoresService
       resp = { pagador: pagador.to_frontend_obj }
       [:success, resp]
     else
+      resp = { msg: "Registro não encontrado." }
       [:error, resp]
     end
     
   end
 
   def self.destroy(params)
-    pagador = Pagador.where(id: params[:id]).first
+    pagador = Pagador.where(id: params[:id]).first 
 
     if pagador.destroy
-      [:success, pagador]
+      resp = { msg: "Registro excluído com sucesso." }
+      [:success, resp]
+    elsif pagador.nil?
+      resp = { msg: "Registro já foi excluído." }
+      [:not_found, resp]
     else
-      [:error, pagador]
+      resp = { msg: "Registro não encontrado." }
     end
     
   end

@@ -52,10 +52,10 @@ angular.module("pagadoresApp").lazy
       execExcluirRegistro: function(pessoa){
         Pagador.destroy(pessoa,
           function(data){
-            scTopMessages.openSuccess("Registro excluído com sucesso!", {timeOut: 3000})
+            scTopMessages.openSuccess(data.msg, {timeOut: 3000})
             vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
           }, function(response){
-            console.log(response)
+            console.log("Eis aqui um erro: ", response)
             scTopMessages.openDanger("Registro não encontrado!", {timeOut: 3000})
           }
         )

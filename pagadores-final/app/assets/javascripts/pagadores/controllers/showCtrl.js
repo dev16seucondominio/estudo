@@ -26,6 +26,7 @@ angular.module('pagadoresApp').lazy
       function(data) {
         for (i in vmShow.formFactory.lista) {
           if(vmShow.formFactory.lista[i].id == data.pagador.id){
+            console.log(data)
             vmShow.itemPagador = vmShow.formFactory.lista[i]
             angular.extend(vmShow.itemPagador, data.pagador)
             vmShow.itemPagador.carregado = true

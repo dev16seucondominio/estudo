@@ -2,18 +2,18 @@
   <div class="sc-fieldset-head flex-row">
     <span class="sc-text-blue sc-text-bold">Endereços</span>
     <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
-      ng-click="PagadoresFormCtrl.formEnd.add()">
+      ng-click="PessoasFormCtrl.formEnd.add()">
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
   <div class="flex-row-with-padding pessoa-endereco"
-    ng-repeat="end in PagadoresFormCtrl.params.enderecos track by end.id">
+    ng-repeat="end in PessoasFormCtrl.params.enderecos track by end.id">
     <div class="fcol-xs-7em">
       <label>
         <div class="sc-label">Principal?</div>
         <div class="sc-p-v-sm">
           <span class="sc-toggle">
-            <input type="checkbox" ng-change="PagadoresFormCtrl.formEnd.setPrincipal(PagadoresFormCtrl.params.enderecos, end)" ng-model="end.principal">
+            <input type="checkbox" ng-change="PessoasFormCtrl.formEnd.setPrincipal(PessoasFormCtrl.params.enderecos, end)" ng-model="end.principal">
             <span label-false="não" label-true="sim"></span>
           </span>
         </div>
@@ -72,16 +72,16 @@
       </label>
     </div>
     <div class="fcol-xs-3em align-self-center"
-      ng-click="PagadoresFormCtrl.formEnd.rmv(end)">
+      ng-click="PessoasFormCtrl.formEnd.rmv(end)">
       <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
     </div>
     <div class="sc-border-b-dashed fcol-xs-100 sc-p-v-lg"
-      ng-if="PagadoresFormCtrl.params.enderecos.length > 1 && !$last">
+      ng-if="PessoasFormCtrl.params.enderecos.length > 1 && !$last">
     </div>
   </div>
   <div class="sc-p-b-o">
     <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
-      ng-hide="PagadoresFormCtrl.params.enderecos.length">Nenhum endereço cadastrado!
+      ng-hide="PessoasFormCtrl.params.enderecos.length">Nenhum endereço cadastrado!
     </div>
   </div>
 </div>

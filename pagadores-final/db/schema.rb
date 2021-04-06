@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_05_213536) do
+ActiveRecord::Schema.define(version: 2021_04_06_205429) do
+
+  create_table "enderecos", force: :cascade do |t|
+    t.boolean "principal"
+    t.string "titulo"
+    t.string "cep"
+    t.string "cidade"
+    t.string "logradouro"
+    t.string "complemento"
+    t.string "bairro"
+    t.integer "pagador_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pagador_id"], name: "index_enderecos_on_pagador_id"
+  end
 
   create_table "pagadors", force: :cascade do |t|
     t.string "nome"
