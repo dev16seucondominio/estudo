@@ -49,8 +49,10 @@ class PagadoresController < ApplicationController
   end
 
   def params_pagador
-    params.require(:pagador).permit(:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
-      :emailalt, :iden, :telefone, :obs, :razao_social, :contato, enderecos_attributes: [:id, :titulo])
+    attrs = [:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+      :emailalt, :iden, :telefone, :obs, :razao_social, :contato, :enderecos]
+    attrs << {enderecos: [:id, :principal, :titulo, :cep, :cidade, :logradouro, :complemento, :bairro, :pagador_id]}
+    params.require(:pagador).permit(attrs)
   end
 
 end

@@ -1,7 +1,7 @@
 class Pagador < ApplicationRecord
 
   has_many :enderecos
-  accepts_nested_attributes_for :enderecos
+  accepts_nested_attributes_for :enderecos, allow_destroy: true
 
   def slim_obj
     attrs = {}

@@ -43,7 +43,6 @@ angular.module('pagadoresApp').lazy
       )  
     }
     
-
     vmForm.perfilPagamento = {
       listOperacoes: [
         {id: 1, key: "pix", nome: "Pix"},
@@ -134,7 +133,6 @@ angular.module('pagadoresApp').lazy
     vmForm.formEnd = {
       add: function() {
         vmForm.params.enderecos.push({
-          id: (vmForm.params.enderecos.length) + 1,
           principal: (vmForm.params.enderecos < 1 ? true : false)
         })
       },
@@ -211,7 +209,7 @@ angular.module('pagadoresApp').lazy
       }
       if(pessoa.email) pessoa.email = pessoa.email.toLowerCase()
 
-      // if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
+      if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
 
       if(pessoa.juridica) {
         pessoa.rg = ''
@@ -228,7 +226,7 @@ angular.module('pagadoresApp').lazy
     vmForm.formCadastro = {
       salvar: function(pessoa) {
         if (!this.isValido()){ return }
-        vmForm.formatacao(vmForm.params)
+        // vmForm.formatacao(vmForm.params)
         vmForm.params.opened  = true
         vmForm.params.editing = false
         vmForm.params.carregado = true

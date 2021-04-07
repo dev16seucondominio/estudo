@@ -47,14 +47,14 @@
           <div class="sc-p-xs" ng-show="pessoa.emailalt">
             <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.emailalt}}</div>
           </div>
-          <div class="sc-p-xs" ng-show="pessoa.enderecoPrincipal.cidade">
+          <div class="sc-p-xs">
             <i class="sc-p-r-md left sc-icon-local"></i>
             <div>
-              <span ng-show="pessoa.enderecoPrincipal.logradouro">{{pessoa.enderecoPrincipal.logradouro}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.complemento">{{pessoa.enderecoPrincipal.complemento}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.bairro">{{pessoa.enderecoPrincipal.bairro}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.cidade">{{pessoa.enderecoPrincipal.cidade}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.cep">{{pessoa.enderecoPrincipal.cep}}</span>
+              <span>{{pessoa.enderecos[1].logradouro}}, </span>
+              <span>{{pessoa.enderecos[1].complemento}}, </span>
+              <span>{{pessoa.enderecos[1].bairro}}, </span>
+              <span>{{pessoa.enderecos[1].cidade}}, </span>
+              <span>{{pessoa.enderecos[1].cep}}</span>
             </div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.obs">

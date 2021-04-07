@@ -22,34 +22,55 @@ class PagadoresService
 
 
   def self.save(params)
+    puts "---------------------------------------------------------AAAAAAAAAA#{params}"
+
+
 
     pagador = Pagador.where(id: params[:id]).first || Pagador.new()
 
+    params = set_params(params)
+    puts "---------------------------------------------------------#{params}"
     pagador.assign_attributes(params)
 
-    if pagador.save
-      resp = { pagador: pagador.to_frontend_obj }
-      [:success, resp]
-    else
+    unless pagador.save
       resp = { msg: "Registro não encontrado." }
       [:error, resp]
+    else
+      resp = { pagador: pagador.to_frontend_obj }
+      [:success, resp]
     end
     
   end
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first 
+    return [:not_found, { msg: 'Registro não encontrado' }] if pagador.blank?
 
     if pagador.destroy
       resp = { msg: "Registro excluído com sucesso." }
       [:success, resp]
-    elsif pagador.nil?
-      resp = { msg: "Registro já foi excluído." }
-      [:not_found, resp]
     else
       resp = { msg: "Registro não encontrado." }
-    end
-    
+      [:error, resp]
+    end  
   end
 
+  private
+
+  def self.set_params(params)
+    # enderecos
+    params = set_enderecos(params)
+    # contas
+    # params = set_contas(params)
+
+    params
+  end
+
+  def self.set_enderecos(params)
+    return if params[:enderecos].blank?
+    enderecos = params.delete(:enderecos)
+
+    params[:enderecos_attributes] = enderecos
+    params
+  end
 end
