@@ -36,7 +36,7 @@
       ng-click="scTopMessages.close()" ng-if="scTopMessages.toggler.opened" style="display: block;">
       <div class="sc-text-white align-center sc-text-shadow-dark flex align-items-center">
         <div class="sc-top-messages-msgs sc-cursor-default">
-          <p ng-repeat="msg in scTopMessages.messages track by $index" ng-bind="scTopMessages.messages"></p>
+          <p ng-repeat="msg in scTopMessages.messages track by $index" ng-bind="msg"></p>
         </div>
         <div class="sc-top-messages-close-button">
           <i class="sc-icon-fechar-1 sc-cursor-pointer"></i>

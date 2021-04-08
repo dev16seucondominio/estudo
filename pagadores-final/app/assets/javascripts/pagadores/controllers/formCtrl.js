@@ -22,12 +22,12 @@ angular.module('pagadoresApp').lazy
 
     vmForm.carregarInfos = function(pessoa) {
       params = angular.copy(pessoa)
-      if(params.carregado) { 
+      if(params.carregado) {
         vmForm.params = angular.copy(pessoa)
         pessoa.opened = true
-        return 
+        return
       }
-      Pagador.show(params, 
+      Pagador.show(params,
         function(data) {
           for (i in vmForm.formFactory.lista) {
             if(vmForm.formFactory.lista[i].id == data.pagador.id){
@@ -38,11 +38,11 @@ angular.module('pagadoresApp').lazy
             }
           }
         }, function(response) {
-          scTopMessages.openDanger("Erro inesperado", {timeOut: 3000})
+          scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
         }
-      )  
+      )
     }
-    
+
     vmForm.perfilPagamento = {
       listOperacoes: [
         {id: 1, key: "pix", nome: "Pix"},
@@ -152,12 +152,6 @@ angular.module('pagadoresApp').lazy
     }
 
     vmForm.formConta = {
-      listBancos: [
-        {id: 0, key: "caixa", nome: "104 - Caixa Econômica Federal"},
-        {id: 1, key: "inter", nome: "077 - Banco Inter"},
-        {id: 2, key: "bradesco", nome: "237 - Bradesco"},
-        {id: 3, key: "banco_do_brasil", nome: "001 - Banco do Brasil"}
-      ],
       tiposConta: [
         {id: 0, key: "conta_corrente", nome: "Conta Corrente"},
         {id: 1, key: "poupanca", nome: "Poupança"},
@@ -176,12 +170,11 @@ angular.module('pagadoresApp').lazy
       ],
       add: function() {
         vmForm.params.contas.push({
-          id: (vmForm.params.contas.length) + 1,
           principal: (vmForm.params.contas.length < 1 ? true : false),
           pj: false,
           banco: vmForm.params.contas.banco,
           doc: (vmForm.params.doc ? angular.copy(vmForm.params.doc) : ''),
-          nome: (angular.copy(vmForm.params.nome))
+          responsavel: (angular.copy(vmForm.params.nome))
         })
       },
       rmv: function(conta) {
@@ -202,6 +195,9 @@ angular.module('pagadoresApp').lazy
     }
 
     vmForm.formatacao = function(pessoa){
+      vmForm.params.opened  = true
+      vmForm.params.editing = false
+      vmForm.params.carregado = true
       if(pessoa.nasc) {
         pessoa.nasc.d = pessoa.nasc.getDate()
         pessoa.nasc.m = pessoa.nasc.getMonth() + 1
@@ -226,10 +222,7 @@ angular.module('pagadoresApp').lazy
     vmForm.formCadastro = {
       salvar: function(pessoa) {
         if (!this.isValido()){ return }
-        // vmForm.formatacao(vmForm.params)
-        vmForm.params.opened  = true
-        vmForm.params.editing = false
-        vmForm.params.carregado = true
+        vmForm.formatacao(vmForm.params)
         Pagador.save( vmForm.params,
           function(data){
             if(!vmForm.params.id) {
@@ -237,19 +230,17 @@ angular.module('pagadoresApp').lazy
               angular.extend(vmForm.params, data.pagador)
               vmForm.params.novo = true
               vmForm.formFactory.lista.unshift(vmForm.params)
-              scTopMessages.openSuccess("Registro criado com sucesso!", {timeOut: 3000})
-              vmForm.formFactory.close()
             } else {
               console.log('Editando')
               for (i in vmForm.formFactory.lista) {
                 if(vmForm.formFactory.lista[i].id == vmForm.params.id){
                   vmForm.itemPagador = vmForm.formFactory.lista[i]
                   angular.extend(vmForm.itemPagador, vmForm.params)
-                  scTopMessages.openSuccess("Registro editado com sucesso!", {timeOut: 3000})
-                  vmForm.formFactory.close()
                 }
               }
             }
+            scTopMessages.openSuccess(data.msg, {timeOut: 3000})
+            vmForm.formFactory.close()
           }, function(response){
             scTopMessages.openDanger("Registro não inserido!", {timeOut: 3000})
           }

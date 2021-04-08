@@ -1,7 +1,10 @@
 class Pagador < ApplicationRecord
 
-  has_many :enderecos
+  has_many :enderecos, class_name: "Endereco", foreign_key: :pagador_id, dependent: :destroy, inverse_of: :pagador
   accepts_nested_attributes_for :enderecos, allow_destroy: true
+
+  has_many :contas, class_name: "Conta", foreign_key: :pagador_id, dependent: :destroy, inverse_of: :pagador
+  accepts_nested_attributes_for :contas, allow_destroy: true
 
   def slim_obj
     attrs = {}
@@ -27,6 +30,7 @@ class Pagador < ApplicationRecord
     attrs[:razao_social] = razao_social
     attrs[:contato] = contato
     attrs[:enderecos] = enderecos
+    attrs[:contas] = contas
     attrs[:obs] = obs
     attrs
   end

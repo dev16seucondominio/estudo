@@ -10,7 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_06_205429) do
+ActiveRecord::Schema.define(version: 2021_04_08_204851) do
+
+  create_table "bancos", force: :cascade do |t|
+    t.integer "codigo"
+    t.string "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "contas", force: :cascade do |t|
+    t.string "tipo_conta"
+    t.string "agencia"
+    t.string "numero_conta"
+    t.string "responsavel"
+    t.string "doc"
+    t.boolean "principal"
+    t.integer "pagador_id"
+    t.integer "banco_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "juridica"
+    t.string "dv_conta"
+    t.string "dv_agencia"
+    t.index ["banco_id"], name: "index_contas_on_banco_id"
+    t.index ["pagador_id"], name: "index_contas_on_pagador_id"
+  end
 
   create_table "enderecos", force: :cascade do |t|
     t.boolean "principal"

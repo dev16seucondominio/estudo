@@ -55,8 +55,7 @@ angular.module("pagadoresApp").lazy
             scTopMessages.openSuccess(data.msg, {timeOut: 3000})
             vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
           }, function(response){
-            console.log("Eis aqui um erro: ", response)
-            scTopMessages.openDanger("Registro não encontrado!", {timeOut: 3000})
+            scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
       }
