@@ -171,8 +171,8 @@ angular.module('pagadoresApp').lazy
       add: function() {
         vmForm.params.contas.push({
           principal: (vmForm.params.contas.length < 1 ? true : false),
-          pj: false,
-          banco: vmForm.params.contas.banco,
+          juridica: false,
+          banco_id: 1,
           doc: (vmForm.params.doc ? angular.copy(vmForm.params.doc) : ''),
           responsavel: (angular.copy(vmForm.params.nome))
         })
@@ -185,6 +185,7 @@ angular.module('pagadoresApp').lazy
       },
       setBanco: function(banco, conta) {
         conta.banco = banco
+        conta.banco_id = 104
       },
       setPrincipal: function(listaContas, conta) {
         for(i in listaContas) {
@@ -242,6 +243,7 @@ angular.module('pagadoresApp').lazy
             scTopMessages.openSuccess(data.msg, {timeOut: 3000})
             vmForm.formFactory.close()
           }, function(response){
+            console.log(response)
             scTopMessages.openDanger("Registro não inserido!", {timeOut: 3000})
           }
         )

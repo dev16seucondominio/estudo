@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_204851) do
+ActiveRecord::Schema.define(version: 2021_04_09_180327) do
 
   create_table "bancos", force: :cascade do |t|
     t.integer "codigo"
@@ -26,13 +26,13 @@ ActiveRecord::Schema.define(version: 2021_04_08_204851) do
     t.string "responsavel"
     t.string "doc"
     t.boolean "principal"
+    t.string "dv_agencia"
+    t.string "dv_conta"
     t.integer "pagador_id"
     t.integer "banco_id"
+    t.boolean "juridica"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "juridica"
-    t.string "dv_conta"
-    t.string "dv_agencia"
     t.index ["banco_id"], name: "index_contas_on_banco_id"
     t.index ["pagador_id"], name: "index_contas_on_pagador_id"
   end

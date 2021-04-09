@@ -54,7 +54,7 @@ class PagadoresService
 
     unless pagador.save
       errors = pagador.errors.full_messages
-      [:error, errors]
+      [:success, errors]
     else
       resp = { msg: msg, pagador: pagador.to_frontend_obj}
       [:success, resp]

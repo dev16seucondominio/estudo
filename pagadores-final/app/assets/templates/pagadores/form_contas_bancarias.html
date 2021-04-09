@@ -8,7 +8,7 @@
   </div>
 
   <div class="flex-row-with-padding align-items-flex-end"
-    ng-repeat="conta in PessoasFormCtrl.params.contas track by conta.id">
+    ng-repeat="conta in PessoasFormCtrl.params.contas">
 
     <div class="fcol-xs-7em">
       <label>
@@ -46,8 +46,8 @@
         <div class="sc-label">Tipo da Conta</div>
         <div class="sc-input-group">
           <select class="sc-input-default sc-input-block"
-            ng-model="conta.tipoConta"
-            ng-options="tipoConta.key as tipoConta.nome for tipoConta in PessoasFormCtrl.formConta.tiposConta">
+            ng-model="conta.tipo_conta"
+            ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PessoasFormCtrl.formConta.tiposConta">
             <option selected="selected" value>Selecione</option>
           </select>
         </div>
@@ -59,7 +59,7 @@
         <div class="sc-label">Agência</div>
         <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.agencia">
         <b class="sc-text-gray sc-m-h-xs">-</b>
-        <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dvAgencia">
+        <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dv_agencia">
       </label>
     </div>
 
@@ -68,7 +68,7 @@
         <div class="sc-label">Número da Conta</div>
         <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.numero_conta">
         <b class="sc-text-gray sc-m-h-xs">-</b>
-        <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dvConta">
+        <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dv_conta">
       </label>
     </div>
 
@@ -84,8 +84,8 @@
         <div class="sc-label">CPF/CNPJ</div>
         <div class="sc-input-group">
           <input class="sc-input-default sc-input-block" type="text" maxlength="11" ng-model="conta.doc">
-          <button class="sc-btn" ng-click="conta.pj = false" ng-class="{'sc-btn-blue' : !conta.pj}" type="button">PF</button>
-          <button class="sc-btn" ng-click="conta.pj = true" ng-class="{'sc-btn-blue' : conta.pj}" type="button">PJ</button>
+          <button class="sc-btn" ng-click="conta.juridica = false" ng-class="{'sc-btn-blue' : !conta.juridica}" type="button">PF</button>
+          <button class="sc-btn" ng-click="conta.juridica = true" ng-class="{'sc-btn-blue' : conta.juridica}" type="button">PJ</button>
         </div>
       </label>
     </div>
