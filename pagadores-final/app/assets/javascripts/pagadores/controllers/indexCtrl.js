@@ -16,17 +16,33 @@ angular.module("pagadoresApp").lazy
     vmIdx.listCtrl = {
       carregando: false,
       list: [],
+      with_settings: true,
       init: function(){
         params = {}
         this.exec(params)
       },
+      loadList: function(params){
+        this.list = []
+        this.exec(params)
+      },
       exec: function(params) {
-        return Pagador.list(params, (function(_this) {
-          return function(data, resp, arg) {
+
+        params ||= {}
+
+        params.filtro        = vmIdx.filtro.params
+        params.with_settings = vmIdx.listCtrl.with_settings
+
+        Pagador.list(params,
+          function(data) {
+            if (vmIdx.listCtrl.with_settings) {
+              vmIdx.listCtrl.with_settings = false
+              loadSettings(data)
+            }
+
             vmIdx.listCtrl.list = angular.extend(data.list)
             vmIdx.formFactory.lista = vmIdx.listCtrl.list
           }
-        })(this))
+        )
       }
     }
 
@@ -87,17 +103,19 @@ angular.module("pagadoresApp").lazy
       listar: {},
       params: {},
       exec: function(tipo){
-        this.listar = {}
-        if(tipo == 'simples') {
-          this.params.q ? this.listar = this.params.q : this.listar = angular.copy(this.params)
-          this.preenchido = true
-        }
-        if(tipo == 'avancado') {
-          delete(this.params.q)
-          this.listar = angular.copy(this.params)
-          vmIdx.settings.filtro.avancado = false
-          this.preenchido = true
-        }
+        // this.listar = {}
+        // if(tipo == 'simples') {
+        //   this.params.q ? this.listar = this.params.q : this.listar = angular.copy(this.params)
+        //   this.preenchido = true
+        // }
+        // if(tipo == 'avancado') {
+        //   delete(this.params.q)
+        //   this.listar = angular.copy(this.params)
+        //   vmIdx.settings.filtro.avancado = false
+        //   this.preenchido = true
+        // }
+
+        vmIdx.listCtrl.loadList()
       },
       limpar: function() {
         this.listar = []
@@ -127,6 +145,14 @@ angular.module("pagadoresApp").lazy
           // } //filter:PessoasCtrl.filtro.opcoes.comEndereco
         }
       }
+    }
+
+    // Settings
+
+    loadSettings = function(data){
+      vmIdx.settings = data.settings
+      // vmIdx.locale = data.locales.pagadores
+      // vmIdx.localeContas = data.locales.contas
     }
 
     return vmIdx

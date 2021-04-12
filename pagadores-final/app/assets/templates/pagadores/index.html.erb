@@ -70,7 +70,7 @@
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="PessoaCtrl.formCtrl.open(pessoa); PessoasCtrl.formFactory.init(pessoa)">
+                  ng-click="PessoaCtrl.formCtrl.open(pessoa)">
                   <i class="sc-icon-lapis"></i> Editar
                 </a>
               </li>
@@ -90,14 +90,17 @@
           </span>
         </div>
 
-        <!-- Include do form de edição e show -->
-        <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
-          ng-controller="PessoasFormCtrl as PessoasFormCtrl"
-          ng-if="pessoa.editing"
-          ng-init="PessoasCtrl.formFactory.init(pessoa)">
+        <div ng-if="pessoa.opened">
+          <!-- Include do form de edição e show -->
+          <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
+            ng-controller="PessoasFormCtrl as PessoasFormCtrl"
+            ng-if="pessoa.editing"
+            ng-init="PessoasCtrl.formFactory.init(pessoa)">
+          </div>
+          <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-show="!pessoa.editing"></div>
+          <div class="clear"></div>
         </div>
-        <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-if="pessoa.opened && !pessoa.editing"></div>
-        <div class="clear"></div>
+
       </li>
     </ul>
   </section>

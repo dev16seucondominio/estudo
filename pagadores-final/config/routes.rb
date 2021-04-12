@@ -11,5 +11,7 @@ Rails.application.routes.draw do
 	  end
 	end
 
+  resources :bancos, only: [:index]
+
 
 end

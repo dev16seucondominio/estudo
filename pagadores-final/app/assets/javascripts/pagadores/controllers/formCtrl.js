@@ -6,44 +6,17 @@ angular.module('pagadoresApp').lazy
     vmForm.carregandoData = false
 
     vmForm.init = function(baseFact, pessoa){
-      if(pessoa) {
-        vmForm.carregarInfos(pessoa)
-      } else {
-        vmForm.params = {}
-        vmForm.params.opened = true
-        vmForm.params.enderecos = []
-        vmForm.params.contas = []
-        vmForm.params.juridica = false
-        vmForm.params.nasc |= {}
-        vmForm.params.perfilPagamento = {}
-      }
+      vmForm.params = angular.copy(pessoa || {})
+
+      vmForm.params.enderecos = []
+      vmForm.params.contas = []
+      vmForm.params.juridica = false
+      vmForm.params.perfil_pagamentos = {}
+
       vmForm.formFactory = baseFact
     }
 
-    vmForm.carregarInfos = function(pessoa) {
-      params = angular.copy(pessoa)
-      if(params.carregado) {
-        vmForm.params = angular.copy(pessoa)
-        pessoa.opened = true
-        return
-      }
-      Pagador.show(params,
-        function(data) {
-          for (i in vmForm.formFactory.lista) {
-            if(vmForm.formFactory.lista[i].id == data.pagador.id){
-              vmForm.params = vmForm.formFactory.lista[i]
-              angular.extend(vmForm.params, data.pagador)
-              vmForm.params.carregado = true
-              pessoa.opened = true
-            }
-          }
-        }, function(response) {
-          scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
-        }
-      )
-    }
-
-    vmForm.perfilPagamento = {
+    vmForm.perfil_pagamentos = {
       listOperacoes: [
         {id: 1, key: "pix", nome: "Pix"},
         {id: 2, key: "boleto_titulo", nome: "Boleto - Título"},
@@ -78,15 +51,16 @@ angular.module('pagadoresApp').lazy
         {id: 2, key: "fundo_de_obras", nome: "3 - FUNDO DE OBRAS"},
         {id: 3, key: "fundo_trabalhista", nome: "4 - FUNDO TRABALHISTA"},
       ],
-      setPlano: function(planoDeContas) {
-        vmForm.params.perfilPagamento.planoDeContas = planoDeContas
+      setPlano: function(plano_de_contas) {
+        vmForm.params.perfil_pagamentos.plano_de_contas = plano_de_contas
       },
       setFundo: function(fundo) {
-        vmForm.params.perfilPagamento.fundo = fundo
+        console.log(fundo)
+        vmForm.params.perfil_pagamentos.fundo = fundo
       }
     }
 
-    vmForm.reajusteContratual = {
+    vmForm.reajuste_contratual = {
       reajustar: function() {
         vmForm.reajuste = !vmForm.reajuste
       },
@@ -199,11 +173,7 @@ angular.module('pagadoresApp').lazy
       vmForm.params.opened  = true
       vmForm.params.editing = false
       vmForm.params.carregado = true
-      if(pessoa.nasc) {
-        pessoa.nasc.d = pessoa.nasc.getDate()
-        pessoa.nasc.m = pessoa.nasc.getMonth() + 1
-        pessoa.nasc.y = pessoa.nasc.getFullYear()
-      }
+
       if(pessoa.email) pessoa.email = pessoa.email.toLowerCase()
 
       if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
@@ -223,7 +193,7 @@ angular.module('pagadoresApp').lazy
     vmForm.formCadastro = {
       salvar: function(pessoa) {
         if (!this.isValido()){ return }
-        vmForm.formatacao(vmForm.params)
+        // vmForm.formatacao(vmForm.params)
         Pagador.save( vmForm.params,
           function(data){
             if(!vmForm.params.id) {
@@ -244,7 +214,7 @@ angular.module('pagadoresApp').lazy
             vmForm.formFactory.close()
           }, function(response){
             console.log(response)
-            scTopMessages.openDanger("Registro não inserido!", {timeOut: 3000})
+            scTopMessages.openDanger(response.errors, {timeOut: 3000})
           }
         )
       },

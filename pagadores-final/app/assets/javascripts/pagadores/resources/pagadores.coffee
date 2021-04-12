@@ -8,12 +8,14 @@ angular.module('pagadoresApp').lazy
     $resource 'http://localhost:3000/pagadores/:id.json', { id: "@id" }, # resource principal do modulo... dela vc deriva e cria outras.... pagadores/delete, pagadores/post....
       list:
         method: 'GET'
+      show:
+        method: 'GET'
+
       save:
         method: 'POST'
         url: 'http://localhost:3000/pagadores/save.json'
         transformRequest: encapsulateData
-      show:
-        method: 'GET'
+
       destroy:
         method: 'DELETE'
 ]

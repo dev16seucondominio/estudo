@@ -1,12 +1,9 @@
 class PagadoresController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  # list = get = index, por padrao a gente usa index no controller, na resource/route blz nao sei se eh exatamente qualquer um, mas so manter nesse padrao q nao da erro sdpofpasdokfpofkapfkasdasdasdpoaksd
-  # como eu disse antes, o index eh o metodo chamado assim q a tela eh aberta/carregada... eh a primeira requisicao
-  def index # index = list
+  def index
     respond_to do |format|
-      ## dentro dos formatos disponiveis (existem outros, bem como formatos de arquivos - pra carregar um pdf, por exemplo), tu precisa setar o que o metodo vai retornar de acordo com o formato passdao... se for html, eh carregar uma template, se for json, eh carregar um registro ou fazer uma requisicao q carrega varios registros...
-      format.html { layout_erp } # qnd bate no html ele carrega a template
+      format.html { layout_erp }
       format.json{
 
         status, resp = PagadoresService.index(get_params)
@@ -50,11 +47,21 @@ class PagadoresController < ApplicationController
   end
 
   def params_pagador
-    attrs = [:id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
-      :emailalt, :iden, :telefone, :obs, :razao_social, :contato, :enderecos, :contas, :banco]
+    attrs = [:id, :processar_ao_salvar, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+      :emailalt, :iden, :telefone, :obs, :razao_social, :contato, :enderecos, :contas, :banco, :perfil_pagamentos, :reajuste_contratual, :bloquear_clientes]
     attrs << {enderecos: [:id, :pagador_id, :principal, :titulo, :cep, :cidade, :logradouro, :complemento, :bairro, :_destroy]}
+    attrs << {perfil_pagamentos: [:id, :pagador_id, :operacao, :plano_de_contas, :fundo, :_destroy]}
     attrs << {contas: [:id, :pagador_id, :banco_id, :tipo_da_conta, :agencia, :dv_agencia, :numero_conta, :dv_conta, :juridica, :responsavel, :doc, :principal, :_destroy]}
-    params.require(:pagador).permit(attrs)
+    attrs << {reajuste_contratual: [:id, :pagador_id, :reajustar, :tipo, :correcao, :valor, :valor_percentual, :frequencia, :periodo, :ultimo_reajuste, :notificar, :_destroy]}
+    attrs << {bloquear_clientes: [:id, :pagador_id, :bloquear, :periodo, :frequencia, :depois_do_vencimento, :clientes, :_destroy]}
+
+    resp = {}
+
+    resp[:pagador] = params.require(:pagador).permit(attrs)
+
+    resp[:filtro] = get_params[:filtro]
+
+    resp
   end
 
 end

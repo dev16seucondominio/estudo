@@ -9,14 +9,15 @@ angular.module('pagadoresApp').lazy
 
         init: function(pagador) {
           this.pagador = pagador
+          this.pagador.editing = true
+
           this.opened = true
           this.new_record = pagador.id ? false : true
-          pagador.editing = true
         },
 
         close: function(pagador){
           this.pagador = {}
-          this.editing = false
+
           this.opened = false
         }
 
