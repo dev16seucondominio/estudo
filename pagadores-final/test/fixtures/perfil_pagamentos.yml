@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  operacao: MyString
+  plano_de_contas: MyString
+  fundo: MyString
+  pagador: one
+
+two:
+  operacao: MyString
+  plano_de_contas: MyString
+  fundo: MyString
+  pagador: two
