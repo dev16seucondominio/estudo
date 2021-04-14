@@ -27,12 +27,12 @@
        <div class="sc-label">Banco</div>
         <span sc-dropdown-menu="" class="sc-dropdown">
           <div class="sc-input-group">
-            <input ng-model="conta.banco.nome" ng-click="menu.toggle()" class="sc-input-group sc-input-default sc-input-block">
+            <input ng-model="banco.id" ng-bind="banco.nome" ng-click="menu_banco.isOn = !menu_banco.isOn" class="sc-input-group sc-input-default sc-input-block">
             <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
           </div>
-          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_banco.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="PessoasFormCtrl.formConta.setBanco(banco, conta)" ng-repeat="banco in PessoasFormCtrl.formConta.listBancos">
+              <li ng-click="PessoasFormCtrl.formConta.setBanco(banco, conta)" ng-repeat="banco in PessoasFormCtrl.indexFactory.settings.pagadores.bancos">
                 <span>{{banco.nome}}</span>
               </li>
             </div>
@@ -47,7 +47,7 @@
         <div class="sc-input-group">
           <select class="sc-input-default sc-input-block"
             ng-model="conta.tipo_conta"
-            ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PessoasFormCtrl.formConta.tiposConta">
+            ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PessoasFormCtrl.indexFactory.settings.pagadores.tipos_conta">
             <option selected="selected" value>Selecione</option>
           </select>
         </div>

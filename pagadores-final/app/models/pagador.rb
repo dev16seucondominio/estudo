@@ -66,6 +66,12 @@ class Pagador < ApplicationRecord
     # USADO PARA RELATÓRIOS
   end
 
+  LISTA_PERIODOS = [
+    {id: 0, key: "dias", nome: "Dias", default: false},
+    {id: 1, key: "meses", nome: "Meses", selected: true},
+    {id: 2, key: "Anos", nome: "Anos", default: true}
+  ]
+
   private
 
   def validar_campos
@@ -81,6 +87,7 @@ class Pagador < ApplicationRecord
   end
 
   def garantir_email
+    return if self.email.blank?
     self.email = email.downcase
   end
 end

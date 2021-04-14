@@ -13,6 +13,7 @@ class PagadoresService
 
   def self.show(params)
     pagador = Pagador.where(id: params[:id]).first
+
     return [:not_found, "Registro não encontrado."] if pagador.blank?
 
     resp = {pagador: pagador.to_frontend_obj}
@@ -23,6 +24,12 @@ class PagadoresService
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first
+
+    # pagador[:contas].each { |i|
+    #   if pagador[:contas][i]
+    #     raise pagador
+    #   end
+    # }
 
     if pagador.blank?
       errors = "Registro já excluído."
@@ -41,6 +48,8 @@ class PagadoresService
 
   def self.save(params)
 
+    params = params[:pagador]
+
     if params[:id].present?
       pagador = Pagador.where(id: params[:id]).first
       if pagador.blank?
@@ -52,23 +61,21 @@ class PagadoresService
     end
 
     params = set_params(params)
-
     pagador.assign_attributes(params)
 
-    msg = "Registro criado com sucesso."
+    novo = true
 
     if !pagador.new_record?
-      msg = "Registro alterado com sucesso."
+      novo = false
     end
 
     unless pagador.save
       errors = pagador.errors.full_messages
       [:error, errors]
     else
-      resp = { msg: msg, pagador: pagador.to_frontend_obj}
+      resp = {novo: novo, pagador: pagador.to_frontend_obj}
       [:success, resp]
     end
-
   end
 
   # settings
@@ -88,7 +95,13 @@ class PagadoresService
   def self.load_settings(params)
     resp = {}
 
-    # resp[:bancos]  Banco.all.map(&:to_slin_obj)
+    resp[:lista_operacoes] = PerfilPagamento::LISTA_OPERACOES
+    resp[:lista_plano_de_contas] = PerfilPagamento::LISTA_PLANO_DE_CONTAS
+    resp[:lista_fundo] = PerfilPagamento::LISTA_FUNDO
+    resp[:lista_periodos] = Pagador::LISTA_PERIODOS
+    resp[:tipos_conta] = Conta::TIPOS_CONTA
+    resp[:lista_correcao] = ReajusteContratual::LISTA_CORRECAO
+    resp[:bancos] = Banco.all.map()
 
     resp
   end

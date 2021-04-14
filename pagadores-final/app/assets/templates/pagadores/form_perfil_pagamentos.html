@@ -10,7 +10,7 @@
         <div class="sc-input-group">
           <select class="sc-input-default sc-input-block"
             ng-model="PessoasFormCtrl.params.perfil_pagamentos.operacao"
-            ng-options="operacao.key as operacao.nome for operacao in PessoasFormCtrl.perfil_pagamentos.listOperacoes">
+            ng-options="operacao.key as operacao.nome for operacao in PessoasFormCtrl.indexFactory.settings.pagadores.lista_operacoes">
             <option selected="selected" value>Selecione</option>
           </select>
         </div>
@@ -21,12 +21,12 @@
        <div class="sc-label">Plano de contas</div>
         <span sc-dropdown-menu="" class="sc-dropdown">
           <div class="sc-input-group">
-            <input ng-model="PessoasFormCtrl.params.perfil_pagamentos.plano_de_contas" ng-click="menu.isOn = !menu.isOn" class="sc-input-group sc-input-default sc-input-block">
+            <input ng-model="PessoasFormCtrl.params.perfil_pagamentos.plano_de_contas" ng-click="menu_plano.isOn = !menu_plano.isOn" class="sc-input-group sc-input-default sc-input-block">
             <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
           </div>
-          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_plano.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="PessoasFormCtrl.perfil_pagamentos.setPlano(plano_de_contas.nome)" ng-repeat="plano_de_contas in PessoasFormCtrl.perfil_pagamentos.listPlano">
+              <li ng-click="PessoasFormCtrl.params.perfil_pagamentos.plano_de_contas = plano_de_contas.nome" ng-repeat="plano_de_contas in PessoasFormCtrl.indexFactory.settings.pagadores.lista_plano_de_contas">
                 <span>{{plano_de_contas.nome}}</span>
               </li>
             </div>
@@ -40,12 +40,12 @@
         <div class="sc-label">Fundo</div>
         <span sc-dropdown-menu="" class="sc-dropdown">
           <div class="sc-input-group">
-            <input ng-model="PessoasFormCtrl.params.perfil_pagamentos.fundo" ng-click="menu.isOn = !menu.isOn" class="sc-input-group sc-input-default sc-input-block">
+            <input ng-model="PessoasFormCtrl.params.perfil_pagamentos.fundo" ng-click="menu_fundo.isOn = !menu_fundo.isOn" class="sc-input-group sc-input-default sc-input-block">
             <i class="sc-icon sc-icon-seta-5-baixo sc-btn sc-btn-blue"></i>
           </div>
-          <ul class="sc-dropdown-menu ng-animation-slider typeahead-dropdown-menu" ng-show="menu.isOn">
+          <ul class="sc-dropdown-menu ng-animation-slider typeahead-dropdown-menu" ng-show="menu_fundo.isOn">
             <div class="sc-scrollbar" style="max-height: 15em;overflow: auto;"></div>
-            <li ng-click="PessoasFormCtrl.perfil_pagamentos.setFundo(fundo.nome)" ng-repeat="fundo in PessoasFormCtrl.perfil_pagamentos.listFundo">
+            <li ng-click="PessoasFormCtrl.params.perfil_pagamentos.fundo = fundo.nome" ng-repeat="fundo in PessoasFormCtrl.indexFactory.settings.pagadores.lista_fundo">
               <span>{{fundo.nome}}</span>
             </li>
           </ul>

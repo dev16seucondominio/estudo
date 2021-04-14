@@ -22,7 +22,7 @@
           <div class="sc-input-group">
             <select class="sc-input-default"
               ng-model="PessoasFormCtrl.params.reajuste_contratual.correcao"
-              ng-options="correcao.key as correcao.nome for correcao in PessoasFormCtrl.reajuste_contratual.listCorrecao">
+              ng-options="correcao.key as correcao.nome for correcao in PessoasFormCtrl.indexFactory.settings.pagadores.lista_correcao">
               <option selected="selected" value>Selecione</option>
             </select>
           </div>
@@ -34,7 +34,7 @@
           <input class="sc-input-default" ng-model="PessoasFormCtrl.params.reajuste_contratual.frequencia" type="number" max="9999" min="1" style="width: 5em; min-width: 5em;">
           <select class="sc-input-default"
             ng-model="PessoasFormCtrl.params.reajuste_contratual.periodo"
-            ng-options="periodos.key as periodos.nome for periodos in PessoasFormCtrl.reajuste_contratual.listPeriodos">
+            ng-options="periodos.key as periodos.nome for periodos in PessoasFormCtrl.indexFactory.settings.pagadores.lista_periodos">
           </select>
         </div>
       </div>
