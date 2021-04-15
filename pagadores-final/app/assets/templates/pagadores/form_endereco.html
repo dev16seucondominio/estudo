@@ -6,79 +6,91 @@
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
-  <div class="flex-row-with-padding pessoa-endereco"
-    ng-repeat="end in PessoasFormCtrl.params.enderecos">
-    <div class="fcol-xs-7em">
-      <label>
-        <div class="sc-label">Principal?</div>
-        <div class="sc-p-v-sm">
-          <span class="sc-toggle">
-            <input type="checkbox" ng-change="PessoasFormCtrl.formEnd.setPrincipal(PessoasFormCtrl.params.enderecos, end)" ng-model="end.principal">
-            <span label-false="não" label-true="sim"></span>
-          </span>
-        </div>
-      </label>
-    </div>
-    <div class="fcol-xs-100 fcol-sm-30 fcol-md-13em">
-      <label>
-        <div class="sc-label">Título do Endereço</div>
-        <input class="sc-input-default sc-input-block" type="text" placeholder="Casa, trabalho, etc..." ng-model="end.titulo">
-      </label>
-    </div>
-    <div class="fcol-xs-100 fcol-sm-50 fcol-md-12em">
-      <label>
-        <div class="sc-label">CEP</div>
-        <div class="sc-input-group">
-          <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cep">
-          <div class="sc-btn sc-btn-blue">
-            <i class="sc-icon sc-icon-lupa-2"></i>
+  <div ng-repeat="end in PessoasFormCtrl.params.enderecos">
+    <div class="flex-row-with-padding pessoa-endereco" ng-class="{'sc-opac-50': end._destroy}">
+      <div class="fcol-xs-7em">
+        <label>
+          <div class="sc-label">Principal?</div>
+          <div class="sc-p-v-sm">
+            <span class="sc-toggle">
+              <input type="checkbox" ng-change="PessoasFormCtrl.formEnd.setPrincipal(PessoasFormCtrl.params.enderecos, end)" ng-model="end.principal">
+              <span label-false="não" label-true="sim"></span>
+            </span>
           </div>
-        </div>
-      </label>
-    </div>
-    <div class="fcol-xs-100 fcol-sm-50 fcol-md-20em">
-      <label>
-        <div class="sc-label">Cidade</div>
-        <div class="sc-input-group">
-          <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cidade">
-          <div class="sc-btn sc-btn-blue">
-            <i class="sc-icon sc-icon-lupa-2"></i>
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-30 fcol-md-13em">
+        <label>
+          <div class="sc-label">Título do Endereço</div>
+          <input class="sc-input-default sc-input-block" type="text" placeholder="Casa, trabalho, etc..." ng-model="end.titulo">
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-12em">
+        <label>
+          <div class="sc-label">CEP</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cep">
+            <div class="sc-btn sc-btn-blue">
+              <i class="sc-icon sc-icon-lupa-2"></i>
+            </div>
           </div>
-        </div>
-      </label>
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-20em">
+        <label>
+          <div class="sc-label">Cidade</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" ng-model="end.cidade">
+            <div class="sc-btn sc-btn-blue">
+              <i class="sc-icon sc-icon-lupa-2"></i>
+            </div>
+          </div>
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-50">
+        <label>
+          <div class="sc-label">Logradouro</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Rua João Alves" ng-model="end.logradouro">
+          </div>
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
+        <label>
+          <div class="sc-label">Número/Complemento</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="N° 31, Bloco 2, Ap. 103" ng-model="end.complemento">
+          </div>
+        </label>
+      </div>
+      <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
+        <label>
+          <div class="sc-label">Bairro</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Setor Central" ng-model="end.bairro">
+          </div>
+        </label>
+      </div>
+      <div class="fcol-xs-3em align-self-center" ng-if="!end._destroy"
+        ng-click="end._destroy = true">
+        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
+      </div>
+
+      <div class="fcol-xs-3 align-self-center" ng-if="end._destroy"
+        ng-click="end._destroy = false">
+        <i class="sc-icon sc-icon-seta-9-esquerda sc-badge-hover-blue"></i>
+      </div>
     </div>
-    <div class="fcol-xs-100 fcol-sm-50">
-      <label>
-        <div class="sc-label">Logradouro</div>
-        <div class="sc-input-group">
-          <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Rua João Alves" ng-model="end.logradouro">
-        </div>
-      </label>
+    
+    <div class="angular-slider sc-text-red sc-p-l-lg" ng-if="end._destroy">
+      <span><i class="sc-icon sc-icon-exclamacao-2 sc-m-r-lg"></i>O endereço será excluído quando o cadastro for salvo!</span>
     </div>
-    <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
-      <label>
-        <div class="sc-label">Número/Complemento</div>
-        <div class="sc-input-group">
-          <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="N° 31, Bloco 2, Ap. 103" ng-model="end.complemento">
-        </div>
-      </label>
-    </div>
-    <div class="fcol-xs-100 fcol-sm-40 fcol-md-20em">
-      <label>
-        <div class="sc-label">Bairro</div>
-        <div class="sc-input-group">
-          <input class="sc-input-default sc-input-block" type="text" style="max-width: 100%" placeholder="Setor Central" ng-model="end.bairro">
-        </div>
-      </label>
-    </div>
-    <div class="fcol-xs-3em align-self-center"
-      ng-click="PessoasFormCtrl.formEnd.rmv(end)">
-      <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red"></i>
-    </div>
+
     <div class="sc-border-b-dashed fcol-xs-100 sc-p-v-lg"
       ng-if="PessoasFormCtrl.params.enderecos.length > 1 && !$last">
     </div>
   </div>
+
   <div class="sc-p-b-o">
     <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
       ng-hide="PessoasFormCtrl.params.enderecos.length">Nenhum endereço cadastrado!

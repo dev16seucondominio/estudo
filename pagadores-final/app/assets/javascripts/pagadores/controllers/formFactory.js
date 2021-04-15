@@ -1,23 +1,23 @@
 angular.module('pagadoresApp').lazy
 .factory("formFactory", [
   function() {
-    base_obj = function(pagador) {
+    base_obj = function(pessoa) {
       return obj = {
         opened: false,
         new_record: false,
-        lista: [ {pagador: {}} ],
+        lista: [ {pessoa: {}} ],
 
-        init: function(pagador) {
-          this.pagador = pagador
-          this.pagador.editing = true
+        init: function(pessoa) {
+          this.pessoa = pessoa
+          this.pessoa.editing = true
 
           this.opened = true
-          this.new_record = pagador.id ? false : true
+          this.new_record = pessoa.id ? false : true
         },
 
-        close: function(pagador){
-          this.pagador.editing = false
-          this.pagador = {}
+        close: function(pessoa){
+          this.pessoa.editing = false
+          this.pessoa = {}
 
           this.opened = false
         }

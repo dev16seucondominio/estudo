@@ -1,17 +1,17 @@
 angular.module("pagadoresApp").lazy
 .controller("PessoasCtrl", [
-  "formFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, scAlert, scTopMessages, Templates, Pagador) {
+  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Pagador) {
     vmIdx = this
 
     vmIdx.templates = Templates
 
     vmIdx.formFactory = undefined
 
-    vmIdx.init = function(pagador){
+    vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory()
-      vmIdx.filtro.listar = angular.copy(vmIdx.settings.filtro.default)
-      vmIdx.listCtrl.init(pagador)
-      vmIdx.formFactory.handleList = handleList
+      vmIdx.indexFactory = new indexFactory()
+      vmIdx.listCtrl.init(pessoa)
+      vmIdx.indexFactory.handleList = handleList
     }
 
     vmIdx.listCtrl = {
@@ -35,21 +35,16 @@ angular.module("pagadoresApp").lazy
 
         Pagador.list(params,
           function(data) {
+            console.log(data)
             if (vmIdx.listCtrl.with_settings) {
               vmIdx.listCtrl.with_settings = false
               loadSettings(data)
             }
-
-            vmIdx.listCtrl.list = angular.extend(data.list)
+            vmIdx.listCtrl.list = angular.copy(data.list)
             vmIdx.formFactory.lista = vmIdx.listCtrl.list
-          }, function(response) {
-              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
-      }
-    }
-
-    vmIdx.pessoas = {
+      },
       excluirRegistro: function(pessoa) {
         scAlert.open({
           title: 'Você tem certeza que deseja excluir essa pessoa?',
@@ -62,7 +57,7 @@ angular.module("pagadoresApp").lazy
               label: 'Sim',
               color: 'yellow',
               action: function() {
-                vmIdx.pessoas.execExcluirRegistro(pessoa)
+                vmIdx.listCtrl.execExcluirRegistro(pessoa)
               }
             }
           ]
@@ -77,28 +72,6 @@ angular.module("pagadoresApp").lazy
             scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
-      }
-    }
-
-    vmIdx.settings = {
-      filtro: {
-        avancado: false,
-        default: {},
-        listOpcoes: [
-          {label: 'Com endereço', active: false, key: 'com_endereco'},
-          {label: 'Sem endereço', active: false, key: 'sem_endereco'},
-          {label: 'Endereço completo', active: false, key: 'endereco_completo'},
-          {label: 'Endereço Incompleto', active: false, key: 'endereco_incompleto'},
-          {label: 'Sem CPF/CNPJ', active: false, key: 'sem_documento'},
-          {label: 'Com CPF/CNPJ', active: false, key: 'com_documento'},
-          {label: 'Sem bloqueio inadimplente', active: false, key: 'sem_bloqueio'},
-          {label: 'Com bloqueio inadimplente', active: false, key: 'com_bloqueio'},
-          {label: 'Sem emails', active: false, key: 'sem_email'},
-          {label: 'Com emails', active: false, key: 'com_email'}
-        ]
-      },
-      loadSettings: function(){
-        console.log('Carregando configuracoes...')
       }
     }
 
@@ -130,16 +103,12 @@ angular.module("pagadoresApp").lazy
         },
         comEndereco: function() {
           vmIdx.filtro.listar = vmIdx.pessoas.listaPessoas.filter(pessoa => (pessoa.enderecos.length))
+          // if (pessoa.enderecos.length > 0) {
+          //   console.log('Pessoa com endereço: ',pessoa)
+          //   return pessoa
+          // } //filter:PessoasCtrl.filtro.opcoes.comEndereco
         }
       }
-    }
-
-    // Settings
-
-    loadSettings = function(data){
-      vmIdx.settings = data.settings
-      // vmIdx.locale = data.locales.pagadores
-      // vmIdx.localeContas = data.locales.contas
     }
 
     handleList = function(list) {
@@ -148,18 +117,26 @@ angular.module("pagadoresApp").lazy
       for (var i = 0; i < list.length; i++) {
         item = list[i]
 
-        itemPagador = vmIdx.formFactory.lista.getById(item.id)
-        if (!itemPagador){ continue }
+        itemPessoa = vmIdx.listCtrl.list.getById(item.id)
+        if (!itemPessoa){ continue }
 
         item.carregado = true
 
-        if(item.nasc){item.nasc = new Date(item.nasc)}
-        if(item.reajuste_contratual){
+        if (item.nasc) { item.nasc = new Date(item.nasc) }
+        if (item.reajuste_contratual) {
           item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
         }
-
-        angular.extend(itemPagador, item)
+        angular.extend(itemPessoa, item)
       }
+    }
+
+    // Settings
+
+    loadSettings = function(data){
+      vmIdx.settings = data.settings
+      vmIdx.indexFactory.settings = vmIdx.settings
+      // vmIdx.locale = data.locales.pagadores
+      // vmIdx.localeContas = data.locales.contas
     }
 
     return vmIdx

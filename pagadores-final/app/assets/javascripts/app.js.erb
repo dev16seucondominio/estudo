@@ -61,12 +61,10 @@ app = angular.module('pagadoresApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
         "<%= asset_path('pagadores/controllers/showCtrl.js') %>",
         "<%= asset_path('pagadores/controllers/formCtrl.js') %>",
         "<%= asset_path('pagadores/controllers/formFactory.js') %>",
+        "<%= asset_path('pagadores/controllers/indexFactory.js') %>",
       ],
     })
   }
-
-  // mano, ali tá falando que não tá achando assets/angular, mas a pasta deveria ser assets/javasscasda/angular
-  // ss pero esse arquivo aí é big fodase, at porque eu o exclui ontem... nem ta na pasta mais, ta carregando da puta que pariu
 
   $routeProvider
   // routeProvider, batendo e listando as rotas (urls) do projeto.

@@ -15,7 +15,7 @@
         <input class="sc-input-default" ng-model="PessoasFormCtrl.params.bloquear_clientes.frequencia" max="99" min="0" placeholder="Ex. 1" style="width: 5em;" type="number">
         <select class="sc-input-default"
           ng-model="PessoasFormCtrl.params.bloquear_clientes.periodo"
-          ng-options="periodos.key as periodos.nome for periodos in PessoasFormCtrl.clienteInadimplente.listPeriodos">
+          ng-options="periodos.key as periodos.nome for periodos in PessoasFormCtrl.indexFactory.settings.pagadores.lista_periodos">
           <option value label="Selecione"></option>
         </select>
       </div>

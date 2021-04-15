@@ -51,7 +51,7 @@ class PagadoresController < ApplicationController
       :emailalt, :iden, :telefone, :obs, :razao_social, :contato, :enderecos, :contas, :banco, :perfil_pagamentos, :reajuste_contratual, :bloquear_clientes]
     attrs << {enderecos: [:id, :pagador_id, :principal, :titulo, :cep, :cidade, :logradouro, :complemento, :bairro, :_destroy]}
     attrs << {perfil_pagamentos: [:id, :pagador_id, :operacao, :plano_de_contas, :fundo, :_destroy]}
-    attrs << {contas: [:id, :pagador_id, :banco_id, :tipo_da_conta, :agencia, :dv_agencia, :numero_conta, :dv_conta, :juridica, :responsavel, :doc, :principal, :_destroy]}
+    attrs << {contas: [:id, :pagador_id, :banco_id, :tipo_conta, :agencia, :dv_agencia, :numero_conta, :dv_conta, :juridica, :responsavel, :doc, :principal, :_destroy]}
     attrs << {reajuste_contratual: [:id, :pagador_id, :reajustar, :tipo, :correcao, :valor, :valor_percentual, :frequencia, :periodo, :ultimo_reajuste, :notificar, :_destroy]}
     attrs << {bloquear_clientes: [:id, :pagador_id, :bloquear, :periodo, :frequencia, :depois_do_vencimento, :clientes, :_destroy]}
 

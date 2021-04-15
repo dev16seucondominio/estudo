@@ -66,6 +66,12 @@ class Pagador < ApplicationRecord
     # USADO PARA RELATÓRIOS
   end
 
+  LISTA_PERIODOS = [
+    {id: 0, key: "dias", nome: "Dias", default: false},
+    {id: 1, key: "meses", nome: "Meses", selected: true},
+    {id: 2, key: "Anos", nome: "Anos", default: true}
+  ]
+
   private
 
   def validar_campos
