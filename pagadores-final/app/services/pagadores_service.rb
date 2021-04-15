@@ -41,8 +41,8 @@ class PagadoresService
 
   def self.save(params)
 
-    if params[:id].present?
-      pagador = Pagador.where(id: params[:id]).first
+    if params[:pagador][:id].present?
+      pagador = Pagador.where(id: params[:pagador][:id]).first
       if pagador.blank?
         errors = "Registro já excluído."
         return [:not_found, errors]
@@ -51,9 +51,9 @@ class PagadoresService
       pagador = Pagador.new
     end
 
-    params = set_params(params)
+    params[:pagador] = set_params(params[:pagador])
 
-    pagador.assign_attributes(params)
+    pagador.assign_attributes(params[:pagador])
 
     msg = "Registro criado com sucesso."
 
@@ -88,6 +88,9 @@ class PagadoresService
   def self.load_settings(params)
     resp = {}
 
+    # resp[:correcao_monetaria] { 
+    #   ReajusteContratual.INDICES_MONETARIOS
+    # }
     # resp[:bancos]  Banco.all.map(&:to_slin_obj)
 
     resp

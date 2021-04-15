@@ -11,6 +11,7 @@ angular.module("pagadoresApp").lazy
       vmIdx.formFactory = new formFactory()
       vmIdx.filtro.listar = angular.copy(vmIdx.settings.filtro.default)
       vmIdx.listCtrl.init(pagador)
+      vmIdx.formFactory.handleList = handleList
     }
 
     vmIdx.listCtrl = {
@@ -41,6 +42,8 @@ angular.module("pagadoresApp").lazy
 
             vmIdx.listCtrl.list = angular.extend(data.list)
             vmIdx.formFactory.lista = vmIdx.listCtrl.list
+          }, function(response) {
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
       }
@@ -103,18 +106,6 @@ angular.module("pagadoresApp").lazy
       listar: {},
       params: {},
       exec: function(tipo){
-        // this.listar = {}
-        // if(tipo == 'simples') {
-        //   this.params.q ? this.listar = this.params.q : this.listar = angular.copy(this.params)
-        //   this.preenchido = true
-        // }
-        // if(tipo == 'avancado') {
-        //   delete(this.params.q)
-        //   this.listar = angular.copy(this.params)
-        //   vmIdx.settings.filtro.avancado = false
-        //   this.preenchido = true
-        // }
-
         vmIdx.listCtrl.loadList()
       },
       limpar: function() {
@@ -139,10 +130,6 @@ angular.module("pagadoresApp").lazy
         },
         comEndereco: function() {
           vmIdx.filtro.listar = vmIdx.pessoas.listaPessoas.filter(pessoa => (pessoa.enderecos.length))
-          // if (pessoa.enderecos.length > 0) {
-          //   console.log('Pessoa com endereço: ',pessoa)
-          //   return pessoa
-          // } //filter:PessoasCtrl.filtro.opcoes.comEndereco
         }
       }
     }
@@ -153,6 +140,26 @@ angular.module("pagadoresApp").lazy
       vmIdx.settings = data.settings
       // vmIdx.locale = data.locales.pagadores
       // vmIdx.localeContas = data.locales.contas
+    }
+
+    handleList = function(list) {
+      list = [list].flattenCompact()
+
+      for (var i = 0; i < list.length; i++) {
+        item = list[i]
+
+        itemPagador = vmIdx.formFactory.lista.getById(item.id)
+        if (!itemPagador){ continue }
+
+        item.carregado = true
+
+        if(item.nasc){item.nasc = new Date(item.nasc)}
+        if(item.reajuste_contratual){
+          item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
+        }
+
+        angular.extend(itemPagador, item)
+      }
     }
 
     return vmIdx

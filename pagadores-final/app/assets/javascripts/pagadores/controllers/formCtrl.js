@@ -55,7 +55,6 @@ angular.module('pagadoresApp').lazy
         vmForm.params.perfil_pagamentos.plano_de_contas = plano_de_contas
       },
       setFundo: function(fundo) {
-        console.log(fundo)
         vmForm.params.perfil_pagamentos.fundo = fundo
       }
     }
@@ -170,24 +169,7 @@ angular.module('pagadoresApp').lazy
     }
 
     vmForm.formatacao = function(pessoa){
-      vmForm.params.opened  = true
-      vmForm.params.editing = false
-      vmForm.params.carregado = true
-
-      if(pessoa.email) pessoa.email = pessoa.email.toLowerCase()
-
       if(pessoa.enderecos.length) vmForm.formEnd.setEnderecoPrincipal(pessoa, pessoa.enderecos)
-
-      if(pessoa.juridica) {
-        pessoa.rg = ''
-        pessoa.nasc = ''
-        pessoa.prof = ''
-        pessoa.sexo = ''
-        pessoa.deficiente = ''
-      } else {
-          pessoa.razao_social = ''
-          pessoa.contato = ''
-      }
     }
 
     vmForm.formCadastro = {
@@ -197,18 +179,21 @@ angular.module('pagadoresApp').lazy
         Pagador.save( vmForm.params,
           function(data){
             if(!vmForm.params.id) {
-              console.log('Adicionando Novo', data)
-              angular.extend(vmForm.params, data.pagador)
+              console.log("aaaaaaaa")
               vmForm.params.novo = true
               vmForm.formFactory.lista.unshift(vmForm.params)
-            } else {
-              console.log('Editando')
-              for (i in vmForm.formFactory.lista) {
-                if(vmForm.formFactory.lista[i].id == vmForm.params.id){
-                  vmForm.itemPagador = vmForm.formFactory.lista[i]
-                  angular.extend(vmForm.itemPagador, vmForm.params)
-                }
+            }
+            for (var i = 0; i < vmForm.formFactory.lista.length; i++) {
+              item = vmForm.formFactory.lista[i]
+              itemPagador = vmForm.formFactory.lista.getById(data.pagador.id)
+              item.carregado = true
+
+              if(item.nasc){item.nasc = new Date(item.nasc)}
+              if(item.reajuste_contratual){
+                item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
               }
+
+              angular.extend(itemPagador, vmForm.params)
             }
             scTopMessages.openSuccess(data.msg, {timeOut: 3000})
             vmForm.formFactory.close()

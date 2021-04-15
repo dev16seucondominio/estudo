@@ -81,6 +81,7 @@ class Pagador < ApplicationRecord
   end
 
   def garantir_email
+    return if self.email.blank?
     self.email = email.downcase
   end
 end

@@ -8,11 +8,11 @@ angular.module('pagadoresApp').lazy
 
     vmShow.init = function(pessoa, baseFact){
       vmShow.formFactory = baseFact
-
       // TODO
     }
 
     vmShow.accToggle = function(pagador, callback){
+      if (pagador.editing) { pagador.editing = false }
       pagador.opened = !pagador.opened
 
       vmShow.carregarPessoa(pagador, callback)
@@ -35,7 +35,7 @@ angular.module('pagadoresApp').lazy
         function(data) {
           pagador.carregando = false
 
-          handleList(data.pagador)
+          vmShow.formFactory.handleList(data.pagador)
 
           if (callback) { callback() }
         }, function(response) {
@@ -45,23 +45,6 @@ angular.module('pagadoresApp').lazy
           scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
         }
       )
-    }
-
-    handleList = function(list) {
-      list = [list].flattenCompact()
-
-      for (var i = 0; i < list.length; i++) {
-        item = list[i]
-
-        itemPagador = vmShow.formFactory.lista.getById(item.id)
-        if (!itemPagador){ continue }
-
-        item.carregado = true
-
-        item.nasc = new Date(item.nasc)
-
-        angular.extend(itemPagador, item)
-      }
     }
 
     vmShow.formCtrl = {

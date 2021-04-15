@@ -97,6 +97,7 @@
             ng-if="pessoa.editing"
             ng-init="PessoasCtrl.formFactory.init(pessoa)">
           </div>
+
           <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-show="!pessoa.editing"></div>
           <div class="clear"></div>
         </div>

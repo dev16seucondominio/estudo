@@ -11,7 +11,7 @@
       <input class="sc-input-default" type="text"
         ng-model="PessoasCtrl.filtro.params.q"
         placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone"
-        ng-disabled="PessoasCtrl.settings.filtro.avancado">
+        ng-disabled="PessoasCtrl.settings.filtro.avancado"/>
 
       <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.preenchido"
         ng-click="PessoasCtrl.filtro.limpar()" type="button">
@@ -55,7 +55,7 @@
 
 <div id="top-bar-filter" class="flex-row sc-p-h-lg" style="z-index: 10;">
   <div class="sc-bg-gray-lighter ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4 sc-p-lg"
-    ng-if="PessoasCtrl.settings.filtro.avancado" style="width: 100%">
+    ng-show="PessoasCtrl.settings.filtro.avancado" style="width: 100%">
     <form ng-submit="PessoasCtrl.filtro.exec('avancado')">
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Nome</label>

@@ -9,5 +9,4 @@ class Banco < ApplicationRecord
     attrs[:codigo] = codigo
     attrs
   end
-
 end

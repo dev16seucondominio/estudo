@@ -47,7 +47,7 @@ class PagadoresController < ApplicationController
   end
 
   def params_pagador
-    attrs = [:id, :processar_ao_salvar, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
+    attrs = [:pagador, :id, :tipo, :juridica, :sexo, :deficiente, :nome, :doc, :rg, :nasc, :prof, :email,
       :emailalt, :iden, :telefone, :obs, :razao_social, :contato, :enderecos, :contas, :banco, :perfil_pagamentos, :reajuste_contratual, :bloquear_clientes]
     attrs << {enderecos: [:id, :pagador_id, :principal, :titulo, :cep, :cidade, :logradouro, :complemento, :bairro, :_destroy]}
     attrs << {perfil_pagamentos: [:id, :pagador_id, :operacao, :plano_de_contas, :fundo, :_destroy]}
@@ -59,7 +59,7 @@ class PagadoresController < ApplicationController
 
     resp[:pagador] = params.require(:pagador).permit(attrs)
 
-    resp[:filtro] = get_params[:filtro]
+    # resp[:filtro] = get_params[:filtro]
 
     resp
   end
