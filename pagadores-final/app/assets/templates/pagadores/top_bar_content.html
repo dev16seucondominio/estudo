@@ -1,6 +1,6 @@
 <div class="flex-row sc-p-md">
   <div class="sc-p-r-xl left">
-    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PessoasCtrl.formFactory.init(pessoa = {})">
+    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PessoasCtrl.formFactory.init(pessoa = {contas:[], enderecos:[]})">
       <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
       <div class="sc-btn-text">Cadastrar Pessoa</div>
     </button>
@@ -13,7 +13,7 @@
         placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone"
         ng-disabled="PessoasCtrl.settings.filtro.avancado"/>
 
-      <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.preenchido"
+      <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.params.q"
         ng-click="PessoasCtrl.filtro.limpar()" type="button">
         <i class="sc-icon-fechar-1"></i>
       </button>
@@ -97,15 +97,15 @@
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <div class="sc-label">Opções</div>
         <div class="sc-dropdown" sc-dropdown-menu="">
-          <button type="button" class="sc-btn sc-btn-blue" ng-click="menu.toggle()" style="width: 100%">
+          <button type="button" class="sc-btn sc-btn-blue" ng-click="menu_filtro.isOn = !menu_filtro.isOn" style="width: 100%">
             Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
           </button>
-          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_filtro.isOn">
             <li class="sc-dropdown-input">
               <input placeholder="Busque uma opção" type="text">
             </li>
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-repeat="opcao in PessoasCtrl.settings.filtro.listOpcoes" ng-click="PessoasCtrl.filtro.opcoes.set(opcao)">
+              <li ng-repeat="opcao in PessoasCtrl.settings.pagadores.lista_opcoes" ng-click="PessoasCtrl.filtro.setOpcoes(opcao)">
                 <div>
                   <i ng-class="opcao.active ? 'sc-icon-visto-3' : 'sc-icon-quadrado-1'"></i>
                   <span>{{opcao.label}}</span>
@@ -115,8 +115,6 @@
           </ul>
         </div>
       </div>
-
-
 
       <div class="clear"></div>
 

@@ -10,8 +10,9 @@ angular.module("pagadoresApp").lazy
     vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory()
       vmIdx.indexFactory = new indexFactory()
-      vmIdx.listCtrl.init(pessoa)
+      vmIdx.listCtrl.init()
       vmIdx.indexFactory.handleList = handleList
+      vmIdx.indexFactory.getBancoNome = getBancoNome
     }
 
     vmIdx.listCtrl = {
@@ -35,7 +36,6 @@ angular.module("pagadoresApp").lazy
 
         Pagador.list(params,
           function(data) {
-            console.log(data)
             if (vmIdx.listCtrl.with_settings) {
               vmIdx.listCtrl.with_settings = false
               loadSettings(data)
@@ -45,7 +45,7 @@ angular.module("pagadoresApp").lazy
           }
         )
       },
-      excluirRegistro: function(pessoa) {
+      alertExcluirRegistro: function(pessoa) {
         scAlert.open({
           title: 'Você tem certeza que deseja excluir essa pessoa?',
           messages: 'Todos os dados serão perdidos!',
@@ -83,7 +83,7 @@ angular.module("pagadoresApp").lazy
       },
       limpar: function() {
         this.listar = []
-        this.params = {}
+        this.params = {opcoes}
         this.preenchido = false
       },
       togglePf: function() {
@@ -95,19 +95,11 @@ angular.module("pagadoresApp").lazy
       buscarTipo: function(tipo) {
         this.params.tipo = tipo
       },
-      opcoes: {
-        set: function(opcao) {
-          console.log(opcao)
-          opcao.active = !opcao.active
-          if(opcao.key == 'com_endereco') this.comEndereco()
-        },
-        comEndereco: function() {
-          vmIdx.filtro.listar = vmIdx.pessoas.listaPessoas.filter(pessoa => (pessoa.enderecos.length))
-          // if (pessoa.enderecos.length > 0) {
-          //   console.log('Pessoa com endereço: ',pessoa)
-          //   return pessoa
-          // } //filter:PessoasCtrl.filtro.opcoes.comEndereco
-        }
+      setOpcoes: function(opcao) {
+        console.log(opcao)
+        opcao.active = !opcao.active
+        this.params.opcoes.push(opcao.id)
+
       }
     }
 
@@ -126,15 +118,30 @@ angular.module("pagadoresApp").lazy
         if (item.reajuste_contratual) {
           item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
         }
+        // Setar o endereço principal para o show
+        item.endereco_principal = item.enderecos.find(end => (end.principal))
+        // Pegar o nome do banco da lista de configurações e coloca-lo no show
+        getBancoNome(item)
+
         angular.extend(itemPessoa, item)
       }
     }
 
-    // Settings
+    getBancoNome = function(pessoa) {
+      for (var j = 0; j < pessoa.contas.length; j++) {
+        for (var i = 0; i < vmIdx.settings.pagadores.bancos.length; i++) {
+          itemBanco = vmIdx.settings.pagadores.bancos.getById(pessoa.contas[j].banco_id)
+          if (!itemBanco){ continue }
+          pessoa.contas[j].banco_nome = itemBanco.nome
+        }
+      }
+    }
 
+    // Settings
     loadSettings = function(data){
       vmIdx.settings = data.settings
       vmIdx.indexFactory.settings = vmIdx.settings
+      vmIdx.filtro.params = vmIdx.settings.pagadores.filtro
       // vmIdx.locale = data.locales.pagadores
       // vmIdx.localeContas = data.locales.contas
     }

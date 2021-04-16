@@ -15,13 +15,87 @@ class Pagador < ApplicationRecord
   has_one :bloquear_clientes, class_name: "BloquearCliente", foreign_key: :pagador_id, dependent: :destroy, inverse_of: :pagador
   accepts_nested_attributes_for :bloquear_clientes, allow_destroy: true
 
+    # if "#{q}".is_email?
+    #   return scoped.where(email: email)
+    # end
+
+    # if "#{q}".any_number?
+    #   sql  << "(nasc = ?)"
+    #   args << "#{q}"
+    # end
+
   scope :buscar, lambda { |params|
     filtro = params[:filtro] || {}
+    scoped = all
+
+    puts "FILTRO -----------#{filtro}"
+    scoped = busca_simples(filtro)
+    scoped = busca_avancada(filtro)
+
+    scoped.distinct
+  }
+
+  scope :busca_simples, lambda { |filtro|
+    scoped = all
+
+    q = filtro[:q]
+    return scoped if q.blank?
+
+    sql  = []
+    args = []
+
+    sql  << "(email like ? OR emailalt like ?)"
+    args += ["%#{q}%", "%#{q}%"]
+
+    sql  << "(nome like ?)"
+    args << "%#{q}%"
+
+    sql  << "(razao_social like ?)"
+    args << "%#{q}%"
+
+    sql  << "(doc like ?)"
+    args << "%#{q}%"
+
+    sql  << "(telefone like ?)"
+    args << "%#{q}%"
+
+    scoped = scoped.where(sql.join(' OR '), *args)
+
+    scoped
+  }
+
+  scope :busca_avancada, lambda { |filtro|
+    scoped = all
+    return scoped if filtro.blank?
+
+    keys = %i(nome doc telefone email)
+    keys.each{ |key|
+      val = filtro[key].presence
+      scoped = scoped.where("#{key} like ?", "%#{val}%") if val
+    }
+
+    scoped
+  }
+
+  scope :com_opcoes, lambda { |*list|
+    q_help = Q_HELP[:opcoes]
 
     scoped = all
 
-    nome = filtro[:q]
-    scoped = scoped.where('nome like ?', "%#{nome}%") if nome
+    list = list.flatten.compact
+    list.each{ |item|
+      key = item.to_sym
+
+      case key
+      when :sem_endereco
+        scoped = scoped.left_outer_joins(:enderecos)
+      when :com_endereco
+        scoped = scoped.joins(:enderecos)
+      end
+
+      sql = q_help[key.to_sym]
+      scoped = scoped.where(sql)
+    }
 
     scoped
   }
@@ -72,11 +146,48 @@ class Pagador < ApplicationRecord
     {id: 2, key: "Anos", nome: "Anos", default: true}
   ]
 
+  LISTA_OPCOES = [
+    { key: :com_endereco,        label: 'Com endereço' },
+    { key: :sem_endereco,        label: 'Sem endereço' },
+    { key: :endereco_completo,   label: 'Endereço completo' },
+    { key: :endereco_incompleto, label: 'Endereço Incompleto' },
+    { key: :sem_documento,       label: 'Sem CPF/CNPJ' },
+    { key: :com_documento,       label: 'Com CPF/CNPJ' },
+    { key: :sem_bloqueio,        label: 'Sem bloqueio inadimplente' },
+    { key: :com_bloqueio,        label: 'Com bloqueio inadimplente' },
+    { key: :sem_email,           label: 'Sem emails' },
+    { key: :com_email,           label: 'Com emails' },
+    { key: :sem_contas,          label: 'Sem contas' },
+    { key: :com_contas,          label: 'Com contas' }
+  ]
+
+  Q_HELP = {
+    opcoes: {
+      com_endereco: "enderecos.id IS NOT NULL",
+      sem_endereco: "enderecos.id IS NULL",
+      # endereco_completo: "",
+      # endereco_incompleto: "",
+      sem_documento: "#{table_name}.doc IS NULL",
+      # com_documento: "",
+      # sem_bloqueio: "",
+      # com_bloqueio: "",
+      # sem_email: "",
+      # com_email: "",
+      # sem_contas: "",
+      # com_contas: "",
+    }
+  }
+
   private
 
   def validar_campos
-    if self.nome.blank?
-      errors.add(:base, 'Nome não pode ser vazio')
+    errors.add(:base, 'Nome não pode ser vazio') if self.nome.blank?
+
+    # Fake verificação se CPF/CNPJ está correto
+    if self.juridica
+      errors.add(:base, 'CNPJ inválido') if self.doc&.is_cnpj?
+    else
+      errors.add(:base, 'CPF inválido') if self.doc&.is_cpf?
     end
 
     if self.email.present? && !self.email.is_email?
@@ -90,4 +201,5 @@ class Pagador < ApplicationRecord
     return if self.email.blank?
     self.email = email.downcase
   end
+
 end

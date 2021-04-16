@@ -47,14 +47,14 @@
           <div class="sc-p-xs" ng-show="pessoa.emailalt">
             <i class="sc-p-r-md left sc-icon-carta-2"></i><div>{{pessoa.emailalt}}</div>
           </div>
-          <div class="sc-p-xs" ng-show="pessoa.enderecoPrincipal">
+          <div class="sc-p-xs" ng-show="pessoa.endereco_principal">
             <i class="sc-p-r-md left sc-icon-local"></i>
             <div>
-              <span ng-show="pessoa.enderecoPrincipal.logradouro">{{pessoa.enderecoPrincipal.logradouro}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.complemento">{{pessoa.enderecoPrincipal.complemento}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.bairro">{{pessoa.enderecoPrincipal.bairro}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.cidade">{{pessoa.enderecoPrincipal.cidade}}, </span>
-              <span ng-show="pessoa.enderecoPrincipal.cep">{{pessoa.enderecoPrincipal.cep}}</span>
+              <span ng-show="pessoa.endereco_principal.logradouro">{{pessoa.endereco_principal.logradouro}}, </span>
+              <span ng-show="pessoa.endereco_principal.complemento">{{pessoa.endereco_principal.complemento}}, </span>
+              <span ng-show="pessoa.endereco_principal.bairro">{{pessoa.endereco_principal.bairro}}, </span>
+              <span ng-show="pessoa.endereco_principal.cidade">{{pessoa.endereco_principal.cidade}}, </span>
+              <span ng-show="pessoa.endereco_principal.cep">{{pessoa.endereco_principal.cep}}</span>
             </div>
           </div>
           <div class="sc-p-xs" ng-show="pessoa.obs">
@@ -88,7 +88,7 @@
             <div>
               <b>Conta:</b>
               <span class="sc-m-l-sm">
-                <span>{{conta.banco.nome}}</span>
+                <span>{{conta.banco_nome}}</span>
                 <span class="sc-p-h-sm">-</span>
                 <b>Ag:</b> {{conta.agencia}} -
                 <span ng-show="conta.dv_agencia">{{conta.dv_agencia}}</span>

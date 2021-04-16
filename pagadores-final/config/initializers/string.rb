@@ -18,6 +18,22 @@ class String
     false
   end
 
+  def somente_numeros
+    self.gsub(/[^0-9]/, '')
+  end
+
+  def is_documento?
+    self.is_cpf? || self.is_cnpj?
+  end
+
+  def is_cpf?
+    self.somente_numeros.length == 11
+  end
+
+  def is_cnpj?
+    self.somente_numeros.length == 14
+  end
+
   def is_email?
     # regex = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i

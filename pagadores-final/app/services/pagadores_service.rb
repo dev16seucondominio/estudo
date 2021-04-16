@@ -3,6 +3,8 @@ class PagadoresService
   def self.index(params)
     pagadores = ::Pagador.buscar(params).map(&:slim_obj)
 
+    puts "------------------------#{pagadores.to_json}"
+
     resp = { list: pagadores }
 
     resp.merge!(load_module(params)) if params[:with_settings]
@@ -18,18 +20,11 @@ class PagadoresService
 
     resp = {pagador: pagador.to_frontend_obj}
     [:success, resp]
-
   end
 
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first
-
-    # pagador[:contas].each { |i|
-    #   if pagador[:contas][i]
-    #     raise pagador
-    #   end
-    # }
 
     if pagador.blank?
       errors = "Registro já excluído."
@@ -53,7 +48,7 @@ class PagadoresService
     if params[:id].present?
       pagador = Pagador.where(id: params[:id]).first
       if pagador.blank?
-        errors = "Registro já excluído."
+        errors = "Registro foi excluído"
         return [:not_found, errors]
       end
     else
@@ -69,12 +64,12 @@ class PagadoresService
       novo = false
     end
 
-    unless pagador.save
-      errors = pagador.errors.full_messages
-      [:error, errors]
-    else
+    if pagador.save
       resp = {novo: novo, pagador: pagador.to_frontend_obj}
       [:success, resp]
+    else
+      errors = pagador.errors.full_messages
+      [:error, errors]
     end
   end
 
@@ -101,7 +96,11 @@ class PagadoresService
     resp[:lista_periodos] = Pagador::LISTA_PERIODOS
     resp[:tipos_conta] = Conta::TIPOS_CONTA
     resp[:lista_correcao] = ReajusteContratual::LISTA_CORRECAO
+    resp[:lista_opcoes] = Pagador::LISTA_OPCOES
     resp[:bancos] = Banco.all.map()
+    resp[:filtro] = {
+      q: "", nome: "", opcoes: [], telefone: "", email: ""
+    }
 
     resp
   end

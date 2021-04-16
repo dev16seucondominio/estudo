@@ -9,7 +9,6 @@ angular.module('pagadoresApp').lazy
       vmForm.params = angular.copy(pessoa || { enderecos: [], contas: [], juridica: false, perfil_pagamentos: {} })
       vmForm.indexFactory = indexFactory
       vmForm.formFactory = baseFact
-      getBancoNome()
     }
 
     vmForm.formEnd = {
@@ -20,9 +19,6 @@ angular.module('pagadoresApp').lazy
       },
       rmv: function(end) {
         vmForm.params.enderecos.remove(end)
-      },
-      setEnderecoPrincipal: function(pessoa, end) {
-        pessoa.enderecoPrincipal = end.find(end => (end.principal))
       },
       setPrincipal: function(listEnd, end) {
         for(i in listEnd) {
@@ -41,12 +37,9 @@ angular.module('pagadoresApp').lazy
           responsavel: (angular.copy(vmForm.params.nome))
         })
       },
-      setContaPrincipal: function(conta) {
-        conta.principal = vmForm.params.contas.filter(conta => (conta.principal))
-      },
       setBanco: function(banco, conta) {
         conta.banco_id = banco.id
-        getBancoNome()
+        vmForm.indexFactory.getBancoNome(vmForm.params)
       },
       setPrincipal: function(listaContas, conta) {
         for(i in listaContas) {
@@ -66,10 +59,11 @@ angular.module('pagadoresApp').lazy
             vmForm.indexFactory.handleList(data.pagador)
 
             scTopMessages.openSuccess(data.msg, {timeOut: 3000})
+
             vmForm.formFactory.close()
           }, function(response){
             console.log(response)
-            scTopMessages.openDanger(response.errors, {timeOut: 3000})
+            scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
       },
@@ -91,15 +85,7 @@ angular.module('pagadoresApp').lazy
       }
     }
 
-    getBancoNome = function() {
-      for (var j = 0; j < vmForm.params.contas.length; j++) {
-        for (var i = 0; i < vmForm.indexFactory.settings.pagadores.bancos.length; i++) {
-          itemBanco = vmForm.indexFactory.settings.pagadores.bancos.getById(vmForm.params.contas[j].banco_id)
-          if (!itemPessoa){ continue }
-          vmForm.params.contas[j].banco_nome = itemBanco.nome
-        }
-      }
-    }
+
 
     return vmForm
 

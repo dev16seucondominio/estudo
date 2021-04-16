@@ -10,7 +10,7 @@ class PagadoresController < ApplicationController
 
         case status
         when :success then render json: resp, status: :ok
-        when :error then render json: { errors: resp }, status: :error
+        when :error then render json: { errors: resp }, status: :bad_request
         end
       }
     end
@@ -21,7 +21,8 @@ class PagadoresController < ApplicationController
 
     case status
     when :success then render json: resp, status: :ok
-    when :error then render json: { errors: resp }, status: :error
+    when :not_found then render json: { errors: resp }, status: :not_found
+    when :error then render json: { errors: resp }, status: :bad_request
     end
   end
 
@@ -31,7 +32,7 @@ class PagadoresController < ApplicationController
     case status
     when :success then render json: resp, status: :ok
     when :not_found then render json: { errors: resp }, status: :not_found
-    when :error then render json: { errors: resp }, status: :error
+    when :error then render json: { errors: resp }, status: :bad_request
     end
   end
 
@@ -42,7 +43,7 @@ class PagadoresController < ApplicationController
     case status
     when :success then render json: resp, status: :ok
     when :not_found then render json: { errors: resp }, status: :not_found
-    when :error then render json: { errors: resp }, status: :error
+    when :error then render json: { errors: resp }, status: :bad_request
     end
   end
 
