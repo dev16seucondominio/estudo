@@ -1,0 +1,130 @@
+<div class="flex-row sc-p-md">
+  <div class="sc-p-r-xl left">
+    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PessoasCtrl.formFactory.init(pessoa = {contas:[], enderecos:[]})">
+      <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
+      <div class="sc-btn-text">Cadastrar Pessoa</div>
+    </button>
+  </div>
+
+  <div class="col-xs-4 col-md-4">
+    <form class="sc-input-group" ng-submit="PessoasCtrl.filtro.exec('simples')">
+      <input class="sc-input-default" type="text"
+        ng-model="PessoasCtrl.filtro.params.q"
+        placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone"
+        ng-disabled="PessoasCtrl.filtro.avancado"/>
+
+      <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.params.filtrado"
+        ng-click="PessoasCtrl.filtro.limpar()" type="button">
+        <i class="sc-icon-fechar-1"></i>
+      </button>
+
+      <button class="sc-btn sc-btn-blue" type="submit">
+        <i class="sc-icon-lupa-2"></i>
+      </button>
+      <button class="sc-btn" ng-click="PessoasCtrl.filtro.avancado = !PessoasCtrl.filtro.avancado"
+        ng-class="{'sc-btn-gray': PessoasCtrl.filtro.avancado}" type="button">
+      <i class="sc-icon-filtro-2"></i>
+      </button>
+    </form>
+  </div>
+
+  <div class="sc-btn-group left">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica == false}" ng-click="PessoasCtrl.filtro.togglePf()">
+      <span>Pessoa Física</span>
+    </button>
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica}" ng-click="PessoasCtrl.filtro.togglePj()">
+      <span>Pessoa Jurídica</span>
+    </button>
+  </div>
+
+  <div class="sc-btn-group left sc-p-l-xl">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Pagador'}" ng-click="PessoasCtrl.filtro.buscarTipo('Pagador')">
+      <span>Pagadores</span>
+    </button>
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Fornecedor'}" ng-click="PessoasCtrl.filtro.buscarTipo('Fornecedor')">
+      <span>Fornecedores</span>
+    </button>
+  </div>
+
+  <div class="fcol-xs-auto"></div>
+
+  <button class="sc-btn right">
+    <i class="sc-icon-historico"></i>
+  </button>
+</div>
+
+<div id="top-bar-filter" class="flex-row sc-p-h-lg" style="z-index: 10;">
+  <div class="sc-bg-gray-lighter ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4 sc-p-lg"
+    ng-show="PessoasCtrl.filtro.avancado" style="width: 100%">
+    <form ng-submit="PessoasCtrl.filtro.exec('avancado')">
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <label class="sc-label">Nome</label>
+        <input class="sc-input-default sc-input-block"
+          type="text"
+          ng-model="PessoasCtrl.filtro.params.nome">
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <label class="sc-label">CPF/CNPJ</label>
+        <input class="sc-input-default sc-input-block"
+          ng-model="PessoasCtrl.filtro.params.doc"
+          type="text">
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <label class="sc-label">Telefone</label>
+        <input class="sc-input-default sc-input-block"
+          ng-model="PessoasCtrl.filtro.params.telefone"
+          type="text">
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <label class="sc-label">E-mail</label>
+        <input class="sc-input-default sc-input-block"
+          ng-model="PessoasCtrl.filtro.params.email"
+          type="text">
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
+        <label class="sc-label">Data</label>
+        <div ng-model="datePickerDate"></div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-b-md">
+        <label class="sc-label">Tipo de Data</label>
+        <select class="sc-input-default" style="width: 100%">
+          <option value="criado">Criado em</option>
+          <option value="ultimoReaj">Último Reajuste Contratual em</option>
+          <option value="reajuste">Reajuste em</option>
+        </select>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <div class="sc-label">Opções</div>
+        <div class="sc-dropdown" sc-dropdown-menu="">
+          <button type="button" class="sc-btn sc-btn-blue" ng-click="menu_filtro.isOn = !menu_filtro.isOn" style="width: 100%">
+            Selecione <i class="sc-icon sc-icon-seta-5-baixo"></i>
+          </button>
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_filtro.isOn">
+            <li class="sc-dropdown-input">
+              <input placeholder="Busque uma opção" type="text">
+            </li>
+            <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+              <li ng-repeat="opcao in PessoasCtrl.settings.pagadores.lista_opcoes" ng-click="PessoasCtrl.filtro.setOpcoes(opcao)">
+                <div>
+                  <i ng-class="opcao.active ? 'sc-icon-visto-3' : 'sc-icon-quadrado-1'"></i>
+                  <span>{{opcao.label}}</span>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+
+      <hr class="sc-hr-gray-light">
+      <button class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md sc-m-b-md" type="submit">
+        <div class="sc-btn-icon">
+          <i class="sc-icon-lupa-2"></i>
+        </div>
+        <div class="sc-btn-text">Aplicar</div>
+      </button>
+    </form>
+  </div>
+</div>

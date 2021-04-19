@@ -1,0 +1,9 @@
+angular.module('passagensApp').lazy
+.factory 'Templates', ->
+  resp =
+    passagens:
+      show: "<%= asset_path('passagens/show.html') %>"
+      form: "<%= asset_path('passagens/form.html') %>"
+
+
+  resp

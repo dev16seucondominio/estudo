@@ -1,0 +1,120 @@
+<div class="sc-fieldset">
+  <div class="sc-fieldset-head flex-row">
+    <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
+    <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
+      ng-click="PessoasFormCtrl.formConta.add(baseFact)">
+      <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
+    </div>
+  </div>
+
+  <div ng-repeat="conta in baseFact.params.contas">
+    <div class="flex-row-with-padding align-items-flex-end" ng-class="{'sc-opac-50': conta._destroy}">
+
+      <div class="fcol-xs-7em">
+        <label>
+          <div class="sc-label">Principal?</div>
+          <div class="sc-p-v-sm">
+            <span class="sc-toggle">
+              <input type="checkbox" ng-model="conta.principal" ng-change="PessoasFormCtrl.formConta.setPrincipal(baseFact.params.contas, conta)">
+              <span label-false="não" label-true="sim"></span>
+            </span>
+          </div>
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
+        <label>
+         <div class="sc-label">Banco</div>
+          <span sc-dropdown-menu="" class="sc-dropdown">
+            <div class="sc-input-group">
+              <input ng-model="conta.banco_nome" ng-click="menu_banco.isOn = !menu_banco.isOn" class="sc-input-group sc-input-default sc-input-block">
+              <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
+            </div>
+            <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_banco.isOn">
+              <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+                <li ng-click="PessoasFormCtrl.formConta.setBanco(baseFact, banco, conta)" ng-repeat="banco in PessoasFormCtrl.indexFactory.settings.pagadores.bancos">
+                  <span>{{banco.codigo}} - {{banco.nome}}</span>
+                </li>
+              </div>
+            </ul>
+          </span>
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-default">
+        <label>
+          <div class="sc-label">Tipo da Conta</div>
+          <div class="sc-input-group">
+            <select class="sc-input-default sc-input-block"
+              ng-model="conta.tipo_conta"
+              ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PessoasFormCtrl.indexFactory.settings.pagadores.tipos_conta">
+              <option selected="selected" value>Selecione</option>
+            </select>
+          </div>
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
+        <label>
+          <div class="sc-label">Agência</div>
+          <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.agencia">
+          <b class="sc-text-gray sc-m-h-xs">-</b>
+          <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dv_agencia">
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-15em">
+        <label>
+          <div class="sc-label">Número da Conta</div>
+          <input class="sc-input-default" style="max-width: 9em;" type="text" ng-model="conta.numero_conta">
+          <b class="sc-text-gray sc-m-h-xs">-</b>
+          <input class="sc-input-default" placeholder="DV" style="max-width: 3em;" type="text" ng-model="conta.dv_conta">
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-22em">
+        <label>
+          <div class="sc-label">Nome da Pessoa</div>
+          <input class ="sc-input-default sc-input-block" type="text" ng-model="conta.responsavel">
+        </label>
+      </div>
+
+      <div class="fcol-xs-100 fcol-sm-50 fcol-md-17em">
+        <label>
+          <div class="sc-label">CPF/CNPJ</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" maxlength="11" ng-model="conta.doc">
+            <button class="sc-btn" ng-click="conta.juridica = false" ng-class="{'sc-btn-blue' : !conta.juridica}" type="button">PF</button>
+            <button class="sc-btn" ng-click="conta.juridica = true" ng-class="{'sc-btn-blue' : conta.juridica}" type="button">PJ</button>
+          </div>
+        </label>
+      </div>
+
+      <div class="fcol-xs-3" ng-if="!conta._destroy"
+        ng-click="conta._destroy = true">
+        <i class="sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg"></i>
+      </div>
+
+      <div class="fcol-xs-3" ng-if="conta._destroy"
+        ng-click="conta._destroy = false">
+        <i class="sc-icon sc-icon-seta-9-esquerda sc-badge-hover-blue sc-text-lg"></i>
+      </div>
+
+    </div>
+      <div class="angular-slider sc-text-red sc-p-l-lg" ng-if="conta._destroy">
+        <span><i class="sc-icon sc-icon-exclamacao-2 sc-m-r-lg"></i>A conta será excluída quando o cadastro for salvo!</span>
+      </div>
+
+      <div class="sc-border-b-solid sc-border-gray-light fcol-xs-100 sc-p-v-lg"
+        ng-if="baseFact.params.contas.length > 1 && !$last">
+      </div>
+
+
+  </div>
+
+
+  <div class="sc-p-b-o">
+    <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
+      ng-hide="baseFact.params.contas.length">Nenhuma conta cadastrada!</div>
+  </div>
+</div>

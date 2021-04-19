@@ -1,0 +1,85 @@
+// criando a instancia do app, com as diretivas, services e o que mais for necessario
+app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.scTopMessages', 'sc.commons.service.scAlert', 'sc.commons.filters.nl2br'])
+.config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
+  $locationProvider.html5Mode({
+    // esse cara aqui eh o responsavel por prover as rotas do seu projeto... todas. nao chegou nessa parte ainda, depois te explico melhor, mas aqui eh so pra liberacao de rotas
+    enabled: true,
+    requireBase: false,
+  });
+
+  function carregarFiles(obj) {
+    return {
+      load: ['$q', '$rootScope', function($q, $rootScope) {
+        var head = document.getElementsByTagName('head')[0];
+        var deffered = $q.defer()
+
+        createElementsBy = function(moduleList, tagName, moduleType, fun){
+          if (!moduleList || moduleList.length == 0){ return }
+
+          $('head '+tagName+'[id="'+moduleType+'"]').remove();
+
+          moduleList.forEach(function(path){
+            var el = document.createElement(tagName);
+            el.id = moduleType;
+
+            switch(tagName){
+              case 'link':
+                el.rel = "stylesheet";
+                el.href = path;
+              case 'script':
+                el.src = path;
+            }
+
+            head.insertBefore(el, head.lastChild);
+          });
+
+        };
+
+        if (obj.js && obj.js.length > 0)   { createElementsBy(obj.js, 'script', 'js'); }
+        if (obj.css && obj.css.length > 0) { createElementsBy(obj.css, 'link', 'css'); }
+
+        setTimeout(() => {
+          $rootScope.$apply(function() { deffered.resolve(); })
+        }, 600)
+
+        return deffered.promise;
+      }]
+    }
+  }
+
+  objDefault = {
+    templateUrl: "<%= asset_path('passagens/index.html') %>",
+    resolve : carregarFiles({
+      js: [
+        "<%= asset_path('templates.js') %>",
+        "<%= asset_path('passagens/resources/passagens.js') %>",
+        "<%= asset_path('passagens/controllers/indexCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/showCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/formCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/formFactory.js') %>",
+        "<%= asset_path('passagens/controllers/indexFactory.js') %>",
+      ],
+    })
+  }
+
+  $routeProvider
+  .when('/', objDefault)
+  .otherwise(objDefault);
+
+  app.lazy = {
+    controller: $controllerProvider.register,
+    directive: $compileProvider.register,
+    filter: $filterProvider.register,
+    factory: $provide.factory,
+    service: $provide.service
+  };
+})
+
+
+.run(function($rootScope, scAlert, scTopMessages) {
+  $rootScope.scAlert = scAlert
+  $rootScope.scTopMessages = scTopMessages
+});
+
+
+
