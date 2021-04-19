@@ -28,9 +28,11 @@ class Pagador < ApplicationRecord
     filtro = params[:filtro] || {}
     scoped = all
 
-    puts "FILTRO -----------#{filtro}"
-    scoped = busca_simples(filtro)
-    scoped = busca_avancada(filtro)
+    if filtro[:q].present?
+      scoped = busca_simples(filtro)
+    else
+      scoped = busca_avancada(filtro)
+    end
 
     scoped.distinct
   }
@@ -74,6 +76,10 @@ class Pagador < ApplicationRecord
       scoped = scoped.where("#{key} like ?", "%#{val}%") if val
     }
 
+    if filtro[:opcoes].present?
+      scoped = scoped.com_opcoes(filtro[:opcoes])
+    end
+
     scoped
   }
 
@@ -90,6 +96,14 @@ class Pagador < ApplicationRecord
       when :sem_endereco
         scoped = scoped.left_outer_joins(:enderecos)
       when :com_endereco
+        scoped = scoped.joins(:enderecos)
+      when :sem_contas
+        scoped = scoped.left_outer_joins(:contas)
+      when :com_contas
+        scoped = scoped.joins(:contas)
+      when :endereco_incompleto
+        scoped = scoped.left_outer_joins(:enderecos)
+      when :endereco_completo
         scoped = scoped.joins(:enderecos)
       end
 
@@ -146,35 +160,51 @@ class Pagador < ApplicationRecord
     {id: 2, key: "Anos", nome: "Anos", default: true}
   ]
 
+  # FILTRO = {
+  #   default: {
+  #     q: 'açldfka'
+  #   }
+  #   opcoes: [
+  #   ]
+  # }
+
   LISTA_OPCOES = [
     { key: :com_endereco,        label: 'Com endereço' },
     { key: :sem_endereco,        label: 'Sem endereço' },
     { key: :endereco_completo,   label: 'Endereço completo' },
     { key: :endereco_incompleto, label: 'Endereço Incompleto' },
-    { key: :sem_documento,       label: 'Sem CPF/CNPJ' },
     { key: :com_documento,       label: 'Com CPF/CNPJ' },
-    { key: :sem_bloqueio,        label: 'Sem bloqueio inadimplente' },
+    { key: :sem_documento,       label: 'Sem CPF/CNPJ' },
     { key: :com_bloqueio,        label: 'Com bloqueio inadimplente' },
-    { key: :sem_email,           label: 'Sem emails' },
+    { key: :sem_bloqueio,        label: 'Sem bloqueio inadimplente' },
     { key: :com_email,           label: 'Com emails' },
-    { key: :sem_contas,          label: 'Sem contas' },
-    { key: :com_contas,          label: 'Com contas' }
+    { key: :sem_email,           label: 'Sem emails' },
+    { key: :com_contas,          label: 'Com contas' },
+    { key: :sem_contas,          label: 'Sem contas' }
   ]
 
   Q_HELP = {
     opcoes: {
       com_endereco: "enderecos.id IS NOT NULL",
       sem_endereco: "enderecos.id IS NULL",
-      # endereco_completo: "",
-      # endereco_incompleto: "",
+      endereco_completo: "enderecos.cep IS NOT NULL AND
+                          enderecos.cidade IS NOT NULL AND
+                          enderecos.bairro IS NOT NULL AND
+                          enderecos.logradouro IS NOT NULL AND
+                          enderecos.complemento IS NOT NULL".squish,
+      endereco_incompleto: "enderecos.cep IS NULL OR
+                            enderecos.cidade IS NULL OR
+                            enderecos.bairro IS NULL OR
+                            enderecos.logradouro IS NULL OR
+                            enderecos.complemento IS NULL".squish,
+      com_documento: "#{table_name}.doc IS NOT NULL",
       sem_documento: "#{table_name}.doc IS NULL",
-      # com_documento: "",
-      # sem_bloqueio: "",
-      # com_bloqueio: "",
-      # sem_email: "",
-      # com_email: "",
-      # sem_contas: "",
-      # com_contas: "",
+      com_bloqueio: "bloquear_clientes.id IS NOT NULL",
+      sem_bloqueio: "bloquear_clientes.id IS NULL",
+      com_email: "#{table_name}.email IS NOT NULL",
+      sem_email: "#{table_name}.email IS NULL",
+      com_contas: "contas.id IS NOT NULL",
+      sem_contas: "contas.id IS NULL",
     }
   }
 
@@ -184,10 +214,12 @@ class Pagador < ApplicationRecord
     errors.add(:base, 'Nome não pode ser vazio') if self.nome.blank?
 
     # Fake verificação se CPF/CNPJ está correto
-    if self.juridica
-      errors.add(:base, 'CNPJ inválido') if self.doc&.is_cnpj?
-    else
-      errors.add(:base, 'CPF inválido') if self.doc&.is_cpf?
+    if self.doc.present?
+      if self.juridica
+        errors.add(:base, 'CNPJ inválido') if !self.doc.is_cnpj?
+      else
+        errors.add(:base, 'CPF inválido') if !self.doc.is_cpf?
+      end
     end
 
     if self.email.present? && !self.email.is_email?

@@ -3,8 +3,6 @@ class PagadoresService
   def self.index(params)
     pagadores = ::Pagador.buscar(params).map(&:slim_obj)
 
-    puts "------------------------#{pagadores.to_json}"
-
     resp = { list: pagadores }
 
     resp.merge!(load_module(params)) if params[:with_settings]
@@ -58,11 +56,7 @@ class PagadoresService
     params = set_params(params)
     pagador.assign_attributes(params)
 
-    novo = true
-
-    if !pagador.new_record?
-      novo = false
-    end
+    novo = pagador.new_record?
 
     if pagador.save
       resp = {novo: novo, pagador: pagador.to_frontend_obj}
@@ -99,7 +93,7 @@ class PagadoresService
     resp[:lista_opcoes] = Pagador::LISTA_OPCOES
     resp[:bancos] = Banco.all.map()
     resp[:filtro] = {
-      q: "", nome: "", opcoes: [], telefone: "", email: ""
+      q: "", nome: "", telefone: "", email: "", opcoes: []
     }
 
     resp

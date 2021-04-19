@@ -1,24 +1,22 @@
 angular.module('pagadoresApp').lazy
 .controller("PessoasFormCtrl", [
-  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Pagador", function(formFactory, indexFactory, scAlert, scTopMessages, Pagador) {
+  "indexFactory", "scAlert", "scTopMessages", "Pagador", function(indexFactory, scAlert, scTopMessages, Pagador) {
     vmForm = this
 
-    vmForm.carregandoData = false
+    vmForm.indexFactory = indexFactory
 
-    vmForm.init = function(baseFact, indexFactory, pessoa){
-      vmForm.params = angular.copy(pessoa || { enderecos: [], contas: [], juridica: false, perfil_pagamentos: {} })
-      vmForm.indexFactory = indexFactory
-      vmForm.formFactory = baseFact
+    vmForm.init = function(pessoa, baseFact){
+      // vmForm.formFactory = baseFact
+
+      baseFact.params = angular.copy(pessoa || { enderecos: [], contas: [], juridica: false, perfil_pagamentos: {} })
+      delete baseFact.params.formFactory
     }
 
     vmForm.formEnd = {
-      add: function() {
-        vmForm.params.enderecos.push({
-          principal: (vmForm.params.enderecos < 1 ? true : false)
+      add: function(baseFact) {
+        baseFact.params.enderecos.push({
+          principal: (baseFact.params.enderecos < 1 ? true : false)
         })
-      },
-      rmv: function(end) {
-        vmForm.params.enderecos.remove(end)
       },
       setPrincipal: function(listEnd, end) {
         for(i in listEnd) {
@@ -29,17 +27,17 @@ angular.module('pagadoresApp').lazy
     }
 
     vmForm.formConta = {
-      add: function() {
-        vmForm.params.contas.push({
-          principal: (vmForm.params.contas.length < 1 ? true : false),
+      add: function(baseFact) {
+        baseFact.params.contas.push({
+          principal: (baseFact.params.contas.length < 1 ? true : false),
           juridica: false,
-          doc: (vmForm.params.doc ? angular.copy(vmForm.params.doc) : ''),
-          responsavel: (angular.copy(vmForm.params.nome))
+          doc: (baseFact.params.doc ? angular.copy(baseFact.params.doc) : ''),
+          responsavel: (angular.copy(baseFact.params.nome))
         })
       },
-      setBanco: function(banco, conta) {
+      setBanco: function(baseFact, banco, conta) {
         conta.banco_id = banco.id
-        vmForm.indexFactory.getBancoNome(vmForm.params)
+        vmForm.indexFactory.getBancoNome(baseFact.params)
       },
       setPrincipal: function(listaContas, conta) {
         for(i in listaContas) {
@@ -50,26 +48,26 @@ angular.module('pagadoresApp').lazy
     }
 
     vmForm.formCadastro = {
-      salvar: function(pessoa) {
-        if (!this.isValido()){ return }
-        Pagador.save(vmForm.params,
+      salvar: function(pessoa, baseFact) {
+        if (!this.isValido(baseFact)){ return }
+        Pagador.save(baseFact.params,
           function(data){
             vmForm.formCadastro.isNovo(data)
 
-            vmForm.indexFactory.handleList(data.pagador)
+            vmForm.indexFactory.itemCtrl.handleList(data.pagador)
 
             scTopMessages.openSuccess(data.msg, {timeOut: 3000})
 
-            vmForm.formFactory.close()
+            baseFact.close()
           }, function(response){
             console.log(response)
             scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )
       },
-      isValido: function() {
+      isValido: function(baseFact) {
         errors = []
-        if(!vmForm.params.nome) {
+        if(!baseFact.params.nome) {
           errors.push("Nome não pode ser vazio!")
           vmForm.erroNome = true
         }
@@ -79,13 +77,10 @@ angular.module('pagadoresApp').lazy
       },
       isNovo: function(data) {
         if (!data.novo) { return }
-        vmForm.params.novo = true
-        angular.extend(vmForm.params, data.pagador)
-        vmForm.formFactory.lista.unshift(vmForm.params)
+        data.pagador.novo = true
+        vmForm.indexFactory.itemCtrl.handleList(data.pagador, { unshift_if_new: true })
       }
     }
-
-
 
     return vmForm
 

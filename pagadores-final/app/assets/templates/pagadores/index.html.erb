@@ -23,7 +23,7 @@
       <li class="sc-acc-blue ng-animation sc-bg-gray-lighter"
         ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
         style="display: block;"
-        ng-if="PessoasCtrl.formFactory.opened && PessoasCtrl.formFactory.new_record"
+        ng-if="PessoasCtrl.formFactory.opened"
         ng-controller="PessoasFormCtrl as PessoasFormCtrl">
         <div class="sc-accordion-head sc-text-blue" ng-click="PessoasCtrl.formFactory.close(pessoa)">
           <div class="sc-accordion-col-3 align-center">
@@ -33,14 +33,14 @@
             <div class="sc-p-xs">Nova Pessoa</div>
           </div>
         </div>
-        <div ng-include="PessoasCtrl.templates.pagadores.form"></div>
+        <div ng-include="PessoasCtrl.templates.pagadores.form" ng-init="baseFact = PessoasCtrl.formFactory"></div>
       </li>
       <!-- Lista de pessoas -->
       <li ng-repeat="pessoa in PessoasCtrl.listCtrl.list | filter:PessoasCtrl.filtro.listar as results"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.opened}"
         ng-controller="PessoaCtrl as PessoaCtrl"
-        ng-init="PessoaCtrl.init(pessoa, PessoasCtrl.formFactory, PessoasCtrl.indexFactory)">
+        ng-init="PessoaCtrl.init(pessoa)">
         <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
@@ -95,7 +95,7 @@
           <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
             ng-controller="PessoasFormCtrl as PessoasFormCtrl"
             ng-if="pessoa.editing"
-            ng-init="PessoasCtrl.formFactory.init(pessoa)">
+            ng-init="pessoa.formFactory.init(pessoa); baseFact = pessoa.formFactory">
           </div>
 
           <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-show="!pessoa.editing"></div>

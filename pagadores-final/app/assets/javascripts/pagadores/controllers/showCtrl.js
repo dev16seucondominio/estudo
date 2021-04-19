@@ -5,10 +5,10 @@ angular.module('pagadoresApp').lazy
 
     // vmShow.formFact = undefined
     // vmShow.pagador = undefined
+    vmShow.indexFactory = indexFactory
 
-    vmShow.init = function(pessoa, baseFact, indexFactory){
-      vmShow.formFactory = baseFact
-      vmShow.indexFactory = indexFactory
+    vmShow.init = function(pessoa){
+      pessoa.formFactory = new formFactory()
 
       // TODO
     }
@@ -39,7 +39,7 @@ angular.module('pagadoresApp').lazy
         function(data) {
           pessoa.carregando = false
 
-          vmShow.indexFactory.handleList(data.pagador)
+          vmShow.indexFactory.itemCtrl.handleList(data.pagador)
 
           if (callback) { callback() }
         }, function(response) {
@@ -56,8 +56,8 @@ angular.module('pagadoresApp').lazy
         vmShow.accToggle(pessoa, function(){
           pessoa.opened = true
 
-          itemPessoa = vmShow.formFactory.lista.getById(pessoa.id)
-          vmShow.formFactory.init(itemPessoa)
+          itemPessoa = vmShow.indexFactory.itemCtrl.get(pessoa.id)
+          pessoa.formFactory.init(itemPessoa)
         })
 
       }

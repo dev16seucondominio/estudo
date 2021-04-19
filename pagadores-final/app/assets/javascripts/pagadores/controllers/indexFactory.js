@@ -1,9 +1,7 @@
 angular.module('pagadoresApp').lazy
 .factory("indexFactory", [
   function() {
-    base_obj = function(pessoa) {
-      return obj = {
-      }
+    base_obj = {
     }
     return base_obj;
   },

@@ -5,13 +5,15 @@ angular.module("pagadoresApp").lazy
 
     vmIdx.templates = Templates
 
-    vmIdx.formFactory = undefined
+    vmIdx.formFactory  = undefined
+    vmIdx.indexFactory = undefined
 
     vmIdx.init = function(pessoa){
       vmIdx.formFactory = new formFactory()
-      vmIdx.indexFactory = new indexFactory()
       vmIdx.listCtrl.init()
-      vmIdx.indexFactory.handleList = handleList
+
+      vmIdx.indexFactory = indexFactory
+      vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
       vmIdx.indexFactory.getBancoNome = getBancoNome
     }
 
@@ -41,7 +43,6 @@ angular.module("pagadoresApp").lazy
               loadSettings(data)
             }
             vmIdx.listCtrl.list = angular.copy(data.list)
-            vmIdx.formFactory.lista = vmIdx.listCtrl.list
           }
         )
       },
@@ -78,13 +79,23 @@ angular.module("pagadoresApp").lazy
     vmIdx.filtro = {
       listar: {},
       params: {},
+      init: function(){
+        this.paramsInit = angular.copy(vmIdx.settings.pagadores.filtro)
+        this.params = angular.copy(this.paramsInit)
+      },
+
       exec: function(tipo){
         vmIdx.listCtrl.loadList()
+        this.avancado = false
+        this.params.filtrado = true
       },
       limpar: function() {
-        this.listar = []
-        this.params = {opcoes}
-        this.preenchido = false
+        this.params = angular.copy(this.paramsInit)
+        this.params.filtrado = false
+        vmIdx.listCtrl.loadList()
+        for(i in vmIdx.settings.pagadores.lista_opcoes) {
+          vmIdx.settings.pagadores.lista_opcoes[i].active = false
+        }
       },
       togglePf: function() {
         this.params.juridica = false
@@ -96,44 +107,55 @@ angular.module("pagadoresApp").lazy
         this.params.tipo = tipo
       },
       setOpcoes: function(opcao) {
-        console.log(opcao)
         opcao.active = !opcao.active
-        this.params.opcoes.push(opcao.id)
-
+        this.params.opcoes.toggle(opcao.key)
+        console.log(this.params.opcoes)
       }
     }
 
-    handleList = function(list) {
-      list = [list].flattenCompact()
+    vmIdx.itemCtrl = {
+      get: function(item){
+        itemId = null
+        if (isObject(item)){ itemId = item.id }
+        if (!itemId){ itemId = item }
 
-      for (var i = 0; i < list.length; i++) {
-        item = list[i]
+        return vmIdx.listCtrl.list.getById(itemId)
+      },
+      handleList: function(list, opts={}) {
+        list = [list].flattenCompact()
 
-        itemPessoa = vmIdx.listCtrl.list.getById(item.id)
-        if (!itemPessoa){ continue }
+        for (var i = 0; i < list.length; i++) {
+          item = list[i]
 
-        item.carregado = true
+          itemPessoa = this.get(item)
+          if (!itemPessoa){
+            if (opts.unshift_if_new){
+              vmIdx.listCtrl.list.unshift(item)
+            }
+            continue
+          }
 
-        if (item.nasc) { item.nasc = new Date(item.nasc) }
-        if (item.reajuste_contratual) {
-          item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
+          item.carregado = true
+
+          if (item.nasc) { item.nasc = new Date(item.nasc) }
+          if (item.reajuste_contratual) {
+            item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
+          }
+          // Setar o endereço principal para o show
+          item.endereco_principal = item.enderecos.find(end => (end.principal))
+          // Pegar o nome do banco da lista de configurações e coloca-lo no show
+          getBancoNome(item)
+
+          angular.extend(itemPessoa, item)
         }
-        // Setar o endereço principal para o show
-        item.endereco_principal = item.enderecos.find(end => (end.principal))
-        // Pegar o nome do banco da lista de configurações e coloca-lo no show
-        getBancoNome(item)
-
-        angular.extend(itemPessoa, item)
       }
     }
 
     getBancoNome = function(pessoa) {
       for (var j = 0; j < pessoa.contas.length; j++) {
-        for (var i = 0; i < vmIdx.settings.pagadores.bancos.length; i++) {
-          itemBanco = vmIdx.settings.pagadores.bancos.getById(pessoa.contas[j].banco_id)
-          if (!itemBanco){ continue }
-          pessoa.contas[j].banco_nome = itemBanco.nome
-        }
+        itemBanco = vmIdx.settings.pagadores.bancos.getById(pessoa.contas[j].banco_id)
+        if (!itemBanco){ continue }
+        pessoa.contas[j].banco_nome = itemBanco.nome
       }
     }
 
@@ -141,7 +163,9 @@ angular.module("pagadoresApp").lazy
     loadSettings = function(data){
       vmIdx.settings = data.settings
       vmIdx.indexFactory.settings = vmIdx.settings
-      vmIdx.filtro.params = vmIdx.settings.pagadores.filtro
+
+      vmIdx.filtro.init()
+
       // vmIdx.locale = data.locales.pagadores
       // vmIdx.localeContas = data.locales.contas
     }

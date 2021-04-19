@@ -2,20 +2,20 @@
   <div class="sc-fieldset-head flex-row">
     <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
     <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
-      ng-click="PessoasFormCtrl.formConta.add()">
+      ng-click="PessoasFormCtrl.formConta.add(baseFact)">
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
 
-  <div ng-repeat="conta in PessoasFormCtrl.params.contas">
+  <div ng-repeat="conta in baseFact.params.contas">
     <div class="flex-row-with-padding align-items-flex-end" ng-class="{'sc-opac-50': conta._destroy}">
-      
+
       <div class="fcol-xs-7em">
         <label>
           <div class="sc-label">Principal?</div>
           <div class="sc-p-v-sm">
             <span class="sc-toggle">
-              <input type="checkbox" ng-model="conta.principal" ng-change="PessoasFormCtrl.formConta.setPrincipal(PessoasFormCtrl.params.contas, conta)">
+              <input type="checkbox" ng-model="conta.principal" ng-change="PessoasFormCtrl.formConta.setPrincipal(baseFact.params.contas, conta)">
               <span label-false="não" label-true="sim"></span>
             </span>
           </div>
@@ -27,12 +27,12 @@
          <div class="sc-label">Banco</div>
           <span sc-dropdown-menu="" class="sc-dropdown">
             <div class="sc-input-group">
-              <input ng-model="conta.banco_nome" ng-click="menu_banco.isOn = !menu_banco.isOn" class="sc-input-group sc-input-default sc-input-block"> 
+              <input ng-model="conta.banco_nome" ng-click="menu_banco.isOn = !menu_banco.isOn" class="sc-input-group sc-input-default sc-input-block">
               <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
             </div>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_banco.isOn">
               <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-                <li ng-click="PessoasFormCtrl.formConta.setBanco(banco, conta)" ng-repeat="banco in PessoasFormCtrl.indexFactory.settings.pagadores.bancos">
+                <li ng-click="PessoasFormCtrl.formConta.setBanco(baseFact, banco, conta)" ng-repeat="banco in PessoasFormCtrl.indexFactory.settings.pagadores.bancos">
                   <span>{{banco.codigo}} - {{banco.nome}}</span>
                 </li>
               </div>
@@ -106,7 +106,7 @@
       </div>
 
       <div class="sc-border-b-solid sc-border-gray-light fcol-xs-100 sc-p-v-lg"
-        ng-if="PessoasFormCtrl.params.contas.length > 1 && !$last">
+        ng-if="baseFact.params.contas.length > 1 && !$last">
       </div>
 
 
@@ -115,6 +115,6 @@
 
   <div class="sc-p-b-o">
     <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
-      ng-hide="PessoasFormCtrl.params.contas.length">Nenhuma conta cadastrada!</div>
+      ng-hide="baseFact.params.contas.length">Nenhuma conta cadastrada!</div>
   </div>
 </div>

@@ -1,6 +1,6 @@
-<div class="sc-accordion-body ng-animation-slider" ng-init="PessoasFormCtrl.init(PessoasCtrl.formFactory, PessoasCtrl.indexFactory, pessoa)">
+<div class="sc-accordion-body ng-animation-slider" ng-init="PessoasFormCtrl.init(pessoa, baseFact)">
   <div class="sc-p-lg sc-accordion-element ng-animation-slider">
-    <form ng-submit="PessoasFormCtrl.formCadastro.salvar(pessoa)">
+    <form ng-submit="PessoasFormCtrl.formCadastro.salvar(pessoa, baseFact)">
       <!-- DADOS GERAIS -->
       <div ng-include="PessoasCtrl.templates.pagadores.form_dados_gerais"></div>
       <!-- ENDEREÇO -->
@@ -18,7 +18,7 @@
 
       <div class="right">
         <div class="sc-m-l-md sc-align-bottom">
-          <button class="sc-btn sc-btn-red" ng-click="PessoasFormCtrl.formFactory.close(pessoa)" type="button">
+          <button class="sc-btn sc-btn-red" ng-click="baseFact.close(pessoa)" type="button">
             Cancelar
           </button>
           </div>

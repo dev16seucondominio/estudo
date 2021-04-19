@@ -2,18 +2,18 @@
   <div class="sc-fieldset-head flex-row">
     <span class="sc-text-blue sc-text-bold">Endereços</span>
     <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
-      ng-click="PessoasFormCtrl.formEnd.add()">
+      ng-click="PessoasFormCtrl.formEnd.add(baseFact)">
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
-  <div ng-repeat="end in PessoasFormCtrl.params.enderecos">
+  <div ng-repeat="end in baseFact.params.enderecos">
     <div class="flex-row-with-padding pessoa-endereco" ng-class="{'sc-opac-50': end._destroy}">
       <div class="fcol-xs-7em">
         <label>
           <div class="sc-label">Principal?</div>
           <div class="sc-p-v-sm">
             <span class="sc-toggle">
-              <input type="checkbox" ng-change="PessoasFormCtrl.formEnd.setPrincipal(PessoasFormCtrl.params.enderecos, end)" ng-model="end.principal">
+              <input type="checkbox" ng-change="PessoasFormCtrl.formEnd.setPrincipal(baseFact.params.enderecos, end)" ng-model="end.principal">
               <span label-false="não" label-true="sim"></span>
             </span>
           </div>
@@ -81,19 +81,19 @@
         <i class="sc-icon sc-icon-seta-9-esquerda sc-badge-hover-blue"></i>
       </div>
     </div>
-    
+
     <div class="angular-slider sc-text-red sc-p-l-lg" ng-if="end._destroy">
       <span><i class="sc-icon sc-icon-exclamacao-2 sc-m-r-lg"></i>O endereço será excluído quando o cadastro for salvo!</span>
     </div>
 
     <div class="sc-border-b-dashed fcol-xs-100 sc-p-v-lg"
-      ng-if="PessoasFormCtrl.params.enderecos.length > 1 && !$last">
+      ng-if="baseFact.params.enderecos.length > 1 && !$last">
     </div>
   </div>
 
   <div class="sc-p-b-o">
     <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue"
-      ng-hide="PessoasFormCtrl.params.enderecos.length">Nenhum endereço cadastrado!
+      ng-hide="baseFact.params.enderecos.length">Nenhum endereço cadastrado!
     </div>
   </div>
 </div>
