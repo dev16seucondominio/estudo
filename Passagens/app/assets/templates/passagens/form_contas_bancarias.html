@@ -2,7 +2,7 @@
   <div class="sc-fieldset-head flex-row">
     <span class="sc-text-blue sc-text-bold">Contas Bancárias</span>
     <div class="sc-btn sc-btn-green sc-btn-thin sc-btn-sm sc-m-l-lg"
-      ng-click="PessoasFormCtrl.formConta.add(baseFact)">
+      ng-click="PassagensFormCtrl.formConta.add(baseFact)">
       <i class="sc-icon sc-icon-mais-1 sc-m-r-md"></i>Adicionar
     </div>
   </div>
@@ -15,7 +15,7 @@
           <div class="sc-label">Principal?</div>
           <div class="sc-p-v-sm">
             <span class="sc-toggle">
-              <input type="checkbox" ng-model="conta.principal" ng-change="PessoasFormCtrl.formConta.setPrincipal(baseFact.params.contas, conta)">
+              <input type="checkbox" ng-model="conta.principal" ng-change="PassagensFormCtrl.formConta.setPrincipal(baseFact.params.contas, conta)">
               <span label-false="não" label-true="sim"></span>
             </span>
           </div>
@@ -32,7 +32,7 @@
             </div>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_banco.isOn">
               <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-                <li ng-click="PessoasFormCtrl.formConta.setBanco(baseFact, banco, conta)" ng-repeat="banco in PessoasFormCtrl.indexFactory.settings.pagadores.bancos">
+                <li ng-click="PassagensFormCtrl.formConta.setBanco(baseFact, banco, conta)" ng-repeat="banco in PassagensFormCtrl.indexFactory.settings.pagadores.bancos">
                   <span>{{banco.codigo}} - {{banco.nome}}</span>
                 </li>
               </div>
@@ -47,7 +47,7 @@
           <div class="sc-input-group">
             <select class="sc-input-default sc-input-block"
               ng-model="conta.tipo_conta"
-              ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PessoasFormCtrl.indexFactory.settings.pagadores.tipos_conta">
+              ng-options="tipo_conta.key as tipo_conta.nome for tipo_conta in PassagensFormCtrl.indexFactory.settings.pagadores.tipos_conta">
               <option selected="selected" value>Selecione</option>
             </select>
           </div>

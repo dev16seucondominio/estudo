@@ -1,47 +1,47 @@
 <div class="flex-row sc-p-md">
   <div class="sc-p-r-xl left">
-    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PessoasCtrl.formFactory.init(pessoa = {contas:[], enderecos:[]})">
+    <button class="sc-btn sc-btn-blue sc-btn-awesomeness" type="button" ng-click="PassagensCtrl.formFactory.init(pessoa = {contas:[], enderecos:[]})">
       <div class="sc-btn-icon"><i class="sc-icon-mais-1"></i></div>
       <div class="sc-btn-text">Cadastrar Pessoa</div>
     </button>
   </div>
 
   <div class="col-xs-4 col-md-4">
-    <form class="sc-input-group" ng-submit="PessoasCtrl.filtro.exec('simples')">
+    <form class="sc-input-group" ng-submit="PassagensCtrl.filtro.exec('simples')">
       <input class="sc-input-default" type="text"
-        ng-model="PessoasCtrl.filtro.params.q"
+        ng-model="PassagensCtrl.filtro.params.q"
         placeholder="Nome, E-mail, Razão Social, CPF/CNPJ e Telefone"
-        ng-disabled="PessoasCtrl.filtro.avancado"/>
+        ng-disabled="PassagensCtrl.filtro.avancado"/>
 
-      <button class="sc-btn sc-btn-red" ng-show="PessoasCtrl.filtro.params.filtrado"
-        ng-click="PessoasCtrl.filtro.limpar()" type="button">
+      <button class="sc-btn sc-btn-red" ng-show="PassagensCtrl.filtro.params.filtrado"
+        ng-click="PassagensCtrl.filtro.limpar()" type="button">
         <i class="sc-icon-fechar-1"></i>
       </button>
 
       <button class="sc-btn sc-btn-blue" type="submit">
         <i class="sc-icon-lupa-2"></i>
       </button>
-      <button class="sc-btn" ng-click="PessoasCtrl.filtro.avancado = !PessoasCtrl.filtro.avancado"
-        ng-class="{'sc-btn-gray': PessoasCtrl.filtro.avancado}" type="button">
+      <button class="sc-btn" ng-click="PassagensCtrl.filtro.avancado = !PassagensCtrl.filtro.avancado"
+        ng-class="{'sc-btn-gray': PassagensCtrl.filtro.avancado}" type="button">
       <i class="sc-icon-filtro-2"></i>
       </button>
     </form>
   </div>
 
   <div class="sc-btn-group left">
-    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica == false}" ng-click="PessoasCtrl.filtro.togglePf()">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PassagensCtrl.filtro.params.juridica == false}" ng-click="PassagensCtrl.filtro.togglePf()">
       <span>Pessoa Física</span>
     </button>
-    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.juridica}" ng-click="PessoasCtrl.filtro.togglePj()">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PassagensCtrl.filtro.params.juridica}" ng-click="PassagensCtrl.filtro.togglePj()">
       <span>Pessoa Jurídica</span>
     </button>
   </div>
 
   <div class="sc-btn-group left sc-p-l-xl">
-    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Pagador'}" ng-click="PessoasCtrl.filtro.buscarTipo('Pagador')">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PassagensCtrl.filtro.params.tipo == 'Pagador'}" ng-click="PassagensCtrl.filtro.buscarTipo('Pagador')">
       <span>Pagadores</span>
     </button>
-    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PessoasCtrl.filtro.params.tipo == 'Fornecedor'}" ng-click="PessoasCtrl.filtro.buscarTipo('Fornecedor')">
+    <button class="sc-btn" type="button" ng-class="{'sc-btn-blue' : PassagensCtrl.filtro.params.tipo == 'Fornecedor'}" ng-click="PassagensCtrl.filtro.buscarTipo('Fornecedor')">
       <span>Fornecedores</span>
     </button>
   </div>
@@ -55,30 +55,30 @@
 
 <div id="top-bar-filter" class="flex-row sc-p-h-lg" style="z-index: 10;">
   <div class="sc-bg-gray-lighter ng-animation-slider sc-border-h-solid sc-border-gray-light sc-box-shadow-z4 sc-p-lg"
-    ng-show="PessoasCtrl.filtro.avancado" style="width: 100%">
-    <form ng-submit="PessoasCtrl.filtro.exec('avancado')">
+    ng-show="PassagensCtrl.filtro.avancado" style="width: 100%">
+    <form ng-submit="PassagensCtrl.filtro.exec('avancado')">
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Nome</label>
         <input class="sc-input-default sc-input-block"
           type="text"
-          ng-model="PessoasCtrl.filtro.params.nome">
+          ng-model="PassagensCtrl.filtro.params.nome">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">CPF/CNPJ</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="PessoasCtrl.filtro.params.doc"
+          ng-model="PassagensCtrl.filtro.params.doc"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">Telefone</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="PessoasCtrl.filtro.params.telefone"
+          ng-model="PassagensCtrl.filtro.params.telefone"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
         <label class="sc-label">E-mail</label>
         <input class="sc-input-default sc-input-block"
-          ng-model="PessoasCtrl.filtro.params.email"
+          ng-model="PassagensCtrl.filtro.params.email"
           type="text">
       </div>
       <div class="col-xs-12 col-sm-6 col-md-2 sc-p-h-md sc-p-b-md">
@@ -105,7 +105,7 @@
               <input placeholder="Busque uma opção" type="text">
             </li>
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-repeat="opcao in PessoasCtrl.settings.pagadores.lista_opcoes" ng-click="PessoasCtrl.filtro.setOpcoes(opcao)">
+              <li ng-repeat="opcao in PassagensCtrl.settings.pagadores.lista_opcoes" ng-click="PassagensCtrl.filtro.setOpcoes(opcao)">
                 <div>
                   <i ng-class="opcao.active ? 'sc-icon-visto-3' : 'sc-icon-quadrado-1'"></i>
                   <span>{{opcao.label}}</span>

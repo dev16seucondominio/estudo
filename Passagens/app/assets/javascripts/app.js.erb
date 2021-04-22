@@ -16,7 +16,7 @@ app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
         createElementsBy = function(moduleList, tagName, moduleType, fun){
           if (!moduleList || moduleList.length == 0){ return }
 
-          $('head '+tagName+'[id="'+moduleType+'"]').remove();
+          $('head '+tagName+'[id="'+moduleType+'"]').remove(); // se ja tiver arquivs carregados ele remove... por isso conseguimos acessar modulos sem recarregar a pagina no sistema... ele so remove do modulo antigo e faz a requisicao pra carregar os novos
 
           moduleList.forEach(function(path){
             var el = document.createElement(tagName);
@@ -33,10 +33,13 @@ app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
             head.insertBefore(el, head.lastChild);
           });
 
+          // aqui ele literalmente monta a tag inteira <... rel="..." src="..."> os ... sao os parametros
         };
 
         if (obj.js && obj.js.length > 0)   { createElementsBy(obj.js, 'script', 'js'); }
         if (obj.css && obj.css.length > 0) { createElementsBy(obj.css, 'link', 'css'); }
+
+        // esse bloco constroi um elemento <link> no head, a partir dos parametros enviados
 
         setTimeout(() => {
           $rootScope.$apply(function() { deffered.resolve(); })
@@ -48,11 +51,12 @@ app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
   }
 
   objDefault = {
-    templateUrl: "<%= asset_path('passagens/index.html') %>",
+    templateUrl: "<%= asset_path('passagens/index.html') %>", // a template index da rota (nao do projeto inteiro, somente da rota q bateu. o index do projeto eh o application.html.erb, onde ficam as diretivas, o body, head... . as demais templates sao incluidas nesse cara, ele eh o html base do projeto)
     resolve : carregarFiles({
+      // o obj default, por sua vez, chama a funcao que carrega os js e css necessarios pro modulo. ele nao ira carregar elementos de outros modulos
       js: [
         "<%= asset_path('templates.js') %>",
-        "<%= asset_path('passagens/resources/passagens.js') %>",
+        "<%= asset_path('pagadores/resources/pagadores.js') %>",
         "<%= asset_path('passagens/controllers/indexCtrl.js') %>",
         "<%= asset_path('passagens/controllers/showCtrl.js') %>",
         "<%= asset_path('passagens/controllers/formCtrl.js') %>",
@@ -63,7 +67,11 @@ app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
   }
 
   $routeProvider
+  // routeProvider, batendo e listando as rotas (urls) do projeto.
+  // como vc pd ver, eh um switch case, q espera por uma rota e retorna um obj de "config"
   .when('/', objDefault)
+  // qnd bate na rota "/", carrega o objDefault
+  // recaptulando... qnd bate na rota acima, chama o obj default
   .otherwise(objDefault);
 
   app.lazy = {
@@ -73,12 +81,15 @@ app = angular.module('passagensApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc
     factory: $provide.factory,
     service: $provide.service
   };
+  // esse lazy aqui eh pra evitar problema de carregamento... alguns elementos podem ser carregados antes mesmo de serem declarados, ai o app nao reconhece e nao acha as dependencias nunca
+  // o app eh criado e instanciado por inteiro, pra so depois ser "inicializado". da pra notar que usamos .lazy em todos os ctrls e factorys
 })
 
 
 .run(function($rootScope, scAlert, scTopMessages) {
   $rootScope.scAlert = scAlert
   $rootScope.scTopMessages = scTopMessages
+  // aqui eh apenas uma referenciacao direta na rootScope, pra nao termos q ficar chamando scAlert e scTopMesssages pelo "Nome completo"...
 });
 
 

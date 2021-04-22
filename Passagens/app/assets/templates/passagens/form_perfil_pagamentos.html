@@ -10,7 +10,7 @@
         <div class="sc-input-group">
           <select class="sc-input-default sc-input-block"
             ng-model="baseFact.params.perfil_pagamentos.operacao"
-            ng-options="operacao.key as operacao.nome for operacao in PessoasFormCtrl.indexFactory.settings.pagadores.lista_operacoes">
+            ng-options="operacao.key as operacao.nome for operacao in PassagensFormCtrl.indexFactory.settings.pagadores.lista_operacoes">
             <option selected="selected" value>Selecione</option>
           </select>
         </div>
@@ -26,7 +26,7 @@
           </div>
           <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_plano.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="baseFact.params.perfil_pagamentos.plano_de_contas = plano_de_contas.nome" ng-repeat="plano_de_contas in PessoasFormCtrl.indexFactory.settings.pagadores.lista_plano_de_contas">
+              <li ng-click="baseFact.params.perfil_pagamentos.plano_de_contas = plano_de_contas.nome" ng-repeat="plano_de_contas in PassagensFormCtrl.indexFactory.settings.pagadores.lista_plano_de_contas">
                 <span>{{plano_de_contas.nome}}</span>
               </li>
             </div>
@@ -45,7 +45,7 @@
           </div>
           <ul class="sc-dropdown-menu ng-animation-slider typeahead-dropdown-menu" ng-show="menu_fundo.isOn">
             <div class="sc-scrollbar" style="max-height: 15em;overflow: auto;"></div>
-            <li ng-click="baseFact.params.perfil_pagamentos.fundo = fundo.nome" ng-repeat="fundo in PessoasFormCtrl.indexFactory.settings.pagadores.lista_fundo">
+            <li ng-click="baseFact.params.perfil_pagamentos.fundo = fundo.nome" ng-repeat="fundo in PassagensFormCtrl.indexFactory.settings.pagadores.lista_fundo">
               <span>{{fundo.nome}}</span>
             </li>
           </ul>

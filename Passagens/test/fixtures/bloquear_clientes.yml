@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bloquear: false
+  periodo: MyString
+  frequencia: 1
+  depois_do_vencimento: false
+  pagador: one
+  clientes: MyString
+
+two:
+  bloquear: false
+  periodo: MyString
+  frequencia: 1
+  depois_do_vencimento: false
+  pagador: two
+  clientes: MyString

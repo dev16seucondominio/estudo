@@ -1,4 +1,4 @@
-<div ng-controller="PessoasCtrl as PessoasCtrl" ng-init="PessoasCtrl.init()" style="background-color: #fff ">
+<div ng-controller="PassagensCtrl as PassagensCtrl" ng-init="PassagensCtrl.init()" style="background-color: #fff ">
   <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
     <div style="height: 42px;">
       <img height="100%" class="sc-border-radius"
@@ -8,7 +8,7 @@
 
   <section id="top-bar" class="sc-bg-gray-lighter" style="height: 52px;">
     <div id="top-bar-content">
-      <div ng-include="'<%= asset_path('pagadores/top_bar_content.html') %>'"></div>
+      <div ng-include="'<%= asset_path('passagens/top_bar_content.html') %>'"></div>
     </div>
   </section>
 
@@ -23,9 +23,9 @@
       <li class="sc-acc-blue ng-animation sc-bg-gray-lighter"
         ng-class="{'sc-acc-opened sc-acc-blue' : pessoa.opened}"
         style="display: block;"
-        ng-if="PessoasCtrl.formFactory.opened"
-        ng-controller="PessoasFormCtrl as PessoasFormCtrl">
-        <div class="sc-accordion-head sc-text-blue" ng-click="PessoasCtrl.formFactory.close(pessoa)">
+        ng-if="PassagensCtrl.formFactory.opened"
+        ng-controller="PassagensFormCtrl as PassagensFormCtrl">
+        <div class="sc-accordion-head sc-text-blue" ng-click="PassagensCtrl.formFactory.close(pessoa)">
           <div class="sc-accordion-col-3 align-center">
             <i class="sc-text-xl sc-icon-mais-1"></i>
           </div>
@@ -33,15 +33,15 @@
             <div class="sc-p-xs">Nova Pessoa</div>
           </div>
         </div>
-        <div ng-include="PessoasCtrl.templates.pagadores.form" ng-init="baseFact = PessoasCtrl.formFactory"></div>
+        <div ng-include="PassagensCtrl.templates.passagens.form" ng-init="baseFact = PassagensCtrl.formFactory"></div>
       </li>
       <!-- Lista de pessoas -->
-      <li ng-repeat="pessoa in PessoasCtrl.listCtrl.list | filter:PessoasCtrl.filtro.listar as results"
+      <li ng-repeat="pessoa in PassagensCtrl.listCtrl.list | filter:PassagensCtrl.filtro.listar as results"
         class="sc-bg-gray-lighter"
         ng-class="{'sc-acc-blue' : pessoa.opened}"
-        ng-controller="PessoaCtrl as PessoaCtrl"
-        ng-init="PessoaCtrl.init(pessoa)">
-        <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
+        ng-controller="PassagemCtrl as PassagemCtrl"
+        ng-init="PassagemCtrl.init(pessoa)">
+        <div ng-click="PassagemCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
             <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
             <i class="sc-text-xl sc-icon sc-icon-fabrica" ng-show="pessoa.juridica"></i>
@@ -70,13 +70,13 @@
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu.isOn">
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="PessoaCtrl.formCtrl.open(pessoa)">
+                  ng-click="PassagemCtrl.formCtrl.open(pessoa)">
                   <i class="sc-icon-lapis"></i> Editar
                 </a>
               </li>
               <li>
                 <a sc-dropdown-close-menu=""
-                  ng-click="PessoasCtrl.listCtrl.alertExcluirRegistro(pessoa)">
+                  ng-click="PassagensCtrl.listCtrl.alertExcluirRegistro(pessoa)">
                   <i class="sc-icon-lixeira-1"></i> Excluir
                 </a>
               </li>
@@ -92,13 +92,13 @@
 
         <div ng-if="pessoa.opened">
           <!-- Include do form de edição e show -->
-          <div ng-include="PessoasCtrl.templates.pagadores.form" class="ng-animation-slider"
-            ng-controller="PessoasFormCtrl as PessoasFormCtrl"
+          <div ng-include="PassagensCtrl.templates.passagens.form" class="ng-animation-slider"
+            ng-controller="PassagensFormCtrl as PassagensFormCtrl"
             ng-if="pessoa.editing"
             ng-init="pessoa.formFactory.init(pessoa); baseFact = pessoa.formFactory">
           </div>
 
-          <div ng-include="PessoasCtrl.templates.pagadores.show" class="ng-animation-slider" ng-show="!pessoa.editing"></div>
+          <div ng-include="PassagensCtrl.templates.passagens.show" class="ng-animation-slider" ng-show="!pessoa.editing"></div>
           <div class="clear"></div>
         </div>
 

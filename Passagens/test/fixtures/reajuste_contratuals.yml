@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reajustar: false
+  tipo: MyString
+  correcao: MyString
+  valor: MyString
+  valor_percentual: false
+  frequencia: 1
+  periodo: MyString
+  ultimo_reajuste: MyString
+  notificar: false
+  pagador: one
+
+two:
+  reajustar: false
+  tipo: MyString
+  correcao: MyString
+  valor: MyString
+  valor_percentual: false
+  frequencia: 1
+  periodo: MyString
+  ultimo_reajuste: MyString
+  notificar: false
+  pagador: two
