@@ -1,5 +1,5 @@
 angular.module('myApp').lazy
-.controller("PessoaCtrl", [
+.controller("PassagemCtrl", [
   "formFactory", "indexFactory", "Pagador", "scTopMessages", function(formFactory, indexFactory, Pagador, scTopMessages) {
     vmShow = this
 

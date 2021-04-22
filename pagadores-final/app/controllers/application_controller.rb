@@ -9,23 +9,29 @@ class ApplicationController < ActionController::Base
 	private
 
 	def layout_erp
-		render html: "", layout: "layouts/application" # aquilo q eu expliquei do index do projeto ser o application.html... eh o arquivo carregado por padrao, o index da modulo especifico eh incluido a partir de outro lugar
+    render html: "", layout: "layouts/site"
 	end
+
+  def layout_passagens_erp
+    render html: "", layout: "layouts/application"
+  end
+
+  def layout_pagadores_erp
+    render html: "", layout: "layouts/site"
+  end
 
 	def load_paths
 		Dir["#{Rails.root}/app/services/*"].each{ |file| require file }
 	end
 
   def params_to_hash(val)
-    # angular envia params por GET em string invés de HASH
-    # aqui convertemos se necessário e fazemos recursive_symbolize
     json_parse = lambda { |item|
-      item = item.to_boolean if item.in? ['true', 'false'] # transforma strings em boleanos de verdade
+      item = item.to_boolean if item.in? ['true', 'false'] 
       return item unless item.is_a?(::String) && (item.is_hash? || item.is_array?)
       params_to_hash(JSON.parse(item))
     }
     resp = val
-    if resp.is_a?(::String)# && (resp.is_hash? || resp.is_array?)
+    if resp.is_a?(::String)
       resp = json_parse.call(resp)
     elsif resp.is_a?(Hash)
       list = resp.keys

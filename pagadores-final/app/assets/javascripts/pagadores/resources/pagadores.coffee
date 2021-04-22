@@ -1,4 +1,4 @@
-angular.module('pagadoresApp').lazy
+angular.module('myApp').lazy
 .factory 'Pagador', [
   '$resource'
   # esse eh um arquivo de resource, que trampa em conjunto com a rota. aqui vc define, no lado do cliente, as rotas disponiveis e o caminho a chegar no servidor... usamos os metodos basicos do html (get, delete, put, post) e keys para chamada

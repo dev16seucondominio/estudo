@@ -1,0 +1,48 @@
+<h1>UGA sim UGA</h1>
+<div ng-controller="PassagensCtrl as PassagensCtrl" ng-init="PassagensCtrl.init()" style="background-color: #fff ">
+  <header class="flex align-items-center" style="background-color: #004565; height: 54px;">
+    <div style="height: 42px;">
+      <img height="100%" class="sc-border-radius"
+        src="https://www.seucondominio.com.br/assets/responsivo/logo-seucondominio-d27c9e579e5286867bca8a6707f5f9af96addd5d7b62d47c0d0f8685979e6b0d.svg">
+    </div>
+  </header>
+
+  <section id="top-bar" class="sc-bg-gray-lighter" style="height: 52px;">
+    <div id="top-bar-content">
+      <div ng-include="'<%= asset_path('passagens/top_bar_content.html') %>'"></div>
+    </div>
+  </section>
+
+  <section id="breadcrumb">
+    <a ng-href="/dashboard" href="/dashboard">Início</a>
+     / Administrativo / Passagens de Serviços
+  </section>
+
+  <section id="passagens">
+    <ul class="sc-accordion">
+      <li class="sc-accordion-head" style="border-bottom: 1px solid #e2e2e2; border-top: none;">
+        <div class="flex-row flex-column align-items-center sc-text-blue" style="min-height: 2.5em;">
+          <div class="fcol-order-0 align-center fcol-sm-3em ng-scope" ng-if="!indexCtrl.filtro.isDirty()">
+            <input class="sc-checkbox sc-checkbox-blue" ng-checked="indexCtrl.selections.allSelected" ng-click="indexCtrl.selections.toggleSelectAll(indexCtrl.selections.allSelected)" type="checkbox">
+          </div>
+          <div class="fcol-xs-7em hidden-xs align-center sc-p-sm sc-cursor-pointer" ng-click="indexCtrl.ordenacao.exec('status')">
+            <i class="sc-m-r-sm sc-icon-seta-5-baixo ng-hide" ng-show="indexCtrl.ordenacao.getByColumn('status')"></i>
+            <span class="sc-ellipsis-inline ng-binding">Status</span>
+          </div>
+          <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
+            <span class="sc-ellipsis-inline ng-binding">Saiu</span>
+          </div>
+          <div class="fcol-xs-auto fcol-order-2 sc-p-sm">
+            <span class="sc-ellipsis-inline ng-binding">Entrou</span>
+          </div>
+          <div class="fcol-xs-7em fcol-order-3 align-center sc-p-sm sc-cursor-pointer" ng-click="indexCtrl.ordenacao.exec('created_at')">
+            <i class="sc-m-r-sm sc-icon-seta-5-baixo ng-hide" ng-show="indexCtrl.ordenacao.getByColumn('created_at')"></i>
+            <span class="sc-ellipsis-inline ng-binding">Criada em</span>
+          </div>
+          <div class="fcol-xs-7em sc-p-md visible-xs fcol-order-4"></div>
+          <div class="fcol-xs-3em sc-p-md fcol-order-5"></div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</div>

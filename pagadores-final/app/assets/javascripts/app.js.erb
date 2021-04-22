@@ -1,8 +1,7 @@
 // criando a instancia do app, com as diretivas, services e o que mais for necessario
-app = angular.module('pagadoresApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.scTopMessages', 'sc.commons.service.scAlert', 'sc.commons.filters.nl2br'])
+app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.scTopMessages', 'sc.commons.service.scAlert', 'sc.commons.filters.nl2br'])
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
   $locationProvider.html5Mode({
-    // esse cara aqui eh o responsavel por prover as rotas do seu projeto... todas. nao chegou nessa parte ainda, depois te explico melhor, mas aqui eh so pra liberacao de rotas
     enabled: true,
     requireBase: false,
   });

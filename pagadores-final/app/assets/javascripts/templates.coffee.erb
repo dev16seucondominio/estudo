@@ -1,11 +1,7 @@
-angular.module('pagadoresApp').lazy
+angular.module('myApp').lazy
 .factory 'Templates', ->
   resp =
     pagadores:
-      # cadastrar as templates nesse formato:
-      # key: "<%= asset_path('CAMINHO') %>"
-      # sendo key a chave pela qual a template será chamada... form, index, show...
-      # do index nao precisa pq o index é carregado em outro lugar
       show: "<%= asset_path('pagadores/show.html') %>"
       form: "<%= asset_path('pagadores/form.html') %>"
       top_bar: "<%= asset_path('pagadores/top_bar_content.html') %>"
@@ -16,6 +12,9 @@ angular.module('pagadoresApp').lazy
       form_endereco: "<%= asset_path('pagadores/form_endereco.html') %>"
       form_perfil_pagamentos: "<%= asset_path('pagadores/form_perfil_pagamentos.html') %>"
       form_reajuste_contratual: "<%= asset_path('pagadores/form_reajuste_contratual.html') %>"
+
+    passagens:
+      top_bar: "<%= asset_path('passagens/top_bar_content.html') %>"
 
 
   resp

@@ -1,5 +1,5 @@
 angular.module("myApp").lazy
-.controller("PessoasCtrl", [
+.controller("PassagensCtrl", [
   "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Pagador) {
     vmIdx = this
 
@@ -137,25 +137,8 @@ angular.module("myApp").lazy
 
           item.carregado = true
 
-          if (item.nasc) { item.nasc = new Date(item.nasc) }
-          if (item.reajuste_contratual) {
-            item.reajuste_contratual.ultimo_reajuste = new Date(item.reajuste_contratual.ultimo_reajuste)
-          }
-          // Setar o endereço principal para o show
-          item.endereco_principal = item.enderecos.find(end => (end.principal))
-          // Pegar o nome do banco da lista de configurações e coloca-lo no show
-          getBancoNome(item)
-
           angular.extend(itemPessoa, item)
         }
-      }
-    }
-
-    getBancoNome = function(pessoa) {
-      for (var j = 0; j < pessoa.contas.length; j++) {
-        itemBanco = vmIdx.settings.pagadores.bancos.getById(pessoa.contas[j].banco_id)
-        if (!itemBanco){ continue }
-        pessoa.contas[j].banco_nome = itemBanco.nome
       }
     }
 
