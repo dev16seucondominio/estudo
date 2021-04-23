@@ -1,0 +1,85 @@
+<div ng-controller="PassagemFormCtrl as PassagemFormCtrl" ng-init="PassagemFormCtrl.init(passagem, )"5>
+
+  <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="">
+    <div class="sc-fieldset flex-row fcol-xs-100">
+      <!-- Aviso de segurança -->
+      <div class="fcol-xs-100 sc-bg-yellow-lighter">
+        <div class="sc-text-red">
+          <i class="sc-icon sc-icon-exclamacao-3 sc-m-h-sm"></i>
+          <span class="sc-text-bold">Imporante!</span>
+        </div>
+        <div class="sc-text-blue sc-label sc-m-l-md sc-p-t-xs">
+          A passagem será realizada automaticamente caso sejam preenchidos os
+          dados de quem está ENTRANDO (preencher só quem sai habilita a edição
+          do registro até que a passagem seja realizada).
+        </div>
+        <div class="sc-text-blue sc-label sc-m-l-md sc-p-t-xs" ng-if="config.deslogar">
+          Ao passar o serviço, o porteiro atual (que cadastrou e passou o serviço)
+          será deslogado automaticamente do sistema
+        </div>
+      </div>
+
+      <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
+        <div sc-dropdown-menu>
+          <div class="sc-label">Quem sai</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa">
+            <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
+        <div class="sc-label">Senha:</div>
+        <input class="sc-input-default sc-input-block" type="text">
+      </div>
+
+      <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
+        <div sc-dropdown-menu>
+          <div class="sc-label">Quem entra</div>
+          <div class="sc-input-group">
+            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa">
+            <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
+        <div class="sc-label">Senha:</div>
+        <input class="sc-input-default sc-input-block" type="text">
+      </div>
+
+      <div class="clear sc-p-o"></div>
+
+      <div class="fcol-xs-100">
+        <div class="sc-label">Perfil de passagem:</div>
+        <div class="sc-input-group sc-input-block fcol-xs-100 fcol-sm-50 fcol-lg-35">
+          <select class="sc-input-default" ng-model="">
+            <option selected="selected" value>Selecione um perfil</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- Objetos -->
+    <div class="fcol-xs-100">
+      <div ng-include="PassagensCtrl.templates.passagens.form_objetos"></div>
+    </div>
+
+    <div class="sc-fieldset flex-row fcol-xs-100 clear">
+      <div class="sc-label sc-p-b-xs clear">Observações:</div>
+      <div class="fcol-xs-100 sc-p-t-o">
+        <textarea class="sc-input-default sc-input-block fcol-xs-100"></textarea>
+      </div>
+    </div>
+
+    <div class="fcol-xs-100 align-right">
+      <button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-r-lg" type="button">
+        Salvar
+      </button>
+      <button class="sc-btn sc-btn-red sc-btn-block-only-xs" type="button">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,8 +1,6 @@
 class PassagensService
 
-  def self.index(params)
-
-    
+  def self.index()
 
   end
 

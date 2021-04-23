@@ -1,8 +1,8 @@
 class PassagensController < ApplicationController
 	def index
 	  respond_to do |format|
-	    format.html { layout_passagens_erp }
-	    format.json{  
+	    format.html { layout_erp }
+	    format.json{
 
 	    	status, resp = PassagensService.index(get_params)
 

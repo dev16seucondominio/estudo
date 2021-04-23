@@ -1,0 +1,102 @@
+<div ng-controller="PassagemCtrl as PassagemCtrl" ng-init="PassagemCtrl.init(passagem)" style="background-color: #fff ">
+  <div class="sc-m-h-md sc-p-t-sm flex-row">
+
+    <div class="sc-fieldset sc-bg-white fcol-md-50 fcol-xs-100 flex-row sc-p-h-xs">
+      <div class="fcol-xs-100 sc-p-b-o sc-m-b-md">
+        <div class="sc-text-gray sc-p-b-sm">Quem sai:
+          <span class="sc-text-blue">
+            Igor Santos e Silva
+          </span>
+        </div>
+        <div class="sc-text-gray sc-p-b-sm">Cadastrado por:
+          <span class="sc-text-blue">
+            Igor Santos</span>
+        </div>
+        <div class="sc-text-gray sc-p-b-sm">Data cadastro:
+          <span class="sc-text-blue">
+            23/04/2021, às 09:12:38
+          </span>
+        </div>
+        <div class="flex-row sc-m-b-sm">
+          <div class="sc-dropdown" sc-dropdown-menu="">
+            <button class="sc-btn sc-btn-blue sc-btn-thin sc-btn-md " ng-click="menu.toggle()" style="width:100%" type="button">
+              Notificar
+              <i class="sc-icon sc-m-l-md sc-icon-seta-5-baixo" ng-class="menu.isOn ? 'sc-icon-seta-5-cima' : 'sc-icon-seta-5-baixo'"></i>
+              <span class="sc-badge sc-badge-fixed sc-bg-yellow ">0</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fcol-md-auto fcol-md-50 fcol-xs-100 sc-m-l-lg-md flex">
+      <div class="sc-fieldset sc-bg-white fcol-xs-100">
+        <div class="sc-fieldset-head flex align-items-center" sytle="padding-top: 0;padding-bottom: 0;min-height: 2.05em;">
+          <span class="sc-text-blue sc-text-bold">Anexos</span>
+        </div>
+        <div class="sc-p-b-o">
+          <div class="sc-text-thin sc-p-md sc-p-b-xxxl sc-p-t-xs sc-text-lg align-center sc-text-blue">
+            Nenhum anexo disponível!
+          </div>
+          <div class="flex flex-wrap justify-content-space-evenly"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="sc-fieldset sc-bg-white fcol-xs-100 flex-row sc-p-xl">
+      <div class="sc-text-gray-dark fcol-xs-100 sc-p-sm">Eu,
+        <span class="sc-label"> Igor Santos e Silva</span>
+          passo o posto de serviço para o(a),
+        <span class="sc-label"> </span>
+          de acordo com as informações abaixo:
+      </div>
+
+      <div class="fcol-xs-100 sc-p-h-o sc-p-b-o">
+        <div class="sc-label sc-text-lg sc-m-l-xs">Resumo Portaria</div>
+        <table class="sc-table sc-fieldset" style="width:100%">
+          <thead>
+            <tr>
+              <th style="width:4%"></th>
+              <th>
+                <div class="sc-text-bold sc-text-gray-darker">  Item</div>
+              </th>
+              <th>
+                <div class="sc-text-bold sc-text-gray-darker align-right">  Qtd</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- repeat -->
+            <tr>
+              <td style="width:4%">
+                <i class="sc-icon sc-icon-menos-1 sc-text-gray"
+                  ng-class="item.executado ? 'sc-icon-visto-1 sc-text-green' : 'sc-icon-menos-1 sc-text-gray'">
+                </i>
+              </td>
+              <td>
+                <div class="sc-text-black"> Relatório de Passagem</div>
+              </td>
+              <td class="align-right">
+                <div class="sc-text-gray-darker"> 1</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sc-fieldset sc-bg-white fcol-xs-100">
+      <div class="sc-fieldset-head sc-p-b-xs">
+        <span class="sc-text-blue sc-text-bold">Observações</span>
+      </div>
+      <div class="sc-text-black col-xs-12 sc-bg-white">
+        <div>
+          Eu, sai correndo e não tive tempo de conferir todas as coisas.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

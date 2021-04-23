@@ -49,7 +49,7 @@ app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.common
     }
   }
 
-  objDefault = {
+  objPagadores = {
     templateUrl: "<%= asset_path('pagadores/index.html') %>", // a template index da rota (nao do projeto inteiro, somente da rota q bateu. o index do projeto eh o application.html.erb, onde ficam as diretivas, o body, head... . as demais templates sao incluidas nesse cara, ele eh o html base do projeto)
     resolve : carregarFiles({
       // o obj default, por sua vez, chama a funcao que carrega os js e css necessarios pro modulo. ele nao ira carregar elementos de outros modulos
@@ -65,13 +65,29 @@ app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.common
     })
   }
 
-  $routeProvider
+  $routeProvider.when('/pagadores', objPagadores)
+
   // routeProvider, batendo e listando as rotas (urls) do projeto.
   // como vc pd ver, eh um switch case, q espera por uma rota e retorna um obj de "config"
-  .when('/', objDefault)
-  // qnd bate na rota "/", carrega o objDefault
+  $routeProvider.when('/passagens', {
+    templateUrl: "<%= asset_path('passagens/index.html') %>",
+    resolve: carregarFiles({
+      js: [
+        "<%= asset_path('templates.js') %>",
+        "<%= asset_path('passagens/resources/passagens.js') %>",
+        "<%= asset_path('passagens/controllers/indexCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/showCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/formCtrl.js') %>",
+        "<%= asset_path('passagens/controllers/formFactory.js') %>",
+        "<%= asset_path('passagens/controllers/indexFactory.js') %>",
+      ]
+    })
+  })
+
+  // qnd bate na rota "/", carrega o objPagadores
   // recaptulando... qnd bate na rota acima, chama o obj default
-  .otherwise(objDefault);
+
+  $routeProvider.otherwise(objPagadores);
 
   app.lazy = {
     controller: $controllerProvider.register,

@@ -1,6 +1,6 @@
 angular.module("myApp").lazy
 .controller("PassagensCtrl", [
-  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Pagador) {
+  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", function(formFactory, indexFactory, scAlert, scTopMessages, Templates) {
     vmIdx = this
 
     vmIdx.templates = Templates
@@ -8,13 +8,12 @@ angular.module("myApp").lazy
     vmIdx.formFactory  = undefined
     vmIdx.indexFactory = undefined
 
-    vmIdx.init = function(pessoa){
+    vmIdx.init = function(passagem){
       vmIdx.formFactory = new formFactory()
       vmIdx.listCtrl.init()
 
       vmIdx.indexFactory = indexFactory
       vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
-      vmIdx.indexFactory.getBancoNome = getBancoNome
     }
 
     vmIdx.listCtrl = {
@@ -36,19 +35,10 @@ angular.module("myApp").lazy
         params.filtro        = vmIdx.filtro.params
         params.with_settings = vmIdx.listCtrl.with_settings
 
-        Pagador.list(params,
-          function(data) {
-            if (vmIdx.listCtrl.with_settings) {
-              vmIdx.listCtrl.with_settings = false
-              loadSettings(data)
-            }
-            vmIdx.listCtrl.list = angular.copy(data.list)
-          }
-        )
       },
-      alertExcluirRegistro: function(pessoa) {
+      alertExcluirRegistro: function(passagem) {
         scAlert.open({
-          title: 'Você tem certeza que deseja excluir essa pessoa?',
+          title: 'Você tem certeza que deseja excluir essa passagem?',
           messages: 'Todos os dados serão perdidos!',
           buttons: [
             {
@@ -58,21 +48,11 @@ angular.module("myApp").lazy
               label: 'Sim',
               color: 'yellow',
               action: function() {
-                vmIdx.listCtrl.execExcluirRegistro(pessoa)
+                // Ação de excluir
               }
             }
           ]
         })
-      },
-      execExcluirRegistro: function(pessoa){
-        Pagador.destroy(pessoa,
-          function(data){
-            scTopMessages.openSuccess(data.msg, {timeOut: 3000})
-            vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(pessoa), 1)
-          }, function(response){
-            scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
-          }
-        )
       }
     }
 
@@ -80,7 +60,7 @@ angular.module("myApp").lazy
       listar: {},
       params: {},
       init: function(){
-        this.paramsInit = angular.copy(vmIdx.settings.pagadores.filtro)
+        this.paramsInit = angular.copy(vmIdx.settings.passagens.filtro)
         this.params = angular.copy(this.paramsInit)
       },
 
@@ -93,23 +73,9 @@ angular.module("myApp").lazy
         this.params = angular.copy(this.paramsInit)
         this.params.filtrado = false
         vmIdx.listCtrl.loadList()
-        for(i in vmIdx.settings.pagadores.lista_opcoes) {
-          vmIdx.settings.pagadores.lista_opcoes[i].active = false
+        for(i in vmIdx.settings.passagens.lista_opcoes) {
+          vmIdx.settings.passagens.lista_opcoes[i].active = false
         }
-      },
-      togglePf: function() {
-        this.params.juridica = false
-      },
-      togglePj: function() {
-        this.params.juridica = true
-      },
-      buscarTipo: function(tipo) {
-        this.params.tipo = tipo
-      },
-      setOpcoes: function(opcao) {
-        opcao.active = !opcao.active
-        this.params.opcoes.toggle(opcao.key)
-        console.log(this.params.opcoes)
       }
     }
 
@@ -127,8 +93,8 @@ angular.module("myApp").lazy
         for (var i = 0; i < list.length; i++) {
           item = list[i]
 
-          itemPessoa = this.get(item)
-          if (!itemPessoa){
+          itemPassagem = this.get(item)
+          if (!itemPassagem){
             if (opts.unshift_if_new){
               vmIdx.listCtrl.list.unshift(item)
             }
@@ -137,7 +103,7 @@ angular.module("myApp").lazy
 
           item.carregado = true
 
-          angular.extend(itemPessoa, item)
+          angular.extend(itemPassagem, item)
         }
       }
     }
@@ -148,9 +114,6 @@ angular.module("myApp").lazy
       vmIdx.indexFactory.settings = vmIdx.settings
 
       vmIdx.filtro.init()
-
-      // vmIdx.locale = data.locales.pagadores
-      // vmIdx.localeContas = data.locales.contas
     }
 
     return vmIdx

@@ -9,16 +9,8 @@ class ApplicationController < ActionController::Base
 	private
 
 	def layout_erp
-    render html: "", layout: "layouts/site"
-	end
-
-  def layout_passagens_erp
     render html: "", layout: "layouts/application"
-  end
-
-  def layout_pagadores_erp
-    render html: "", layout: "layouts/site"
-  end
+	end
 
 	def load_paths
 		Dir["#{Rails.root}/app/services/*"].each{ |file| require file }
@@ -26,7 +18,7 @@ class ApplicationController < ActionController::Base
 
   def params_to_hash(val)
     json_parse = lambda { |item|
-      item = item.to_boolean if item.in? ['true', 'false'] 
+      item = item.to_boolean if item.in? ['true', 'false']
       return item unless item.is_a?(::String) && (item.is_hash? || item.is_array?)
       params_to_hash(JSON.parse(item))
     }
