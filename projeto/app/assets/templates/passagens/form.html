@@ -1,12 +1,13 @@
-<div ng-controller="PassagemFormCtrl as PassagemFormCtrl" ng-init="PassagemFormCtrl.init(passagem, )"5>
+<div ng-controller="PassagensFormCtrl as PassagensFormCtrl"
+  ng-init="PassagensFormCtrl.init(passagem, PassagensCtrl.formFactory)">
 
-  <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="">
+  <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="PassagensFormCtrl.formCadastro.save(passagem)">
     <div class="sc-fieldset flex-row fcol-xs-100">
       <!-- Aviso de segurança -->
       <div class="fcol-xs-100 sc-bg-yellow-lighter">
         <div class="sc-text-red">
           <i class="sc-icon sc-icon-exclamacao-3 sc-m-h-sm"></i>
-          <span class="sc-text-bold">Imporante!</span>
+          <span class="sc-text-bold">Importante!</span>
         </div>
         <div class="sc-text-blue sc-label sc-m-l-md sc-p-t-xs">
           A passagem será realizada automaticamente caso sejam preenchidos os
@@ -23,7 +24,8 @@
         <div sc-dropdown-menu>
           <div class="sc-label">Quem sai</div>
           <div class="sc-input-group">
-            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa">
+            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
+              ng-model="PassagensFormCtrl.params.quem_sai">
             <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
           </div>
         </div>
@@ -31,14 +33,15 @@
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default sc-input-block" type="text">
+        <input class="sc-input-default sc-input-block" type="text" ng-model="PassagensFormCtrl.params.senha_quem_sai">
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
         <div sc-dropdown-menu>
           <div class="sc-label">Quem entra</div>
           <div class="sc-input-group">
-            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa">
+            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
+              ng-model="PassagensFormCtrl.params.quem_entra">
             <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
           </div>
         </div>
@@ -46,7 +49,7 @@
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default sc-input-block" type="text">
+        <input class="sc-input-default sc-input-block" type="text" ng-model="PassagensFormCtrl.params.senha_quem_entra">
       </div>
 
       <div class="clear sc-p-o"></div>
@@ -54,11 +57,12 @@
       <div class="fcol-xs-100">
         <div class="sc-label">Perfil de passagem:</div>
         <div class="sc-input-group sc-input-block fcol-xs-100 fcol-sm-50 fcol-lg-35">
-          <select class="sc-input-default" ng-model="">
+          <select class="sc-input-default">
             <option selected="selected" value>Selecione um perfil</option>
           </select>
         </div>
       </div>
+
     </div>
     <!-- Objetos -->
     <div class="fcol-xs-100">
@@ -73,10 +77,11 @@
     </div>
 
     <div class="fcol-xs-100 align-right">
-      <button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-r-lg" type="button">
+      <button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-r-lg" type="submit">
         Salvar
       </button>
-      <button class="sc-btn sc-btn-red sc-btn-block-only-xs" type="button">
+      <button class="sc-btn sc-btn-red sc-btn-block-only-xs" type="button"
+        ng-click="PassagensFormCtrl.formFactory.close(passagem)">
         Cancelar
       </button>
     </div>

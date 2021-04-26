@@ -1,25 +1,33 @@
 angular.module('myApp').lazy
 .factory("formFactory", [
   function() {
-    base_obj = function(pessoa) {
+    base_obj = function(passagem) {
       return obj = {
         opened: false,
         new_record: false,
-        lista: [ {pessoa: {}} ],
+        lista: [ {passagem: {}} ],
 
-        init: function(pessoa) {
-          this.pessoa = pessoa
-          this.pessoa.editing = true
+        init: function(passagem) {
+          passagem.editing = true
+          passagem.opened = true
 
-          this.opened = true
-          this.new_record = pessoa.id ? false : true
+          if(passagem.id) {
+            this.new_record = false
+          } else {
+            this.new_record = true
+            passagem = {}
+          }
         },
-
-        close: function(pessoa){
-          this.pessoa.editing = false
-          this.pessoa = {}
-
+        open: function(passagem) {
+          passagem.opened = true
+          passagem.editing = true
+          this.opened = true
+          this.new_record = false
+        },
+        close: function(passagem) {
+          passagem.editing = false
           this.opened = false
+          this.new_record = false
         }
 
       }

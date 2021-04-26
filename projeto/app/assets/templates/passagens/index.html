@@ -20,13 +20,13 @@
   <section id="passagens">
     <ul class="sc-accordion">
 
-      <!-- FORM DE NOVA PESSOA -->
-      <li ng-if="asdadas" class="sc-acc-blue">
-        <div class="sc-accordion-head flex-row" ng-click="">
+      <!-- FORM DE NOVA PASSAGEM -->
+      <li ng-if="PassagensCtrl.formFactory.new_record" class="sc-acc-blue">
+        <div class="sc-accordion-head flex-row" ng-click="PassagensCtrl.formFactory.close(passagem)">
           <div class="fcol-xs-2em">
-            <i class="sc-icon sc-icon-mais-1 sc-text-white"></i>
+            <i class="sc-icon sc-icon-mais-1"></i>
           </div>
-          <div class="sc-text-white sc-text-bold">Nova Passagem</div>
+          <div class="sc-text-bold">Nova Passagem</div>
         </div>
         <div class="sc-accordion-body">
           <div ng-include="PassagensCtrl.templates.passagens.form"></div>
@@ -41,7 +41,7 @@
               <input class="sc-checkbox sc-checkbox-blue" type="checkbox">
             </div>
             <div class="fcol-xs-7em hidden-xs align-center sc-p-sm sc-cursor-pointer">
-              <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i>
+              <!-- <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i> -->
               <span class="sc-ellipsis-inline">Status</span>
             </div>
             <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
@@ -51,7 +51,7 @@
               <span class="sc-ellipsis-inline">Entrou</span>
             </div>
             <div class="fcol-xs-7em fcol-order-3 align-center sc-p-sm sc-cursor-pointer">
-              <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i>
+              <!-- <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i> -->
               <span class="sc-ellipsis-inline">Criada em</span>
             </div>
             <div class="fcol-xs-7em sc-p-md visible-xs fcol-order-4"></div>
@@ -60,10 +60,14 @@
         </div>
       </li>
 
-      <li class="sc-accordion-head" ng-class="{'sc-acc-blue': passagem.acc.oppened}">
-        <div class="flex-row flex-column sc-accordion-head sc-text-gray">
+      <li class="sc-accordion-head" ng-class="{'sc-acc-blue': passagem.opened}"
+        ng-repeat="passagem in PassagensCtrl.listCtrl.list track by passagem.id"
+        ng-controller="PassagemCtrl as PassagemCtrl"
+        ng-init="PassagemCtrl.init(passagem)">
+        <div class="flex-row flex-column sc-accordion-head sc-text-gray"
+          ng-click="PassagemCtrl.accToggle(passagem)">
 
-          <div class="fcol-xs-3em align-center fcol-order-0" sc-stop-click>
+          <div class="fcol-xs-3em align-center fcol-order-0" sc-stop-click="">
             <input class="sc-checkbox sc-checkbox-blue" type="checkbox">
           </div>
 
@@ -73,37 +77,75 @@
 
           <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
             <i class="sc-icon sc-icon-seta-8-baixo sc-text-red hidden-xs sc-p-r-md"
-              ng-class="{'sc-text-white': itemCtrl.formFact.opened || passagem.acc.opened }">
+              ng-class="{'sc-text-white': passagem.opened }">
             </i>
-            <span class="sc-ellipsis"> Igor Santos e Silva</span>
+            <span class="sc-ellipsis"> {{passagem.quem_sai}}</span>
           </div>
 
           <div class="fcol-xs-auto fcol-order-2 sc-p-sm">
             <i class="sc-icon sc-icon-seta-8-cima sc-text-green hidden-xs sc-p-r-md"
-              ng-class="{'sc-text-white': itemCtrl.formFact.opened || passagem.acc.opened }">
+              ng-class="{'sc-text-white': passagem.opened }">
             </i>
+            <span class="sc-ellipsis"> {{passagem.quem_entra}}</span>
           </div>
 
           <div class="fcol-xs-7em fcol-order-3 sc-p-sm"
-            ng-class="{'sc-text-white': itemCtrl.formFact.opened || passagem.acc.opened }">
+            ng-class="{'sc-text-white': passagem.opened }">
             23/04/2021
           </div>
 
           <div class="fcol-xs-7em fcol-order-4 visible-xs sc-p-sm"></div>
 
-          <div class="fcol-xs-3em align-center sc-p-sm fcol-order-5" sc-stop-click>
-            <span class="sc-dropdown ng-scope" sc-dropdown-menu>
-
+          <div class="fcol-xs-3em align-center sc-p-sm fcol-order-5" sc-stop-click="">
+            <span class="sc-dropdown" sc-dropdown-menu="">
+              <div>
+                <i class="sc-icon sc-icon-reticiencias-v sc-badge-hover-gray"
+                  ng-class="{'sc-text-white sc-badge-hover-white': passagem.opened}"
+                  ng-click="menu.isOn = !menu.isOn">
+                </i>
+                <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="menu.isOn">
+                  <li sc-dropdown-close-menu="">
+                    <span>
+                      <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
+                    </span>
+                  </li>
+                  <li sc-dropdown-close-menu="" ng-click="PassagemCtrl.formCtrl.open(passagem)">
+                    <span>
+                      <i class="sc-icon-lapis"></i> Editar
+                    </span>
+                  </li>
+                  <li sc-dropdown-close-menu="">
+                    <span>
+                      <i class="sc-icon sc-icon-mais-4"></i> Duplicar
+                    </span>
+                  </li>
+                  <li sc-dropdown-close-menu="">
+                    <span>
+                      <i class="sc-icon-banir"></i> Desativar
+                    </span>
+                  </li>
+                  <li sc-dropdown-close-menu="">
+                    <span>
+                      <i class="sc-icon-lixeira-1"></i> Excluir
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </span>
-
           </div>
-
         </div>
-      </li>
 
-      <!-- SHOW -->
-      <li ng-if="bbbbb">
-        <div ng-include="PassagensCtrl.templates.passagens.show"></div>
+        <div ng-if="passagem.opened">
+          <!-- SHOW -->
+          <div ng-if="!passagem.editing">
+            <div ng-include="PassagensCtrl.templates.passagens.show"></div>
+          </div>
+          <!-- EDIÇÃO -->
+          <div ng-if="passagem.editing">
+            <div ng-include="PassagensCtrl.templates.passagens.form"></div>
+          </div>
+        </div>
+
       </li>
     </ul>
   </section>

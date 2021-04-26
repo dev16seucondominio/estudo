@@ -1,6 +1,6 @@
 <div class="flex-row sc-p-md">
   <div class="sc-p-r-xl left">
-    <button class="sc-btn sc-btn-green" type="button">
+    <button class="sc-btn sc-btn-green" type="button" ng-click="PassagensCtrl.formFactory.init(passagem = {})">
       <span>Nova Passagem</span>
     </button>
   </div>
@@ -11,8 +11,7 @@
         placeholder="Nome, e-mail, data (de criação), etc"
         ng-disabled=""/>
 
-      <button class="sc-btn sc-btn-red"
-        ng-click="PassagensCtrl.filtro.limpar()" type="button">
+      <button class="sc-btn sc-btn-red" type="button">
         <i class="sc-icon-fechar-1"></i>
       </button>
 

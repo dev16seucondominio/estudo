@@ -8,17 +8,48 @@ angular.module("myApp").lazy
     vmIdx.formFactory  = undefined
     vmIdx.indexFactory = undefined
 
-    vmIdx.init = function(passagem){
+    vmIdx.init = function(){
       vmIdx.formFactory = new formFactory()
       vmIdx.listCtrl.init()
-
+      vmIdx.formFactory.lista = vmIdx.listCtrl.list
       vmIdx.indexFactory = indexFactory
       vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
     }
 
     vmIdx.listCtrl = {
       carregando: false,
-      list: [],
+      list: [
+        { id: 1 ,quem_sai: "Igor Santos", senha_quem_sai: "123456", quem_entra: "Lucas Santos",
+          senha_quem_entra: "654321", perfil_de_passagem: "padrao", lista_objetos:
+          [
+            { id: 1, categoria: "Controles", lista_itens:
+              [
+                { id: 1, descricao: "Academia", qtd: 2 }, { id: 2, descricao: "SPA", qtd: 3 }
+              ]
+            },
+            { id: 2, categoria: "Cameras", lista_itens:
+              [
+                { id: 4, descricao: "Portaria", qtd: 5 }, { id: 4, descricao: "Garagem", qtd: 4 }
+              ]
+            }
+          ], observacoes: "Deixo meu posto para sempre."
+        },
+        { id: 2 ,quem_sai: "Lucas Santos", senha_quem_sai: "654321", quem_entra: "Igor Santos",
+          senha_quem_entra: "123456", perfil_de_passagem: "padrao", lista_objetos:
+          [
+            { id: 3, categoria: "Controles", lista_itens:
+              [
+                { id: 5, descricao: "Academia", qtd: 2 }, { id: 6, descricao: "SPA", qtd: 3 }
+              ]
+            },
+            { id: 2, categoria: "Cameras", lista_itens:
+              [
+                { id: 7, descricao: "Portaria", qtd: 5 }, { id: 8, descricao: "Garagem", qtd: 4 }
+              ]
+            }
+          ], observacoes: "Deixo meu posto sem nenhuma informação importante."
+        }
+      ],
       with_settings: true,
       init: function(){
         params = {}
