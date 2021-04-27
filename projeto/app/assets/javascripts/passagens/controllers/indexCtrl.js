@@ -79,12 +79,16 @@ angular.module("myApp").lazy
               label: 'Sim',
               color: 'yellow',
               action: function() {
-                // Ação de excluir
+                vmIdx.listCtrl.execExcluirRegistro(passagem)
               }
             }
           ]
         })
-      }
+      },
+      execExcluirRegistro: function(passagem){
+        scTopMessages.openSuccess("Registro excluído com sucesso", {timeOut: 3000})
+        vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
+      }    
     }
 
     vmIdx.filtro = {

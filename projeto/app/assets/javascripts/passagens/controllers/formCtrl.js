@@ -14,20 +14,20 @@ angular.module('myApp').lazy
 
     vmForm.formCadastro = {
       save: function(passagem) {
-
-        if(!this.isNovo(passagem)) {
-          item = vmForm.formFactory.lista.getById(passagem.id)
-        }
-
-
-        angular.extend(item, vmForm.params)
-        vmForm.formFactory.close(item)
-        vmForm.params.opened = true
+        if(!this.isNovo(vmForm.params)) {
+          item = vmForm.formFactory.lista.getById(vmForm.params.id)
+          angular.extend(item, vmForm.params)
+          vmForm.formFactory.close(vmForm.params)
+          vmForm.params.opened = true
+        }        
       },
       isNovo: function(passagem) {
-        if (passagem.id) { return true }
-        vmForm.params.id = vmForm.formFactory.lista.length + 1
+        if (passagem.id) { return false }
+        vmForm.params.id += vmForm.formFactory.lista.length
         vmForm.formFactory.lista.unshift(vmForm.params)
+        vmForm.formFactory.close(vmForm.params)
+        vmForm.params.opened = true
+        return true
         // vmForm.indexFactory.itemCtrl.handleList(data.passagem, { unshift_if_new: true })
       }
     }
