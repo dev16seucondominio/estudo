@@ -6,7 +6,8 @@ angular.module('myApp').lazy
     vmShow.indexFactory = indexFactory
 
     vmShow.init = function(passagem){
-      vmShow.formFactory = new formFactory
+      passagem.formFactory = new formFactory()
+      vmShow.indexFactory.getCategoriaNome(passagem)
     }
 
     vmShow.accToggle = function(passagem) {
@@ -16,7 +17,8 @@ angular.module('myApp').lazy
 
     vmShow.formCtrl = {
       open: function(passagem) {
-        vmShow.formFactory.open(passagem)
+        passagem.opened = true
+        passagem.editing = true
       }
     }
 

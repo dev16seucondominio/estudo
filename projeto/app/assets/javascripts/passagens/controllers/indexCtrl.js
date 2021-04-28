@@ -8,12 +8,29 @@ angular.module("myApp").lazy
     vmIdx.formFactory  = undefined
     vmIdx.indexFactory = undefined
 
-    vmIdx.init = function(){
+    vmIdx.init = function(passagem){
       vmIdx.formFactory = new formFactory()
       vmIdx.listCtrl.init()
       vmIdx.formFactory.lista = vmIdx.listCtrl.list
       vmIdx.indexFactory = indexFactory
       vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
+      vmIdx.indexFactory.getCategoriaNome = getCategoriaNome
+    }
+
+    vmIdx.listaCategorias = [
+      {id: 1, descricao: "Controles"},
+      {id: 2, descricao: "Cameras"},
+      {id: 3, descricao: "Chaves"}
+    ]
+
+
+    // Eu salvo na passagem apenas o id ca categoria, essa função itera na lista de categorias e atribui os nomes.
+    getCategoriaNome = function(passagem) {
+      for (var i = 0; i < passagem.lista_objetos.length; i++) {
+        itemCategoria = vmIdx.listaCategorias.getById(passagem.lista_objetos[i].categoria_id)
+        if (!itemCategoria){ continue }
+        passagem.lista_objetos[i].categoria_descricao = itemCategoria.descricao
+      }
     }
 
     vmIdx.listCtrl = {
@@ -22,14 +39,14 @@ angular.module("myApp").lazy
         { id: 1 ,quem_sai: "Igor Santos", senha_quem_sai: "123456", quem_entra: "Lucas Santos",
           senha_quem_entra: "654321", perfil_de_passagem: "padrao", lista_objetos:
           [
-            { id: 1, categoria: "Controles", lista_itens:
+            { id: 1, categoria_id: 2, lista_itens:
               [
                 { id: 1, descricao: "Academia", qtd: 2 }, { id: 2, descricao: "SPA", qtd: 3 }
               ]
             },
-            { id: 2, categoria: "Cameras", lista_itens:
+            { id: 2, categoria_id: 3, lista_itens:
               [
-                { id: 4, descricao: "Portaria", qtd: 5 }, { id: 4, descricao: "Garagem", qtd: 4 }
+                { id: 1, descricao: "Portaria", qtd: 5 }, { id: 2, descricao: "Garagem", qtd: 4 }
               ]
             }
           ], observacoes: "Deixo meu posto para sempre."
@@ -37,14 +54,14 @@ angular.module("myApp").lazy
         { id: 2 ,quem_sai: "Lucas Santos", senha_quem_sai: "654321", quem_entra: "Igor Santos",
           senha_quem_entra: "123456", perfil_de_passagem: "padrao", lista_objetos:
           [
-            { id: 3, categoria: "Controles", lista_itens:
+            { id: 3, categoria_id: 1, lista_itens:
               [
-                { id: 5, descricao: "Academia", qtd: 2 }, { id: 6, descricao: "SPA", qtd: 3 }
+                { id: 1, descricao: "Academia", qtd: 2 }, { id: 2, descricao: "SPA", qtd: 3 }
               ]
             },
-            { id: 2, categoria: "Cameras", lista_itens:
+            { id: 4, categoria_id: 2, lista_itens:
               [
-                { id: 7, descricao: "Portaria", qtd: 5 }, { id: 8, descricao: "Garagem", qtd: 4 }
+                { id: 1, descricao: "Portaria", qtd: 5 }, { id: 2, descricao: "Garagem", qtd: 4 }
               ]
             }
           ], observacoes: "Deixo meu posto sem nenhuma informação importante."
@@ -85,10 +102,19 @@ angular.module("myApp").lazy
           ]
         })
       },
-      execExcluirRegistro: function(passagem){
+      execExcluirRegistro: function(passagem) {
         scTopMessages.openSuccess("Registro excluído com sucesso", {timeOut: 3000})
         vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
-      }    
+      },
+      duplicarRegistro: function(passagem) {
+        novaPassagem = angular.copy(passagem)
+        delete novaPassagem.id
+        delete novaPassagem.quem_entra
+        delete novaPassagem.quem_sai
+        delete novaPassagem.senha_quem_entra
+        delete novaPassagem.senha_quem_sai
+        vmIdx.formFactory.init(novaPassagem)
+      }
     }
 
     vmIdx.filtro = {
@@ -131,6 +157,8 @@ angular.module("myApp").lazy
           itemPassagem = this.get(item)
           if (!itemPassagem){
             if (opts.unshift_if_new){
+              item.id = vmIdx.listCtrl.list.length + 1
+              item.editing = false
               vmIdx.listCtrl.list.unshift(item)
             }
             continue

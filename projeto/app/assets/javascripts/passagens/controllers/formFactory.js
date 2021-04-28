@@ -8,26 +8,19 @@ angular.module('myApp').lazy
         lista: [ {passagem: {}} ],
 
         init: function(passagem) {
-          passagem.editing = true
-          passagem.opened = true
+          this.passagem = passagem
+          this.passagem.editing = true
+          this.passagem.opened = true
 
-          if(passagem.id) {
-            this.new_record = false
-          } else {
-            this.new_record = true
-            passagem = {}
-          }
+          this.passagem.id ? this.new_record = false : this.new_record = true
         },
-        open: function(passagem) {
-          passagem.opened = true
-          passagem.editing = true
-          this.opened = true
-          this.new_record = false
-        },
-        close: function(passagem) {
-          passagem.editing = false
+        close: function() {
+          console.log(this)
+          this.passagem.editing = false
+          this.passagem.opened = true
           this.opened = false
           this.new_record = false
+          this.passagem = {}
         }
 
       }

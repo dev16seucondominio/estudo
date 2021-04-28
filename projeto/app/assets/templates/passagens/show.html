@@ -47,14 +47,14 @@
 
     <div class="sc-fieldset sc-bg-white fcol-xs-100 flex-row sc-p-xl">
       <div class="sc-text-gray-dark fcol-xs-100 sc-p-sm">Eu,
-        <span class="sc-label"> Igor Santos e Silva</span>
-          passo o posto de serviço para o(a),
+        <span class="sc-label"> {{passagem.quem_sai}}</span>
+          passo o posto de serviço para o(a), {{passagem.quem_entra}}
         <span class="sc-label"> </span>
           de acordo com as informações abaixo:
       </div>
 
-      <div class="fcol-xs-100 sc-p-h-o sc-p-b-o">
-        <div class="sc-label sc-text-lg sc-m-l-xs">Resumo Portaria</div>
+      <div class="fcol-xs-100 sc-p-h-o sc-p-b-o" ng-repeat="listObj in passagem.lista_objetos track by listObj.id">
+        <div class="sc-label sc-text-lg sc-m-l-xs">{{listObj.categoria_descricao}}</div>
         <table class="sc-table sc-fieldset" style="width:100%">
           <thead>
             <tr>
@@ -69,17 +69,17 @@
           </thead>
           <tbody>
             <!-- repeat -->
-            <tr>
+            <tr ng-repeat="item in listObj.lista_itens track by item.id">
               <td style="width:4%">
                 <i class="sc-icon sc-icon-menos-1 sc-text-gray"
                   ng-class="item.executado ? 'sc-icon-visto-1 sc-text-green' : 'sc-icon-menos-1 sc-text-gray'">
                 </i>
               </td>
               <td>
-                <div class="sc-text-black"> Relatório de Passagem</div>
+                <div class="sc-text-black">{{item.descricao}}</div>
               </td>
               <td class="align-right">
-                <div class="sc-text-gray-darker"> 1</div>
+                <div class="sc-text-gray-darker">{{item.qtd}}</div>
               </td>
             </tr>
           </tbody>
@@ -93,7 +93,7 @@
       </div>
       <div class="sc-text-black col-xs-12 sc-bg-white">
         <div>
-          Eu, sai correndo e não tive tempo de conferir todas as coisas.
+          {{passagem.observacoes}}
         </div>
       </div>
     </div>

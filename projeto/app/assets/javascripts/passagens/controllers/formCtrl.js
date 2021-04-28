@@ -5,30 +5,26 @@ angular.module('myApp').lazy
 
     vmForm.indexFactory = indexFactory
 
-    vmForm.init = function(passagem, baseFact){
-      vmForm.formFactory = baseFact
-      vmForm.params = angular.copy(passagem || {})
-      console.log(vmForm.params)
+    vmForm.init = function(baseFact){
+      baseFact.params = angular.copy(baseFact.passagem || {})
     }
 
 
     vmForm.formCadastro = {
-      save: function(passagem) {
-        if(!this.isNovo(vmForm.params)) {
-          item = vmForm.formFactory.lista.getById(vmForm.params.id)
-          angular.extend(item, vmForm.params)
-          vmForm.formFactory.close(vmForm.params)
-          vmForm.params.opened = true
-        }        
+      save: function(baseFact) {
+        this.isNovo(baseFact)
+        vmForm.indexFactory.itemCtrl.handleList(baseFact.params, opts)
+        baseFact.close()
+
       },
-      isNovo: function(passagem) {
-        if (passagem.id) { return false }
-        vmForm.params.id += vmForm.formFactory.lista.length
-        vmForm.formFactory.lista.unshift(vmForm.params)
-        vmForm.formFactory.close(vmForm.params)
-        vmForm.params.opened = true
-        return true
-        // vmForm.indexFactory.itemCtrl.handleList(data.passagem, { unshift_if_new: true })
+      isNovo: function(baseFact) {
+        baseFact.params.id ? opts = { unshift_if_new: false } : opts = { unshift_if_new: true }
+      },
+      addListaObj: function(baseFact) {
+        baseFact.params.lista_objetos.push({lista_itens: []})
+      },
+      addItem: function(listObj) {
+        listObj.lista_itens.push({})
       }
     }
 

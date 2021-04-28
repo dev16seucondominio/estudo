@@ -22,14 +22,14 @@
 
       <!-- FORM DE NOVA PASSAGEM -->
       <li ng-if="PassagensCtrl.formFactory.new_record" class="sc-acc-blue">
-        <div class="sc-accordion-head flex-row" ng-click="PassagensCtrl.formFactory.close(passagem)">
+        <div class="sc-accordion-head flex-row" ng-click="PassagensCtrl.formFactory.close()">
           <div class="fcol-xs-2em">
             <i class="sc-icon sc-icon-mais-1"></i>
           </div>
           <div class="sc-text-bold">Nova Passagem</div>
         </div>
         <div class="sc-accordion-body">
-          <div ng-include="PassagensCtrl.templates.passagens.form"></div>
+          <div ng-include="PassagensCtrl.templates.passagens.form" ng-init="baseFact = PassagensCtrl.formFactory"></div>
         </div>
       </li>
 
@@ -114,7 +114,7 @@
                       <i class="sc-icon-lapis"></i> Editar
                     </span>
                   </li>
-                  <li sc-dropdown-close-menu="">
+                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.listCtrl.duplicarRegistro(passagem)">
                     <span>
                       <i class="sc-icon sc-icon-mais-4"></i> Duplicar
                     </span>
@@ -142,7 +142,9 @@
           </div>
           <!-- EDIÇÃO -->
           <div ng-if="passagem.editing">
-            <div ng-include="PassagensCtrl.templates.passagens.form"></div>
+            <div ng-include="PassagensCtrl.templates.passagens.form"
+              ng-init="passagem.formFactory.init(passagem); baseFact = passagem.formFactory">
+            </div>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 <div ng-controller="PassagensFormCtrl as PassagensFormCtrl"
-  ng-init="PassagensFormCtrl.init(passagem, PassagensCtrl.formFactory)">
+  ng-init="PassagensFormCtrl.init(baseFact)">
 
-  <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="PassagensFormCtrl.formCadastro.save(passagem)">
+  <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="PassagensFormCtrl.formCadastro.save(baseFact)">
     <div class="sc-fieldset flex-row fcol-xs-100">
       <!-- Aviso de segurança -->
       <div class="fcol-xs-100 sc-bg-yellow-lighter">
@@ -25,7 +25,7 @@
           <div class="sc-label">Quem sai</div>
           <div class="sc-input-group">
             <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
-              ng-model="PassagensFormCtrl.params.quem_sai">
+              ng-model="baseFact.params.quem_sai">
             <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
           </div>
         </div>
@@ -33,7 +33,7 @@
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default sc-input-block" type="text" ng-model="PassagensFormCtrl.params.senha_quem_sai">
+        <input class="sc-input-default sc-input-block" type="text" ng-model="baseFact.params.senha_quem_sai">
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
@@ -41,7 +41,7 @@
           <div class="sc-label">Quem entra</div>
           <div class="sc-input-group">
             <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
-              ng-model="PassagensFormCtrl.params.quem_entra">
+              ng-model="baseFact.params.quem_entra">
             <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
           </div>
         </div>
@@ -49,7 +49,7 @@
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default sc-input-block" type="text" ng-model="PassagensFormCtrl.params.senha_quem_entra">
+        <input class="sc-input-default sc-input-block" type="text" ng-model="baseFact.params.senha_quem_entra">
       </div>
 
       <div class="clear sc-p-o"></div>
@@ -72,7 +72,7 @@
     <div class="sc-fieldset flex-row fcol-xs-100 clear">
       <div class="sc-label sc-p-b-xs clear">Observações:</div>
       <div class="fcol-xs-100 sc-p-t-o">
-        <textarea class="sc-input-default sc-input-block fcol-xs-100"></textarea>
+        <textarea ng-model="baseFact.params.observacoes" class="sc-input-default sc-input-block fcol-xs-100"></textarea>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
         Salvar
       </button>
       <button class="sc-btn sc-btn-red sc-btn-block-only-xs" type="button"
-        ng-click="PassagensFormCtrl.formFactory.close(passagem)">
+        ng-click="baseFact.close()">
         Cancelar
       </button>
     </div>
