@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_140757) do
+ActiveRecord::Schema.define(version: 2021_04_30_201835) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bancos", force: :cascade do |t|
     t.integer "codigo"
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_140757) do
     t.string "periodo"
     t.integer "frequencia"
     t.boolean "depois_do_vencimento"
-    t.integer "pagador_id"
+    t.bigint "pagador_id"
     t.string "clientes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -40,8 +43,8 @@ ActiveRecord::Schema.define(version: 2021_04_12_140757) do
     t.boolean "principal"
     t.string "dv_agencia"
     t.string "dv_conta"
-    t.integer "pagador_id"
-    t.integer "banco_id"
+    t.bigint "pagador_id"
+    t.bigint "banco_id"
     t.boolean "juridica"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -57,7 +60,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_140757) do
     t.string "logradouro"
     t.string "complemento"
     t.string "bairro"
-    t.integer "pagador_id"
+    t.bigint "pagador_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pagador_id"], name: "index_enderecos_on_pagador_id"
@@ -84,11 +87,16 @@ ActiveRecord::Schema.define(version: 2021_04_12_140757) do
     t.string "contato"
   end
 
+  create_table "passagem_servicos", force: :cascade do |t|
+    t.string "status"
+    t.text "obervacoes"
+  end
+
   create_table "perfil_pagamentos", force: :cascade do |t|
     t.string "operacao"
     t.string "plano_de_contas"
     t.string "fundo"
-    t.integer "pagador_id"
+    t.bigint "pagador_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pagador_id"], name: "index_perfil_pagamentos_on_pagador_id"
@@ -104,7 +112,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_140757) do
     t.string "periodo"
     t.string "ultimo_reajuste"
     t.boolean "notificar"
-    t.integer "pagador_id"
+    t.bigint "pagador_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pagador_id"], name: "index_reajuste_contratuals_on_pagador_id"
