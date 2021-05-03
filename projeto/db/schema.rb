@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_201835) do
+ActiveRecord::Schema.define(version: 2021_04_30_205215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,9 +87,20 @@ ActiveRecord::Schema.define(version: 2021_04_30_201835) do
     t.string "contato"
   end
 
+  create_table "passagem_servico_objeto_categorias", force: :cascade do |t|
+    t.string "nome"
+  end
+
+  create_table "passagem_servico_objetos", force: :cascade do |t|
+    t.jsonb "itens"
+    t.integer "passagem_servico_objetos_categoria_id"
+  end
+
   create_table "passagem_servicos", force: :cascade do |t|
     t.string "status"
-    t.text "obervacoes"
+    t.text "observacoes"
+    t.integer "user_entrou_id"
+    t.integer "user_saiu_id"
   end
 
   create_table "perfil_pagamentos", force: :cascade do |t|
@@ -116,6 +127,12 @@ ActiveRecord::Schema.define(version: 2021_04_30_201835) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pagador_id"], name: "index_reajuste_contratuals_on_pagador_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "senha"
+    t.string "nome"
+    t.string "email"
   end
 
   add_foreign_key "bloquear_clientes", "pagadors"

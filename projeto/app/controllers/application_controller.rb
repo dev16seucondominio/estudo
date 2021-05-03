@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def load_paths
-		Dir["#{Rails.root}/app/services/*"].each{ |file| require file }
+		Dir["#{Rails.root}/app/services/*/*"].each{ |file| require file }
 	end
 
   def params_to_hash(val)

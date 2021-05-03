@@ -4,7 +4,7 @@ angular.module('myApp').lazy
   ($resource) ->
     encapsulateData = (data)-> JSON.stringify { passagem: data }
 
-    $resource 'http://localhost:3000/passagem/:id.json', { id: "@id" },
+    $resource 'http://localhost:3000/passagens/:id.json', { id: "@id" },
       list:
         method: 'GET'
       show:
@@ -12,7 +12,7 @@ angular.module('myApp').lazy
 
       save:
         method: 'POST'
-        url: 'http://localhost:3000/passagem/save.json'
+        url: 'http://localhost:3000/passagens/save.json'
         transformRequest: encapsulateData
 
       destroy:
