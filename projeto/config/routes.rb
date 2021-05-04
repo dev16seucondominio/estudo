@@ -3,20 +3,18 @@ Rails.application.routes.draw do
 
   root 'site#index'
 
-  #  esse aqui eh parceiro da resource, mas ja no server side... aqui vc define as rotas esperadas pelo servidor, usando as mesmas keys q vc usar no resource.coffee
-                              # index = list
+  namespace :administrativo do
+    resources :passagens, only: [:index, :show, :destroy] do
+      collection do
+        post :save
+      end
+    end
+  end
+
   resources :pagadores, only: [:index, :show, :destroy] do
   	collection do
 	    post :save
 	  end
 	end
-
-  resources :passagens, only: [:index, :show, :destroy] do
-    collection do
-      post :save
-    end
-  end
-
-
 
 end

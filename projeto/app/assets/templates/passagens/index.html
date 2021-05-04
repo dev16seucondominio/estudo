@@ -72,7 +72,7 @@
           </div>
 
           <div class="fcol-xs-7em hidden-xs align-center sc-p-sm">
-            <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm sc-bg-yellow">Pendente</span>
+            <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm sc-bg-yellow">{{passagem.status}}</span>
           </div>
 
           <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
@@ -91,7 +91,7 @@
 
           <div class="fcol-xs-7em fcol-order-3 sc-p-sm"
             ng-class="{'sc-text-white': passagem.opened }">
-            23/04/2021
+            {{passagem.created_at | date:"dd/MM/yyyy"}}
           </div>
 
           <div class="fcol-xs-7em fcol-order-4 visible-xs sc-p-sm"></div>

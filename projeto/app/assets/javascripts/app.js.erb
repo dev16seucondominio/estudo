@@ -67,9 +67,7 @@ app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.common
 
   $routeProvider.when('/pagadores', objPagadores)
 
-  // routeProvider, batendo e listando as rotas (urls) do projeto.
-  // como vc pd ver, eh um switch case, q espera por uma rota e retorna um obj de "config"
-  $routeProvider.when('/passagens', {
+  $routeProvider.when('/administrativo/passagens', {
     templateUrl: "<%= asset_path('passagens/index.html') %>",
     resolve: carregarFiles({
       js: [
@@ -83,9 +81,6 @@ app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngSanitize', 'sc.common
       ]
     })
   })
-
-  // qnd bate na rota "/", carrega o objPagadores
-  // recaptulando... qnd bate na rota acima, chama o obj default
 
   $routeProvider.otherwise(objPagadores);
 

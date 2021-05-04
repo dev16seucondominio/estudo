@@ -15,6 +15,28 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "administrativo_passagem_servico_objeto_categorias", force: :cascade do |t|
+    t.string "nome"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "administrativo_passagem_servico_objetos", force: :cascade do |t|
+    t.jsonb "itens"
+    t.integer "administrativo_passagem_servico_objetos_categoria_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "administrativo_passagem_servicos", force: :cascade do |t|
+    t.string "status"
+    t.text "observacoes"
+    t.integer "user_entrou_id"
+    t.integer "user_saiu_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "bancos", force: :cascade do |t|
     t.integer "codigo"
     t.string "nome"
@@ -87,22 +109,6 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
     t.string "contato"
   end
 
-  create_table "passagem_servico_objeto_categorias", force: :cascade do |t|
-    t.string "nome"
-  end
-
-  create_table "passagem_servico_objetos", force: :cascade do |t|
-    t.jsonb "itens"
-    t.integer "passagem_servico_objetos_categoria_id"
-  end
-
-  create_table "passagem_servicos", force: :cascade do |t|
-    t.string "status"
-    t.text "observacoes"
-    t.integer "user_entrou_id"
-    t.integer "user_saiu_id"
-  end
-
   create_table "perfil_pagamentos", force: :cascade do |t|
     t.string "operacao"
     t.string "plano_de_contas"
@@ -133,6 +139,8 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
     t.string "senha"
     t.string "nome"
     t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "bloquear_clientes", "pagadors"

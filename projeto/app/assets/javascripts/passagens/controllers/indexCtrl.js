@@ -15,15 +15,8 @@ angular.module("myApp").lazy
         vmIdx.formFactory.lista = vmIdx.listCtrl.list
         vmIdx.indexFactory = indexFactory
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
-        vmIdx.indexFactory.getCategoriaNome = getCategoriaNome
+        // vmIdx.indexFactory.getCategoriaNome = getCategoriaNome
       }
-
-
-      vmIdx.listaCategorias = [
-        {id: 1, descricao: "Controles"},
-        {id: 2, descricao: "Cameras"},
-        {id: 3, descricao: "Chaves"}
-      ]
 
       // Eu salvo na passagem apenas o id ca categoria, essa função itera na lista de categorias e atribui os nomes.
       getCategoriaNome = function(passagem) {
@@ -36,38 +29,7 @@ angular.module("myApp").lazy
 
       vmIdx.listCtrl = {
         carregando: false,
-        list: [
-          { id: 1 ,quem_sai: "Igor Santos", senha_quem_sai: "123456", quem_entra: "Lucas Santos",
-            senha_quem_entra: "654321", perfil_de_passagem: "padrao", lista_objetos:
-            [
-              { id: 1, categoria_id: 2, lista_itens:
-                [
-                  { id: 1, descricao: "Academia", qtd: 2 }, { id: 2, descricao: "SPA", qtd: 3 }
-                ]
-              },
-              { id: 2, categoria_id: 3, lista_itens:
-                [
-                  { id: 1, descricao: "Portaria", qtd: 5 }, { id: 2, descricao: "Garagem", qtd: 4 }
-                ]
-              }
-            ], observacoes: "Deixo meu posto para sempre."
-          },
-          { id: 2 ,quem_sai: "Lucas Santos", senha_quem_sai: "654321", quem_entra: "Igor Santos",
-            senha_quem_entra: "123456", perfil_de_passagem: "padrao", lista_objetos:
-            [
-              { id: 3, categoria_id: 1, lista_itens:
-                [
-                  { id: 1, descricao: "Academia", qtd: 2 }, { id: 2, descricao: "SPA", qtd: 3 }
-                ]
-              },
-              { id: 4, categoria_id: 2, lista_itens:
-                [
-                  { id: 1, descricao: "Portaria", qtd: 5 }, { id: 2, descricao: "Garagem", qtd: 4 }
-                ]
-              }
-            ], observacoes: "Deixo meu posto sem nenhuma informação importante."
-          }
-        ],
+        list: [],
         with_settings: true,
         init: function(){
           params = {}
@@ -86,6 +48,7 @@ angular.module("myApp").lazy
 
           Passagem.list(params,
             function(data) {
+              console.log(data)
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
               console.log("Pode ter acontecido algum erro.", response)
@@ -113,8 +76,16 @@ angular.module("myApp").lazy
           })
         },
         execExcluirRegistro: function(passagem) {
-          scTopMessages.openSuccess("Registro excluído com sucesso", {timeOut: 3000})
-          vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
+          console.log(passagem)
+          Passagem.destroy(passagem, 
+            function(data) {
+              console.log("deu bão")
+              scTopMessages.openSuccess("Registro excluído com sucesso", {timeOut: 3000})
+              vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
+            }, function(response) {
+              console.log("deu ruim")
+            }
+          )
         },
         duplicarRegistro: function(passagem) {
           novaPassagem = angular.copy(passagem)
@@ -167,7 +138,6 @@ angular.module("myApp").lazy
             itemPassagem = this.get(item)
             if (!itemPassagem){
               if (opts.unshift_if_new){
-                item.id = vmIdx.listCtrl.list.length + 1
                 item.editing = false
                 vmIdx.listCtrl.list.unshift(item)
               }

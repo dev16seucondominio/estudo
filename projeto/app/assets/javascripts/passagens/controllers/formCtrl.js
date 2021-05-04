@@ -1,6 +1,7 @@
 angular.module('myApp').lazy
 .controller("PassagensFormCtrl", [
-  "indexFactory", "scAlert", "scTopMessages", function(indexFactory, scAlert, scTopMessages) {
+  "indexFactory", "scAlert", "scTopMessages", "Passagem", 
+    function(indexFactory, scAlert, scTopMessages, Passagem) {
     vmForm = this
 
     vmForm.indexFactory = indexFactory
@@ -13,7 +14,14 @@ angular.module('myApp').lazy
     vmForm.formCadastro = {
       save: function(baseFact) {
         this.isNovo(baseFact)
-        vmForm.indexFactory.itemCtrl.handleList(baseFact.params, opts)
+        Passagem.save(baseFact.params, 
+          function(data) {
+            console.log("Deu bão")
+            vmForm.indexFactory.itemCtrl.handleList(baseFact.params, opts)
+          }, function(response) {
+            console.log("Deu erro")
+          }
+        )
         baseFact.close()
 
       },
