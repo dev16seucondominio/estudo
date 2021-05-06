@@ -14,7 +14,7 @@
         </div>
         <div class="sc-text-gray sc-p-b-sm">Data cadastro:
           <span class="sc-text-blue">
-            {{passagem.created_at | date:"dd/MM/yyyy"}}, às {{passagem.created_at | date:"HH:mm:ss"}}
+            {{passagem.criado_em | date:"dd/MM/yyyy"}}, às {{passagem.criado_em | date:"HH:mm:ss"}}
           </span>
         </div>
         <div class="flex-row sc-m-b-sm">
@@ -54,7 +54,7 @@
       </div>
 
       <div class="fcol-xs-100 sc-p-h-o sc-p-b-o" ng-repeat="listObj in passagem.lista_objetos track by listObj.id">
-        <div class="sc-label sc-text-lg sc-m-l-xs">{{listObj.categoria_descricao}}</div>
+        <div class="sc-label sc-text-lg sc-m-l-xs">{{listObj.categoria.nome}}</div>
         <table class="sc-table sc-fieldset" style="width:100%">
           <thead>
             <tr>
@@ -69,7 +69,7 @@
           </thead>
           <tbody>
             <!-- repeat -->
-            <tr ng-repeat="item in listObj.lista_itens track by item.id">
+            <tr ng-repeat="item in listObj.itens">
               <td style="width:4%">
                 <i class="sc-icon sc-icon-menos-1 sc-text-gray"
                   ng-class="item.executado ? 'sc-icon-visto-1 sc-text-green' : 'sc-icon-menos-1 sc-text-gray'">

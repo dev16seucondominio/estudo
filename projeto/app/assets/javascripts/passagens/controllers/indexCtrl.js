@@ -15,7 +15,6 @@ angular.module("myApp").lazy
         vmIdx.formFactory.lista = vmIdx.listCtrl.list
         vmIdx.indexFactory = indexFactory
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
-        // vmIdx.indexFactory.getCategoriaNome = getCategoriaNome
       }
 
       // Eu salvo na passagem apenas o id ca categoria, essa função itera na lista de categorias e atribui os nomes.
@@ -49,6 +48,7 @@ angular.module("myApp").lazy
           Passagem.list(params,
             function(data) {
               console.log(data)
+              loadSettings(data)
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
               console.log("Pode ter acontecido algum erro.", response)
@@ -79,11 +79,10 @@ angular.module("myApp").lazy
           console.log(passagem)
           Passagem.destroy(passagem, 
             function(data) {
-              console.log("deu bão")
-              scTopMessages.openSuccess("Registro excluído com sucesso", {timeOut: 3000})
+              scTopMessages.openSuccess(data.msg, {timeOut: 3000})
               vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
             }, function(response) {
-              console.log("deu ruim")
+
             }
           )
         },
@@ -153,10 +152,9 @@ angular.module("myApp").lazy
 
       // Settings
       loadSettings = function(data){
-        vmIdx.settings = data.settings
+        vmIdx.settings = data.settings.passagens
+        vmIdx.settings = vmIdx.settings
         vmIdx.indexFactory.settings = vmIdx.settings
-
-        vmIdx.filtro.init()
       }
 
       return vmIdx

@@ -24,8 +24,8 @@
             <div class="sc-label">Categoria:</div>
             <div class="sc-input-group">
               <select class="sc-input-default sc-input-block"
-                ng-options="categoria.id as categoria.descricao for categoria in PassagensCtrl.listaCategorias"
-                ng-model="listObj.categoria_id">
+                ng-options="categoria.id as categoria.nome for categoria in PassagensCtrl.settings.lista_categorias"
+                ng-model="listObj.categoria.id">
                 <option value selected="selected">Selecione</option>
               </select>
               <span class="sc-dropdown pull-right">
@@ -73,7 +73,7 @@
               <input class="sc-checkbox sc-checkbox-green" type="checkbox">
             </div>
           </li>
-          <li class="flex-row sc-p-b-md" ng-repeat="item in listObj.lista_itens">
+          <li class="flex-row sc-p-b-md" ng-repeat="item in listObj.itens">
             <div class="fcol-xs-3em align-self-center sc-m-l-sm" style="top: 8px">
               <div class="sc-label">
                 <input class="sc-checkbox sc-checkbox-green" type="checkbox">

@@ -15,7 +15,6 @@ angular.module('myApp').lazy
           this.passagem.id ? this.new_record = false : this.new_record = true
         },
         close: function() {
-          console.log(this)
           this.passagem.editing = false
           this.passagem.opened = true
           this.opened = false

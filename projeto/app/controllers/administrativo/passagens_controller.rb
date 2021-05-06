@@ -20,6 +20,7 @@ class Administrativo::PassagensController < ApplicationController
 
 		case status
 		when :success then render json: resp, status: :ok
+		when :not_found then render json: { errors: resp }, status: :not_found
 		end
 	end
 
@@ -32,8 +33,8 @@ class Administrativo::PassagensController < ApplicationController
 	end
 
 	def params_passagem
-		attrs = [:passagem, :id]
-
+		attrs = [:passagem, :id, :observacoes, :status, :lista_objetos]
+		attrs << {lista_objetos: [:id, :itens, :categoria]}
 		resp = {}
 
 		resp[:passagem] = params.require(:passagem).permit(attrs)

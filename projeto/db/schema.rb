@@ -17,15 +17,12 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
 
   create_table "administrativo_passagem_servico_objeto_categorias", force: :cascade do |t|
     t.string "nome"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "administrativo_passagem_servico_objetos", force: :cascade do |t|
-    t.jsonb "itens"
-    t.integer "administrativo_passagem_servico_objetos_categoria_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "itens", default: []
+    t.integer "administrativo_passagem_servico_objeto_categoria_id"
+    t.integer "administrativo_passagem_servico_id"
   end
 
   create_table "administrativo_passagem_servicos", force: :cascade do |t|

@@ -13,6 +13,7 @@ angular.module('myApp').lazy
 
     vmForm.formCadastro = {
       save: function(baseFact) {
+        console.log(baseFact.params)
         this.isNovo(baseFact)
         Passagem.save(baseFact.params, 
           function(data) {
@@ -29,10 +30,14 @@ angular.module('myApp').lazy
         baseFact.params.id ? opts = { unshift_if_new: false } : opts = { unshift_if_new: true }
       },
       addListaObj: function(baseFact) {
-        baseFact.params.lista_objetos.push({lista_itens: []})
+        if(baseFact.params.lista_objetos) {
+          baseFact.params.lista_objetos.push({itens: []})
+        } else {
+          baseFact.params = {lista_objetos: [{itens: []} ]}
+        }
       },
       addItem: function(listObj) {
-        listObj.lista_itens.push({})
+        listObj.itens.push({})
       }
     }
 
