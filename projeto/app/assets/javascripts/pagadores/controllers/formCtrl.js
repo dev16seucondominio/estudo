@@ -60,7 +60,7 @@ angular.module('myApp').lazy
 
             baseFact.close()
           }, function(response){
-            console.log(response)
+            console.log(response.data)
             scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
           }
         )

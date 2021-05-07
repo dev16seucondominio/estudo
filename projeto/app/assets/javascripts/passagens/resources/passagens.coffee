@@ -1,6 +1,7 @@
 angular.module('myApp').lazy
 .factory 'Passagem', [
   '$resource'
+
   ($resource) ->
     encapsulateData = (data)-> JSON.stringify { passagem: data }
 

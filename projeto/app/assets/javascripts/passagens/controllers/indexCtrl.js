@@ -1,6 +1,6 @@
-angular.module("myApp").lazy
-.controller("PassagensCtrl", [
-  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Passagem",
+(function() {
+  angular.module("myApp").lazy.controller("PassagensCtrl", [
+    "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Passagem",
       function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Passagem) {
       vmIdx = this
 
@@ -15,15 +15,6 @@ angular.module("myApp").lazy
         vmIdx.formFactory.lista = vmIdx.listCtrl.list
         vmIdx.indexFactory = indexFactory
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
-      }
-
-      // Eu salvo na passagem apenas o id ca categoria, essa função itera na lista de categorias e atribui os nomes.
-      getCategoriaNome = function(passagem) {
-        for (var i = 0; i < passagem.lista_objetos.length; i++) {
-          itemCategoria = vmIdx.listaCategorias.getById(passagem.lista_objetos[i].categoria_id)
-          if (!itemCategoria){ continue }
-          passagem.lista_objetos[i].categoria_descricao = itemCategoria.descricao
-        }
       }
 
       vmIdx.listCtrl = {
@@ -47,7 +38,6 @@ angular.module("myApp").lazy
 
           Passagem.list(params,
             function(data) {
-              console.log(data)
               loadSettings(data)
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
@@ -77,7 +67,7 @@ angular.module("myApp").lazy
         },
         execExcluirRegistro: function(passagem) {
           console.log(passagem)
-          Passagem.destroy(passagem, 
+          Passagem.destroy(passagem,
             function(data) {
               scTopMessages.openSuccess(data.msg, {timeOut: 3000})
               vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
@@ -162,3 +152,4 @@ angular.module("myApp").lazy
     }
   ]
 )
+}).call(this);

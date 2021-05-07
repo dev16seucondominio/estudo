@@ -1,0 +1,44 @@
+<div ng-if="novaCategoria.isOn">
+  <div class="sc-input-group">
+    <input class="sc-input-default sc-input-block" type="text">
+    <i class="sc-btn sc-btn-red sc-icon sc-icon-fechar-1"></i>
+    <i class="sc-btn sc-btn-green sc-icon sc-icon-visto-1"></i>
+  </div>
+</div>
+
+<div class="sc-input-group" ng-if="!novaCategoria.isOn">
+  <select class="sc-input-default sc-input-block"
+    ng-options="categoria.id as categoria.nome for categoria in PassagensCtrl.settings.lista_categorias"
+    ng-model="listObj.administrativo_passagem_servico_objeto_categoria_id">
+    <option value selected="selected">Selecione</option>
+  </select>
+  <span class="sc-dropdown pull-right">
+    <div>
+      <i class="sc-icon-reticiencias-v sc-btn" style="border-radius: 0px 0.3em 0.3em 0px;"
+        ng-click="menu_categoria.isOn = !menu_categoria.isOn"
+        ng-class="{'sc-btn-gray':menu_categoria.isOn}">
+      </i>
+    </div>
+    <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_categoria.isOn">
+      <li>
+        <a ng-click="novaCategoria.isOn = !novaCategoria.isOn">
+          <i class="sc-icon sc-icon-mais-1 sc-text-green"></i>
+          Nova Categoria
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="sc-icon sc-icon-lapis sc-text-yellow"></i>
+          Editar
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="sc-icon sc-icon-lixeira-1 sc-text-red"></i>
+          Excluir
+        </a>
+      </li>
+    </ul>
+  </span>
+
+</div>
