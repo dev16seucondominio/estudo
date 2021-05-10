@@ -11,8 +11,8 @@ class Administrativo::PassagemServico < ApplicationRecord
     attrs = {}
     attrs[:id] = id
     attrs[:status] = status
-    attrs[:user_entrou] = user_entrou_id
-    attrs[:user_saiu] = user_saiu_id
+    attrs[:user_saiu] = load_user_obj(user_saiu_id)
+    attrs[:user_entrou] = load_user_obj(user_entrou_id)
     attrs[:criado_em] = created_at
     attrs
   end
@@ -20,9 +20,28 @@ class Administrativo::PassagemServico < ApplicationRecord
   def to_frontend_obj
     attrs = slim_obj
     attrs[:atualizado_em] = updated_at
+    attrs[:observacoes] = observacoes
     attrs[:objetos] = objetos.map(&:to_frontend_obj)
     attrs
   end
 
+  def to_obj
+    attrs = {}
+    attrs[:id] = id
+    attrs[:nome] = nome
+    attrs[:email] = email
+    attrs
+  end
+
+  def load_user_obj(user_id)
+    if user_id.present?
+      user = User.find(user_id)
+      user.to_frontend_obj
+    else
+      return
+    end
+
+    user
+  end
 
 end

@@ -8,7 +8,6 @@
 
       vmShow.init = function(passagem){
         passagem.formFactory = new formFactory()
-        // vmShow.indexFactory.getCategoriaNome(passagem)
       }
 
       vmShow.accToggle = function(passagem) {

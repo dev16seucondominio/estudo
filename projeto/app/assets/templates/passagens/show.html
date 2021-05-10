@@ -5,12 +5,17 @@
       <div class="fcol-xs-100 sc-p-b-o sc-m-b-md">
         <div class="sc-text-gray sc-p-b-sm">Quem sai:
           <span class="sc-text-blue">
-            {{passagem.quem_sai}}
+            {{passagem.user_saiu.nome}}
+          </span>
+        </div>
+        <div class="sc-text-gray sc-p-b-sm">Quem entra:
+          <span class="sc-text-blue">
+            {{passagem.user_entrou.nome}}
           </span>
         </div>
         <div class="sc-text-gray sc-p-b-sm">Cadastrado por:
           <span class="sc-text-blue">
-            Igor Santos</span>
+            Igor Santos</span> <!-- {{user.current}}  -->
         </div>
         <div class="sc-text-gray sc-p-b-sm">Data cadastro:
           <span class="sc-text-blue">
@@ -47,8 +52,8 @@
 
     <div class="sc-fieldset sc-bg-white fcol-xs-100 flex-row sc-p-xl">
       <div class="sc-text-gray-dark fcol-xs-100 sc-p-sm">Eu,
-        <span class="sc-label"> {{passagem.quem_sai}}</span>
-          passo o posto de serviço para o(a), {{passagem.quem_entra}}
+        <span class="sc-label"> {{passagem.user_saiu.nome}}</span>
+          passo o posto de serviço para o(a), {{passagem.user_entrou.nome}}
         <span class="sc-label"> </span>
           de acordo com as informações abaixo:
       </div>
@@ -68,7 +73,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- repeat -->
             <tr ng-repeat="item in listObj.itens">
               <td style="width:4%">
                 <i class="sc-icon sc-icon-menos-1 sc-text-gray"

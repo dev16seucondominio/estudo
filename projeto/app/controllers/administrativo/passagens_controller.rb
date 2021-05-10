@@ -34,8 +34,9 @@ class Administrativo::PassagensController < ApplicationController
 	end
 
 	def params_passagem
-		attrs = [:passagem, :id, :observacoes, :status, :objetos]
-    attrs << {objetos: [:id, :administrativo_passagem_servico_objeto_categoria_id, :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]}
+		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id]
+    attrs << {objetos: [:id, :administrativo_passagem_servico_objeto_categoria_id,
+      :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]}
 
 		resp = {}
 

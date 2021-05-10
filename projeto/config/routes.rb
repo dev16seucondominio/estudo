@@ -11,6 +11,14 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :administrativo do
+    resources :categorias, only: [:index, :show, :destroy] do
+      collection do
+        post :save
+      end
+    end
+  end
+
   resources :pagadores, only: [:index, :show, :destroy] do
   	collection do
 	    post :save

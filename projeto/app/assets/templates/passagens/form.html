@@ -21,14 +21,22 @@
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
-        <div sc-dropdown-menu>
-          <div class="sc-label">Quem sai</div>
+       <div class="sc-label">Quem sai</div>
+        <span sc-dropdown-menu="" class="sc-dropdown">
           <div class="sc-input-group">
-            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
-              ng-model="baseFact.params.quem_sai">
-            <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
+            <input ng-model="baseFact.params.user_saiu.nome" ng-click="PassagensFormCtrl.formUser.toggleUserSai()"
+              class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
+            <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
           </div>
-        </div>
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensFormCtrl.menu_quem_sai.isOn">
+            <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+              <li ng-click="PassagensFormCtrl.formUser.setUserSai(baseFact, user); vmForm.menu_quem_sai "
+                ng-repeat="user in PassagensFormCtrl.indexFactory.settings.usuarios">
+                <span>{{user.nome}}</span>
+              </li>
+            </div>
+          </ul>
+        </span>
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
@@ -37,14 +45,22 @@
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">
-        <div sc-dropdown-menu>
-          <div class="sc-label">Quem entra</div>
+       <div class="sc-label">Quem entra</div>
+        <span sc-dropdown-menu="" class="sc-dropdown">
           <div class="sc-input-group">
-            <input class="sc-input-default sc-input-block" type="text" placeholder="Digite uma pessoa"
-              ng-model="baseFact.params.quem_entra">
-            <div class="sc-btn sc-btn-blue"><i class="sc-icon sc-icon-lupa-2"></i></div>
+            <input ng-model="baseFact.params.user_entrou.nome" ng-click="PassagensFormCtrl.formUser.toggleUserEntra()"
+              class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
+            <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
           </div>
-        </div>
+          <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensFormCtrl.menu_quem_entra.isOn">
+            <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
+              <li ng-click="PassagensFormCtrl.formUser.setUserEntra(baseFact, user); vmForm.menu_quem_entra "
+                ng-repeat="user in PassagensFormCtrl.indexFactory.settings.usuarios">
+                <span>{{user.nome}}</span>
+              </li>
+            </div>
+          </ul>
+        </span>
       </div>
 
       <div class="fcol-xs-90 fcol-sm-50 fcol-md-25">

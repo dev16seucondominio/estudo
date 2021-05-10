@@ -1,15 +1,19 @@
-<div ng-if="novaCategoria.isOn">
+<div ng-show="PassagensFormCtrl.categoria.active">
   <div class="sc-input-group">
-    <input class="sc-input-default sc-input-block" type="text">
-    <i class="sc-btn sc-btn-red sc-icon sc-icon-fechar-1"></i>
-    <i class="sc-btn sc-btn-green sc-icon sc-icon-visto-1"></i>
+    <input class="sc-input-default sc-input-block" type="text"
+      ng-model="PassagensFormCtrl.params.categoria.nome">
+    <button class="sc-btn sc-btn-red sc-icon sc-icon-fechar-1"
+      ng-click="PassagensFormCtrl.categoria.active = !PassagensFormCtrl.categoria.active" type="button">
+    </button>
+    <button class="sc-btn sc-btn-green sc-icon sc-icon-visto-1" type="button"
+      ng-click="PassagensFormCtrl.formCategoria.saveCategoria(PassagensFormCtrl.params.categoria)"></button>
   </div>
 </div>
 
-<div class="sc-input-group" ng-if="!novaCategoria.isOn">
+<div class="sc-input-group" ng-show="!PassagensFormCtrl.categoria.active">
   <select class="sc-input-default sc-input-block"
-    ng-options="categoria.id as categoria.nome for categoria in PassagensCtrl.settings.lista_categorias"
-    ng-model="listObj.administrativo_passagem_servico_objeto_categoria_id">
+    ng-options="categoria.id as categoria.nome for categoria in PassagensFormCtrl.indexFactory.settings.lista_categorias"
+    ng-model="listObj.categoria.id" ng-change="PassagensFormCtrl.formCategoria.set(listObj)">
     <option value selected="selected">Selecione</option>
   </select>
   <span class="sc-dropdown pull-right">
@@ -21,19 +25,19 @@
     </div>
     <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_categoria.isOn">
       <li>
-        <a ng-click="novaCategoria.isOn = !novaCategoria.isOn">
+        <a ng-click="PassagensFormCtrl.formCategoria.novaCategoria()">
           <i class="sc-icon sc-icon-mais-1 sc-text-green"></i>
           Nova Categoria
         </a>
       </li>
-      <li>
-        <a>
+      <li ng-if="PassagensFormCtrl.params.categoria">
+        <a ng-click="PassagensFormCtrl.categoria.active = true">
           <i class="sc-icon sc-icon-lapis sc-text-yellow"></i>
           Editar
         </a>
       </li>
-      <li>
-        <a>
+      <li ng-if="PassagensFormCtrl.params.categoria">
+        <a ng-click="PassagensFormCtrl.formCategoria.alertExcluirRegistro(PassagensFormCtrl.params.categoria)">
           <i class="sc-icon sc-icon-lixeira-1 sc-text-red"></i>
           Excluir
         </a>

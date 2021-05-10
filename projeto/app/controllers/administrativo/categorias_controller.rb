@@ -3,7 +3,7 @@ class Administrativo::CategoriasController < ApplicationController
 
 	def index
 	  respond_to do |format|
-	    format.html { layout_erp }
+      format.html { layout_erp }
 	    format.json{
 
 	    	status, resp = Administrativo::CategoriasService.index(get_params)
@@ -36,9 +36,7 @@ class Administrativo::CategoriasController < ApplicationController
 		attrs = [:categoria, :id, :nome]
 
 		resp = {}
-
 		resp[:categoria] = params.require(:categoria).permit(attrs)
-
 		resp
 	end
 end
