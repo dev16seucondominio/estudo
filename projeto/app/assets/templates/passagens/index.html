@@ -104,7 +104,7 @@
                   ng-click="menu.isOn = !menu.isOn">
                 </i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="menu.isOn">
-                  <li sc-dropdown-close-menu="">
+                  <li sc-dropdown-close-menu="" ng-click="PassagensFormCtrl.formCadastro.passarServico(baseFact)">
                     <span>
                       <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
                     </span>

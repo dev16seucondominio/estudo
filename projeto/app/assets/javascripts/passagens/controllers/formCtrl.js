@@ -71,6 +71,7 @@
       vmForm.formCadastro = {
         save: function(baseFact) {
           baseFact.params.status = "Pendente"
+          if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
               vmForm.formCadastro.isNovo(data)
@@ -85,6 +86,18 @@
               scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
             }
           )
+        },
+        isValido: function(baseFact) {
+          errors = []
+          if(!baseFact.params.user_saiu_id) {
+            errors.push("Quem sai não pode ser vazio!")
+          }
+          if (errors.length){
+            scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})
+            return false
+          } else {
+            return true
+          }
         },
         isNovo: function(data) {
           if (!data.novo) { return }
@@ -123,6 +136,11 @@
         },
         addItem: function(listObj) {
           listObj.itens.push({})
+        },
+        passarServico: function(baseFact) {
+          // Fazer verificação no front e no back
+          baseFact.params.status = "Relizada"
+          this.save(baseFact)
         }
       }
 
