@@ -48,7 +48,7 @@
           <li class="flex-row sc-p-b-md" ng-repeat="item in listObj.itens">
             <div class="fcol-xs-3em align-self-center sc-m-l-sm" style="top: 8px">
               <div class="sc-label">
-                <input class="sc-checkbox sc-checkbox-green" type="checkbox">
+                <input class="sc-checkbox sc-checkbox-green" ng-model="item.verificado" type="checkbox">
               </div>
             </div>
             <div class="fcol-sm-auto fcol-md-70">

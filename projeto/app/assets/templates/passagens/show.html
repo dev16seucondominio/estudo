@@ -75,9 +75,7 @@
           <tbody>
             <tr ng-repeat="item in listObj.itens">
               <td style="width:4%">
-                <i class="sc-icon sc-icon-menos-1 sc-text-gray"
-                  ng-class="item.executado ? 'sc-icon-visto-1 sc-text-green' : 'sc-icon-menos-1 sc-text-gray'">
-                </i>
+                <i class="sc-icon " ng-class="item.verificado ? 'sc-icon-visto-1 sc-text-green' : 'sc-icon-menos-1 sc-text-gray'"></i>
               </td>
               <td>
                 <div class="sc-text-black">{{item.descricao}}</div>

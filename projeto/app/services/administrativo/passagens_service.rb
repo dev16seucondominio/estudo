@@ -1,7 +1,7 @@
 class Administrativo::PassagensService
 
   def self.index(params)
-    passagens = Administrativo::PassagemServico.all.map(&:to_frontend_obj)
+    passagens = Administrativo::PassagemServico.all.reverse_order.map(&:to_frontend_obj)
 
     resp = { list: passagens }
 

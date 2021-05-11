@@ -8,7 +8,7 @@
       vmForm.indexFactory = indexFactory
 
       vmForm.init = function(baseFact){
-        vmForm.categoria = {active: false}
+        baseFact.categoria = {active: false}
         vmForm.menu_quem_sai = {isOn: false}
         vmForm.menu_quem_entra = {isOn: false}
         baseFact.params = angular.copy(baseFact.passagem || {})
@@ -20,7 +20,7 @@
         saveCategoria: function(categoria) {
           Categoria.save(categoria,
             function(data) {
-              vmForm.categoria.active = false
+              baseFact.categoria.active = false
 
               if(!vmForm.indexFactory.settings.lista_categorias.getById(categoria.id)) {
                 vmForm.indexFactory.settings.lista_categorias.push(categoria)
@@ -58,12 +58,11 @@
             }
           )
         },
-        novaCategoria: function() {
-          vmForm.categoria.active = true
+        novaCategoria: function(listObj) {
+          listObj.categoria.active = true
           vmForm.params.categoria = {}
         },
         set: function(listObj) {
-          console.log(listObj)
           listObj.administrativo_passagem_servico_objeto_categoria_id = listObj.categoria.id
         }
       }
