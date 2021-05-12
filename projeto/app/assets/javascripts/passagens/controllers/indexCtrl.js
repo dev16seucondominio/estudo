@@ -17,6 +17,20 @@
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
       }
 
+      vmIdx.passarModal = {
+        menuUsertoggle: function(user){
+          user == 'saiu' ? vmIdx.menuUserSaiu = !vmIdx.menuUserSaiu : vmIdx.menuUserEntrou = !vmIdx.menuUserEntrou
+        }
+      }
+
+      vmIdx.passarServico = function(passagem) {
+        console.log(passagem)
+        // Fazer verificação no front e no back
+        modal = {active: true}
+        passagem.status = "Relizada"
+        passagem.passar_servico_modal = {active: true}
+      }
+
       vmIdx.listCtrl = {
         carregando: false,
         list: [],
@@ -47,7 +61,7 @@
 
 
         },
-        alertExcluirRegistro: function(passagem) {
+        beforeExcluirRegistro: function(passagem) {
           scAlert.open({
             title: 'Você tem certeza que deseja excluir essa passagem?',
             messages: 'Todos os dados serão perdidos!',

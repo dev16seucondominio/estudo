@@ -19,6 +19,13 @@
         open: function(passagem) {
           passagem.opened = true
           passagem.editing = true
+          passagem.menuReticiencias = false
+        }
+      }
+
+      vmShow.menuReticiencias = {
+        toggle: function(passagem) {
+          passagem.menuReticiencias = !passagem.menuReticiencias
         }
       }
 

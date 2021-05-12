@@ -9,28 +9,28 @@
 
       vmForm.init = function(baseFact){
         baseFact.categoria = {active: false}
+        vmForm.params = {}
         vmForm.menu_quem_sai = {isOn: false}
         vmForm.menu_quem_entra = {isOn: false}
         baseFact.params = angular.copy(baseFact.passagem || {})
         delete baseFact.params.formFactory
-        baseFact.lista_categoria = vmForm.indexFactory.settings.lista_categorias
       }
 
       vmForm.formCategoria = {
-        saveCategoria: function(categoria) {
-          Categoria.save(categoria,
+        saveCategoria: function(listObj) {
+          Categoria.save(listObj.categoria,
             function(data) {
-              baseFact.categoria.active = false
+              listObj.categoria.active = false
 
-              if(!vmForm.indexFactory.settings.lista_categorias.getById(categoria.id)) {
-                vmForm.indexFactory.settings.lista_categorias.push(categoria)
+              if(!vmForm.indexFactory.settings.lista_categorias.getById(listObj.categoria.id)) {
+                vmForm.indexFactory.settings.lista_categorias.push(listObj.categoria)
               }
             }, function(response) {
               console.log("deu erro", categoria)
             }
           )
         },
-        alertExcluirRegistro: function(categoria) {
+        beforeDestroyCategoria: function(listObj) {
           scAlert.open({
             title: 'Você tem certeza que deseja excluir essa categoria?',
             buttons: [
@@ -41,36 +41,40 @@
                 label: 'Sim',
                 color: 'red',
                 action: function() {
-                  vmForm.formCadastro.destroyCategoria(categoria) // Posso escrever a função diretamente aqui?
+                  vmForm.formCategoria.destroyCategoria(listObj)
                 }
               }
             ]
           })
         },
-        destroyCategoria: function(categoria) {
-          Categoria.destroy(categoria,
+        destroyCategoria: function(listObj) {
+          Categoria.destroy(listObj.categoria,
             function(data) {
               scTopMessages.openSuccess("Categoria excluída com sucesso.", {timeOut: 3000})
               vmForm.indexFactory.settings.lista_categorias.splice(
-                vmForm.indexFactory.settings.lista_categorias.indexOf(categoria), 1)
+                vmForm.indexFactory.settings.lista_categorias.indexOf(listObj.categoria), 1)
             }, function(response) {
+              console.log(response)
               scTopMessages.openDanger("Não foi possível excluir a categoria.", {timeOut: 3000})
             }
           )
         },
         novaCategoria: function(listObj) {
-          listObj.categoria.active = true
-          vmForm.params.categoria = {}
+          listObj.categoria = {active: true}
         },
         set: function(listObj) {
           listObj.administrativo_passagem_servico_objeto_categoria_id = listObj.categoria.id
+        },
+        edit: function(listObj) {
+          listObj.categoria = vmForm.indexFactory.settings.lista_categorias.getById(listObj.categoria.id)
+          listObj.categoria.active = true
         }
       }
 
 
       vmForm.formCadastro = {
         save: function(baseFact) {
-          baseFact.params.status = "Pendente"
+          console.log(baseFact)
           if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
@@ -90,8 +94,13 @@
         isValido: function(baseFact) {
           errors = []
           if(!baseFact.params.user_saiu_id) {
-            errors.push("Quem sai não pode ser vazio!")
+            if(baseFact.params.user_saiu) {
+              baseFact.params.user_saiu_id = baseFact.params.user_saiu.id
+            } else {
+              errors.push("Quem sai não pode ser vazio!")
+            }
           }
+          this.isRelizada(baseFact)
           if (errors.length){
             scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})
             return false
@@ -103,6 +112,13 @@
           if (!data.novo) { return }
           data.passagem.novo = true
           vmForm.indexFactory.itemCtrl.handleList(data.passagem, { unshift_if_new: true })
+        },
+        isRelizada: function(baseFact) {
+          if(baseFact.params.user_entrou_id) {
+            baseFact.params.status = "Relizada"
+          } else {
+            baseFact.params.status = "Pendente"
+          }
         },
         addListaObj: function(baseFact) {
           if(baseFact.params.objetos) {
@@ -137,10 +153,8 @@
         addItem: function(listObj) {
           listObj.itens.push({})
         },
-        passarServico: function(baseFact) {
-          // Fazer verificação no front e no back
-          baseFact.params.status = "Relizada"
-          this.save(baseFact)
+        desativarPassagem: function(baseFact) {
+
         }
       }
 
@@ -148,6 +162,7 @@
         setUserSai: function(baseFact, user) {
           baseFact.params.user_saiu = {nome: user.nome}
           baseFact.params.user_saiu_id = user.id
+          this.toggleUserSai()
         },
         toggleUserSai: function() {
           vmForm.menu_quem_sai.isOn = !vmForm.menu_quem_sai.isOn
@@ -159,6 +174,7 @@
           console.log(user)
           baseFact.params.user_entrou = {nome: user.nome}
           baseFact.params.user_entrou_id = user.id
+          this.toggleUserEntra()
         }
       }
 

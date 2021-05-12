@@ -1,6 +1,7 @@
 angular.module('myApp').lazy
 .factory 'Categoria', [
   '$resource'
+
   ($resource) ->
     encapsulateData = (data)-> JSON.stringify { categoria: data }
 

@@ -1,13 +1,5 @@
 class Administrativo::CategoriasService
 
-  def self.index(params)
-    categorias = Administrativo::PassagemServicoObjetoCategoria.all.map(&:to_frontend_obj)
-
-    resp = { list: categorias }
-
-    [:success, resp]
-  end
-
   def self.save(params)
     params = params[:categoria]
 
@@ -30,10 +22,13 @@ class Administrativo::CategoriasService
       errors = categoria.errors.full_messages
       [:error, errors]
     end
+
   end
 
   def self.destroy(params)
+
   	categoria = Administrativo::PassagemServicoObjetoCategoria.where(id: params[:id]).first
+
 
   	if categoria.destroy
   		resp = {msg: "Registro excluído com sucesso"}
@@ -43,4 +38,5 @@ class Administrativo::CategoriasService
   		[:error, errors]
   	end
   end
+
 end

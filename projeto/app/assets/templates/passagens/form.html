@@ -1,5 +1,4 @@
-<div ng-controller="PassagensFormCtrl as PassagensFormCtrl"
-  ng-init="PassagensFormCtrl.init(baseFact)">
+<div ng-init="PassagensFormCtrl.init(baseFact)">
 
   <form class="sc-m-h-md sc-p-t-sm flex-row" ng-submit="PassagensFormCtrl.formCadastro.save(baseFact)">
     <div class="sc-fieldset flex-row fcol-xs-100">
@@ -30,7 +29,7 @@
           </div>
           <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensFormCtrl.menu_quem_sai.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="PassagensFormCtrl.formUser.setUserSai(baseFact, user); vmForm.menu_quem_sai "
+              <li ng-click="PassagensFormCtrl.formUser.setUserSai(baseFact, user)"
                 ng-repeat="user in PassagensFormCtrl.indexFactory.settings.usuarios">
                 <span>{{user.nome}}</span>
               </li>
@@ -54,7 +53,7 @@
           </div>
           <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensFormCtrl.menu_quem_entra.isOn">
             <div class="sc-scrollbar" style="max-height: 15em; overflow: auto;">
-              <li ng-click="PassagensFormCtrl.formUser.setUserEntra(baseFact, user); vmForm.menu_quem_entra "
+              <li ng-click="PassagensFormCtrl.formUser.setUserEntra(baseFact, user)"
                 ng-repeat="user in PassagensFormCtrl.indexFactory.settings.usuarios">
                 <span>{{user.nome}}</span>
               </li>

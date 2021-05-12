@@ -1,0 +1,81 @@
+<div sc-modal="passagem.passar_servico_modal" sc-modal-draggable="true">
+  <div class="sc-modal-header">
+    <i ng-click="anyModal.close()" class="sc-modal-close sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer" style="font-size: 0.6em"></i>
+    Passar serviço
+  </div>
+
+  <div class="sc-modal-body">
+    <div class="flex-row">
+      <div class="col-xs-12 col-sm-6 sc-m-b-md">
+        <div sc-dropdown-menu="">
+          <div class="sc-label">Quem sai:</div>
+          <span sc-dropdown-menu="" class="sc-dropdown">
+            <div class="sc-input-group">
+              <input ng-model="passagem.user_saiu.nome" ng-click="PassagensCtrl.passarModal.menuUsertoggle('saiu')"
+                class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
+              <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
+            </div>
+            <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensCtrl.menuUserSaiu">
+              <div class="sc-scrollbar">
+                <li ng-click="PassagensFormCtrl.formUser.setUserSai(baseFact, user); vmForm.menu_quem_sai "
+                  ng-repeat="user in PassagensCtrl.indexFactory.settings.usuarios">
+                  <span>{{user.nome}}</span>
+                </li>
+              </div>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 sc-m-b-md">
+        <div class="sc-label">Senha:</div>
+        <input class="sc-input-default" ng-model="passagem.senha_user_saiu"
+          style="width: 100%;" type="password">
+      </div>
+      <div class="clear"></div>
+      <div class="col-xs-12 col-sm-6 sc-m-b-md">
+        <div sc-dropdown-menu="">
+          <div class="sc-label">Quem entra:</div>
+          <span sc-dropdown-menu="" class="sc-dropdown">
+            <div class="sc-input-group">
+              <input ng-model="passagem.user_entrou.nome" ng-click="PassagensCtrl.passarModal.menuUsertoggle('entrou')"
+                class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
+              <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
+            </div>
+            <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensCtrl.menuUserEntrou">
+              <div class="sc-scrollbar">
+                <li ng-click="PassagensFormCtrl.formUser.setUserSai(baseFact, user); vmForm.menu_quem_sai "
+                  ng-repeat="user in PassagensCtrl.indexFactory.settings.usuarios">
+                  <span>{{user.nome}}</span>
+                </li>
+              </div>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 sc-m-b-md">
+        <div class="sc-label">Senha:</div>
+        <input class="sc-input-default" ng-model="passagem.senha_user_saiu"
+          style="width: 100%;" type="password">
+      </div>
+    </div>
+    <hr class="sc-hr-gray-light">
+    <div class="flex-row sc-p-t-md sc-p-h-sm">
+      <div class="sc-text-gray">Eu,<span class="sc-label"> {{passagem.user_saiu.nome}}</span>
+        , passo o posto de serviço para o(a)
+        <span class="sc-label"> {{passagem.user_entrou.nome}}</span>
+        de acordo com as informações abaixo:
+      </div>
+    </div>
+    <div class="flex-row sc-m-t-xl sc-p-h-sm">
+      <div class="sc-label fcol-xs-100">Observações:</div>
+      <textarea class="sc-input-default" cols="80" ng-model="passagem.observacoes"
+        rows="5" type="text">
+      </textarea>
+    </div>
+  </div>
+
+  <div class="sc-modal-footer">
+    <button ng-click="anyModal.save()" class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-lg-sm">Passar serviço</button>
+    <button ng-click="anyModal.close()" class="sc-btn sc-btn-gray sc-btn-block-only-xs sc-m-l-md">Cancelar</button>
+  </div>
+</div>

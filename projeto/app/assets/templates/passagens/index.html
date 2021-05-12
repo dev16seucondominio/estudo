@@ -17,11 +17,12 @@
     / Administrativo / Passagens de Serviços
   </section>
 
+
   <section id="passagens">
     <ul class="sc-accordion">
 
       <!-- FORM DE NOVA PASSAGEM -->
-      <li ng-if="PassagensCtrl.formFactory.new_record" class="sc-acc-blue">
+      <li ng-if="PassagensCtrl.formFactory.new_record" class="sc-acc-blue" ng-controller="PassagensFormCtrl as PassagensFormCtrl">
         <div class="sc-accordion-head flex-row" ng-click="PassagensCtrl.formFactory.close()">
           <div class="fcol-xs-2em">
             <i class="sc-icon sc-icon-mais-1"></i>
@@ -41,7 +42,6 @@
               <input class="sc-checkbox sc-checkbox-blue" type="checkbox">
             </div>
             <div class="fcol-xs-7em hidden-xs align-center sc-p-sm sc-cursor-pointer">
-              <!-- <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i> -->
               <span class="sc-ellipsis-inline">Status</span>
             </div>
             <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
@@ -51,7 +51,6 @@
               <span class="sc-ellipsis-inline">Entrou</span>
             </div>
             <div class="fcol-xs-7em fcol-order-3 align-center sc-p-sm sc-cursor-pointer">
-              <!-- <i class="sc-m-r-sm sc-icon-seta-5-baixo"></i> -->
               <span class="sc-ellipsis-inline">Criada em</span>
             </div>
             <div class="fcol-xs-7em sc-p-md visible-xs fcol-order-4"></div>
@@ -72,7 +71,11 @@
           </div>
 
           <div class="fcol-xs-7em hidden-xs align-center sc-p-sm">
-            <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm sc-bg-yellow">{{passagem.status}}</span>
+            <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm"
+              ng-class="{'sc-bg-yellow': passagem.status.includes('Pendente'),
+              'sc-bg-green': passagem.status.includes('Relizada') }">
+              {{passagem.status}}
+            </span>
           </div>
 
           <div class="fcol-xs-auto fcol-order-1 sc-p-sm">
@@ -94,17 +97,17 @@
             {{passagem.criado_em | date:"dd/MM/yyyy"}}
           </div>
 
-          <div class="fcol-xs-7em fcol-order-4 visible-xs sc-p-sm"></div>
+
 
           <div class="fcol-xs-3em align-center sc-p-sm fcol-order-5" sc-stop-click="">
             <span class="sc-dropdown" sc-dropdown-menu="">
               <div>
                 <i class="sc-icon sc-icon-reticiencias-v sc-badge-hover-gray"
                   ng-class="{'sc-text-white sc-badge-hover-white': passagem.opened}"
-                  ng-click="menu.isOn = !menu.isOn">
+                  ng-click="PassagemCtrl.menuReticiencias.toggle(passagem)">
                 </i>
-                <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="menu.isOn">
-                  <li sc-dropdown-close-menu="" ng-click="PassagensFormCtrl.formCadastro.passarServico(baseFact)">
+                <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menuReticiencias">
+                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.passarServico(passagem)">
                     <span>
                       <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
                     </span>
@@ -124,7 +127,7 @@
                       <i class="sc-icon-banir"></i> Desativar
                     </span>
                   </li>
-                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.listCtrl.alertExcluirRegistro(passagem)">
+                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.listCtrl.beforeExcluirRegistro(passagem)">
                     <span>
                       <i class="sc-icon-lixeira-1"></i> Excluir
                     </span>
@@ -141,11 +144,14 @@
             <div ng-include="PassagensCtrl.templates.passagens.show"></div>
           </div>
           <!-- EDIÇÃO -->
-          <div ng-if="passagem.editing">
+          <div ng-if="passagem.editing" ng-controller="PassagensFormCtrl as PassagensFormCtrl">
             <div ng-include="PassagensCtrl.templates.passagens.form"
               ng-init="passagem.formFactory.init(passagem); baseFact = passagem.formFactory">
             </div>
           </div>
+        </div>
+        <div ng-if="passagem.passar_servico_modal.active">
+          <div ng-include="PassagensCtrl.templates.passagens.passar_servico_modal"></div>
         </div>
 
       </li>

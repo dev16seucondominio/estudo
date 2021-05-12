@@ -41,7 +41,7 @@ class Administrativo::PassagemServico < ApplicationRecord
       return
     end
 
-    user
+    user || {}
   end
 
 end

@@ -9,9 +9,6 @@ Rails.application.routes.draw do
         post :save
       end
     end
-  end
-
-  namespace :administrativo do
     resources :categorias, only: [:index, :show, :destroy] do
       collection do
         post :save

@@ -1,12 +1,12 @@
 <div ng-show="listObj.categoria.active">
   <div class="sc-input-group">
     <input class="sc-input-default sc-input-block" type="text"
-      ng-model="PassagensFormCtrl.params.categoria.nome">
+      ng-model="listObj.categoria.nome">
     <button class="sc-btn sc-btn-red sc-icon sc-icon-fechar-1"
       ng-click="listObj.categoria.active = false" type="button">
     </button>
     <button class="sc-btn sc-btn-green sc-icon sc-icon-visto-1" type="button"
-      ng-click="PassagensFormCtrl.formCategoria.saveCategoria(PassagensFormCtrl.params.categoria)"></button>
+      ng-click="PassagensFormCtrl.formCategoria.saveCategoria(listObj)"></button>
   </div>
 </div>
 
@@ -25,19 +25,19 @@
     </div>
     <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menu_categoria.isOn">
       <li>
-        <a ng-click="PassagensFormCtrl.formCategoria.novaCategoria()">
+        <a ng-click="PassagensFormCtrl.formCategoria.novaCategoria(listObj)">
           <i class="sc-icon sc-icon-mais-1 sc-text-green"></i>
           Nova Categoria
         </a>
       </li>
       <li ng-if="listObj.categoria.id">
-        <a ng-click="listObj.categoria.active = true">
+        <a ng-click="PassagensFormCtrl.formCategoria.edit(listObj)">
           <i class="sc-icon sc-icon-lapis sc-text-yellow"></i>
           Editar
         </a>
       </li>
       <li ng-if="listObj.categoria.id">
-        <a ng-click="PassagensFormCtrl.formCategoria.alertExcluirRegistro(PassagensFormCtrl.params.categoria)">
+        <a ng-click="PassagensFormCtrl.formCategoria.beforeDestroyCategoria(listObj)">
           <i class="sc-icon sc-icon-lixeira-1 sc-text-red"></i>
           Excluir
         </a>
