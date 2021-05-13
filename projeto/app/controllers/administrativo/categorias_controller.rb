@@ -15,7 +15,7 @@ class Administrativo::CategoriasController < ApplicationController
 
 		case status
 		when :success then render json: resp, status: :ok
-    when :error then render json: { errors: resp }, status: :error
+    when :error then render json: { errors: resp }, status: :bad_request
 		end
 	end
 

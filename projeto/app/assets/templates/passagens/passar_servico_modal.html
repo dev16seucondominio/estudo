@@ -1,6 +1,6 @@
 <div sc-modal="passagem.passar_servico_modal" sc-modal-draggable="true">
   <div class="sc-modal-header">
-    <i ng-click="anyModal.close()" class="sc-modal-close sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer" style="font-size: 0.6em"></i>
+    <i ng-click="PassagensCtrl.closePassar(passagem)" class="sc-modal-close sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer" style="font-size: 0.6em"></i>
     Passar serviço
   </div>
 
@@ -75,7 +75,7 @@
   </div>
 
   <div class="sc-modal-footer">
-    <button ng-click="anyModal.save()" class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-lg-sm">Passar serviço</button>
-    <button ng-click="anyModal.close()" class="sc-btn sc-btn-gray sc-btn-block-only-xs sc-m-l-md">Cancelar</button>
+    <button ng-click="PassagensCtrl.passarServicoModal.passarServico(passagem)" class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-lg-sm">Passar serviço</button>
+    <button ng-click="PassagensCtrl.closePassar(passagem)" class="sc-btn sc-btn-gray sc-btn-block-only-xs sc-m-l-md">Cancelar</button>
   </div>
 </div>

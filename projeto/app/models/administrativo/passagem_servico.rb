@@ -44,4 +44,27 @@ class Administrativo::PassagemServico < ApplicationRecord
     user || {}
   end
 
+  validate :validar_campos
+
+  private
+
+  def validar_campos
+    errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
+
+    if self.objetos.present? 
+      self.objetos.each do |objeto|
+        if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
+          errors.add(:base, 'Selecione uma categoria para os objetos.')
+        elsif objeto[:itens].blank
+          errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
+        end
+
+      end
+    end
+
+    errors.empty?
+  end
+
+
+
 end

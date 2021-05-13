@@ -75,7 +75,7 @@
       vmForm.formCadastro = {
         save: function(baseFact) {
           console.log(baseFact)
-          if(!this.isValido(baseFact)) { return }
+          // if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
               vmForm.formCadastro.isNovo(data)
@@ -153,8 +153,8 @@
         addItem: function(listObj) {
           listObj.itens.push({})
         },
-        desativarPassagem: function(baseFact) {
-
+        rmvItem: function(listObj, item) {
+          listObj.itens.remove(listObj.itens.getById(item.id))
         }
       }
 

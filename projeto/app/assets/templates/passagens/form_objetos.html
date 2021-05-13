@@ -41,7 +41,7 @@
         </div>
         <ul class="sc-p-b-xs">
           <li class="flex-row sc-p-b-sm">
-            <div class="fcol-xs-3em sc-m-l-xs align-self-center">
+            <div class="fcol-xs-3em sc-m-l-xs align-self-center" ng-if="listObj.itens.length">
               <input class="sc-checkbox sc-checkbox-green" type="checkbox">
             </div>
           </li>
@@ -65,7 +65,8 @@
             <div class="fcol-xs-auto hidden-sm hidden-xs"></div>
             <div class="fcol-xs-3em align-self-center">
               <div class="align-right">
-                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red fcol-xs-3em"></i>
+                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red fcol-xs-3em" 
+                  ng-click="PassagensFormCtrl.formCadastro.rmvItem(listObj, item)"></i>
               </div>
             </div>
           </li>

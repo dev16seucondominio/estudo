@@ -17,18 +17,36 @@
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
       }
 
-      vmIdx.passarModal = {
+      vmIdx.passarServicoModal = {
         menuUsertoggle: function(user){
           user == 'saiu' ? vmIdx.menuUserSaiu = !vmIdx.menuUserSaiu : vmIdx.menuUserEntrou = !vmIdx.menuUserEntrou
+        },
+        passarServico: function(passagem) {
+          console.log(passagem)
+          passagem.micro_update_type = "passar_servico"
+          Passagem.micro_update(passagem,
+            function(data) {
+              scTopMessages.openSuccess("Registro atualizado com sucesso.", {timeOut: 3000})
+            }, function(response) {
+              scTopMessages.openDanger("Erro desconhecido", {timeOut: 3000})
+            }
+          )
         }
       }
 
+
+      // Essa função não existirá mais.
       vmIdx.passarServico = function(passagem) {
         console.log(passagem)
         // Fazer verificação no front e no back
         modal = {active: true}
         passagem.status = "Relizada"
+        passagem.menuReticiencias = false
         passagem.passar_servico_modal = {active: true}
+      }
+
+      vmIdx.closePassar = function(passagem) {
+        passagem.passar_servico_modal = {active: false}
       }
 
       vmIdx.listCtrl = {

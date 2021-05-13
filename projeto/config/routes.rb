@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :passagens, only: [:index, :show, :destroy] do
       collection do
         post :save
+        put :micro_update
       end
     end
     resources :categorias, only: [:index, :show, :destroy] do

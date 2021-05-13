@@ -16,6 +16,11 @@ angular.module('myApp').lazy
         url: 'http://localhost:3000/administrativo/passagens/save.json'
         transformRequest: encapsulateData
 
+      micro_update:
+        method: 'PUT'
+        url: 'http://localhost:3000/administrativo/passagens/micro_update.json'
+        transformRequest: encapsulateData
+
       destroy:
         method: 'DELETE'
 ]

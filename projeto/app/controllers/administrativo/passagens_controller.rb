@@ -15,12 +15,22 @@ class Administrativo::PassagensController < ApplicationController
 	  end
 	end
 
+	def micro_update
+		status, resp = Administrativo::PassagensService.micro_update(params_passagem)
+
+		case status
+		when :success then render json: resp, status: :ok
+    when :error then render json: { errors: resp }, status: :bad_request
+		when :not_found then render json: { errors: resp }, status: :not_found
+		end
+	end
+
 	def save
 		status, resp = Administrativo::PassagensService.save(params_passagem)
 
 		case status
 		when :success then render json: resp, status: :ok
-    when :error then render json: { errors: resp }, status: :error
+    when :error then render json: { errors: resp }, status: :bad_request
 		when :not_found then render json: { errors: resp }, status: :not_found
 		end
 	end
@@ -34,7 +44,7 @@ class Administrativo::PassagensController < ApplicationController
 	end
 
 	def params_passagem
-		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id]
+		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id, :micro_update_type]
     attrs << {objetos: [:id, :administrativo_passagem_servico_objeto_categoria_id,
       :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]}
 

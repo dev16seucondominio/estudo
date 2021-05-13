@@ -10,6 +10,41 @@ class Administrativo::PassagensService
     [:success, resp]
   end
 
+  def self.micro_update
+
+    raise params
+
+    if params[:micro_update_type].blank?
+      errors.add(:base, 'Registro não encontrado.')
+      return [:not_found, errors]
+    end
+
+    case params[:micro_update_type]
+    when :passar_servico 
+      passar_servico(params)
+    end
+
+  end
+
+  def self.passar_servico
+    
+    if params[:id].present?
+      passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+    elsif passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    if passagem.micro_update
+      resp = {passagem: passagem.to_frontend_obj}
+      [:success, resp]
+    else
+      resp = passagem.errors.full_messages
+      [:error, errors]
+    end
+
+  end
+
   def self.save(params)
     params = params[:passagem]
 
