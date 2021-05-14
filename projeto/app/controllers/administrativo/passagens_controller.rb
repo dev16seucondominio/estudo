@@ -44,9 +44,12 @@ class Administrativo::PassagensController < ApplicationController
 	end
 
 	def params_passagem
-		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id, :micro_update_type]
+		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id,
+      :micro_update_type, :user_saiu_senha, :user_entrou_senha]
+
     attrs << {objetos: [:id, :administrativo_passagem_servico_objeto_categoria_id,
-      :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]}
+      :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]
+    }
 
 		resp = {}
 

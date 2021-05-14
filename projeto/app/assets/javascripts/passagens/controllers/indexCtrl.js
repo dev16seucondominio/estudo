@@ -15,38 +15,48 @@
         vmIdx.formFactory.lista = vmIdx.listCtrl.list
         vmIdx.indexFactory = indexFactory
         vmIdx.indexFactory.itemCtrl = vmIdx.itemCtrl
+        vmIdx.menu_quem_sai = {isOn: false}
+        vmIdx.menu_quem_entra = {isOn: false}
       }
 
-      vmIdx.passarServicoModal = {
-        menuUsertoggle: function(user){
-          user == 'saiu' ? vmIdx.menuUserSaiu = !vmIdx.menuUserSaiu : vmIdx.menuUserEntrou = !vmIdx.menuUserEntrou
+      vmIdx.passarServicoCtrl = {
+        modal: { active: false },
+        open: function(passagem) {
+          this.params = angular.copy(passagem)
+          this.modal.active = true
         },
-        passarServico: function(passagem) {
-          console.log(passagem)
-          passagem.micro_update_type = "passar_servico"
-          Passagem.micro_update(passagem,
+        close: function() {
+          this.params = {}
+          this.modal.active = false
+        },
+        passarServico: function() {
+          params = Object.slice(this.params, 'id', 'observacoes', 'user_entrou', 'user_saiu')
+          params.micro_update_type = "passar_servico"
+
+          Passagem.micro_update(params,
             function(data) {
               scTopMessages.openSuccess("Registro atualizado com sucesso.", {timeOut: 3000})
             }, function(response) {
               scTopMessages.openDanger("Erro desconhecido", {timeOut: 3000})
             }
           )
+        },
+        setUserSai: function(user) {
+          this.params.user_saiu = {nome: user.nome}
+          this.params.user_saiu = user.id
+          this.toggleUserSai()
+        },
+        toggleUserSai: function() {
+          vmIdx.menu_quem_sai.isOn = !vmIdx.menu_quem_sai.isOn
+        },
+        toggleUserEntra: function() {
+          vmIdx.menu_quem_entra.isOn = !vmIdx.menu_quem_entra.isOn
+        },
+        setUserEntra: function(user) {
+          this.params.user_entrou = {nome: user.nome}
+          this.params.user_entrou = user.id
+          this.toggleUserEntra()
         }
-      }
-
-
-      // Essa função não existirá mais.
-      vmIdx.passarServico = function(passagem) {
-        console.log(passagem)
-        // Fazer verificação no front e no back
-        modal = {active: true}
-        passagem.status = "Relizada"
-        passagem.menuReticiencias = false
-        passagem.passar_servico_modal = {active: true}
-      }
-
-      vmIdx.closePassar = function(passagem) {
-        passagem.passar_servico_modal = {active: false}
       }
 
       vmIdx.listCtrl = {

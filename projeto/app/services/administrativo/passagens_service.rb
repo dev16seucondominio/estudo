@@ -10,32 +10,36 @@ class Administrativo::PassagensService
     [:success, resp]
   end
 
-  def self.micro_update
+  def self.micro_update(params)
 
-    raise params
+    passagem = params[:passagem]
 
-    if params[:micro_update_type].blank?
-      errors.add(:base, 'Registro não encontrado.')
-      return [:not_found, errors]
-    end
+    micro_update_type = passagem[:micro_update_type]
 
-    case params[:micro_update_type]
-    when :passar_servico 
-      passar_servico(params)
+    case micro_update_type.to_s.to_sym
+    when :passar_servico then passar_servico(passagem)
+    else
+      fail 'Opção inválida'
     end
 
   end
 
-  def self.passar_servico
-    
-    if params[:id].present?
-      passagem = Administrativo::PassagemServico.where(id: params[:id]).first
-    elsif passagem.blank?
+  def self.passar_servico(params)
+    params.delete(:micro_update_type)
+
+    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
+    if passagem.blank?
       errors = "Registro não existe"
       return [:not_found, errors]
     end
 
-    if passagem.micro_update
+    pas_params = set_params(params)
+
+    # pas_params....
+
+    passagem.assign_attributes(pas_params)
+
+    if passagem.save
       resp = {passagem: passagem.to_frontend_obj}
       [:success, resp]
     else
@@ -58,8 +62,8 @@ class Administrativo::PassagensService
       passagem = Administrativo::PassagemServico.new
     end
 
-    params = set_params(params)
-    passagem.assign_attributes(params)
+    pas_params = set_params(params)
+    passagem.assign_attributes(pas_params)
 
     novo = passagem.new_record?
 
@@ -104,6 +108,12 @@ class Administrativo::PassagensService
   end
 
   def self.set_params(params)
+
+    params[:validar_user_opts] = {
+      user_saiu_senha:   params.delete(:user_saiu_senha),
+      user_entrou_senha: params.delete(:user_entrou_senha)
+    }
+
     params = set_objetos(params)
     params
   end
@@ -115,6 +125,5 @@ class Administrativo::PassagensService
     params[:objetos_attributes] = objetos
     params
   end
-
 
 end

@@ -107,7 +107,7 @@
                   ng-click="PassagemCtrl.menuReticiencias.toggle(passagem)">
                 </i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menuReticiencias">
-                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.passarServico(passagem)">
+                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.passarServicoCtrl.open(passagem); PassagemCtrl.menuReticiencias.toggle(passagem)">
                     <span>
                       <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
                     </span>
@@ -150,11 +150,15 @@
             </div>
           </div>
         </div>
-        <div ng-if="passagem.passar_servico_modal.active">
-          <div ng-include="PassagensCtrl.templates.passagens.passar_servico_modal"></div>
-        </div>
 
       </li>
     </ul>
+
+    <!-- includes -->
+    <div>
+      <div ng-if="PassagensCtrl.passarServicoCtrl.modal.active">
+        <div ng-include="PassagensCtrl.templates.passagens.passar_servico_modal"></div>
+      </div>
+    </div>
   </section>
 </div>

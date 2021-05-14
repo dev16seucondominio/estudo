@@ -75,7 +75,7 @@
       vmForm.formCadastro = {
         save: function(baseFact) {
           console.log(baseFact)
-          // if(!this.isValido(baseFact)) { return }
+          if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
               vmForm.formCadastro.isNovo(data)
@@ -100,6 +100,7 @@
               errors.push("Quem sai não pode ser vazio!")
             }
           }
+
           this.isRelizada(baseFact)
           if (errors.length){
             scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})
@@ -171,7 +172,6 @@
           vmForm.menu_quem_entra.isOn = !vmForm.menu_quem_entra.isOn
         },
         setUserEntra: function(baseFact, user) {
-          console.log(user)
           baseFact.params.user_entrou = {nome: user.nome}
           baseFact.params.user_entrou_id = user.id
           this.toggleUserEntra()

@@ -10,4 +10,9 @@ class User < ApplicationRecord
   	attrs
   end
 
+  def verificar_senha(params_senha)
+    params_senha == self.senha
+  end
+
+
 end
