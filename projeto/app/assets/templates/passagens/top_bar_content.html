@@ -6,12 +6,12 @@
   </div>
 
   <div class="fcol-xs-70 fcol-sm-60 fcol-lg-45 sc-p-h-lg">
-    <form class="sc-input-group" ng-submit="">
+    <form class="sc-input-group" ng-submit="PassagensCtrl.filtro.exec()">
       <input class="sc-input-default" type="text"
         placeholder="Nome, e-mail, data (de criação), etc"
-        ng-disabled=""/>
+        ng-model="PassagensCtrl.filtro.params.q">
 
-      <button class="sc-btn sc-btn-red" type="button">
+      <button class="sc-btn sc-btn-red" ng-click="PassagensCtrl.filtro.limpar()" type="button">
         <i class="sc-icon-fechar-1"></i>
       </button>
 
@@ -69,7 +69,10 @@
 
       <div class="col-xs-12 col-sm-6 col-md-3 sc-m-b-md">
         <label class="sc-label">Tipo de data:</label>
-        <select class="sc-input-default">
+        <select class="sc-input-default sc-input-block"
+          ng-model="PassagensCtrl.filtroasdass"
+          ng-options="tipoData.key as tipoData.label for tipoData in PassagensCtrl.settings.lista_tipo_data">
+          <option value selected="selected">Selecione</option>
         </select>
       </div>
 

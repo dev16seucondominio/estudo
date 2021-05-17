@@ -17,6 +17,7 @@
 
       vmShow.formCtrl = {
         open: function(passagem) {
+          console.log(passagem)
           passagem.opened = true
           passagem.editing = true
           passagem.menuReticiencias = false

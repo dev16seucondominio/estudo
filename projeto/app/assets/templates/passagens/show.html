@@ -22,6 +22,11 @@
             {{passagem.criado_em | date:"dd/MM/yyyy"}}, às {{passagem.criado_em | date:"HH:mm:ss"}}
           </span>
         </div>
+        <div class="sc-text-gray sc-p-b-sm">Data passagem:
+          <span class="sc-text-blue">
+            {{passagem.atualizado_em | date:"dd/MM/yyyy"}}, às {{passagem.atualizado_em | date:"HH:mm:ss"}}
+          </span>
+        </div>
         <div class="flex-row sc-m-b-sm">
           <div class="sc-dropdown" sc-dropdown-menu="">
             <button class="sc-btn sc-btn-blue sc-btn-thin sc-btn-md " ng-click="menu.toggle()" style="width:100%" type="button">

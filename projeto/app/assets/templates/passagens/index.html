@@ -73,7 +73,7 @@
           <div class="fcol-xs-7em hidden-xs align-center sc-p-sm">
             <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm"
               ng-class="{'sc-bg-yellow': passagem.status.includes('Pendente'),
-              'sc-bg-green': passagem.status.includes('Relizada') }">
+              'sc-bg-green': passagem.status.includes('Realizada') }">
               {{passagem.status}}
             </span>
           </div>
@@ -89,6 +89,7 @@
             <i class="sc-icon sc-icon-seta-8-cima sc-text-green hidden-xs sc-p-r-md"
               ng-class="{'sc-text-white': passagem.opened }">
             </i>
+            <span  ng-show="!passagem.user_entrou.nome"> - </span>
             <span class="sc-ellipsis"> {{passagem.user_entrou.nome}}</span>
           </div>
 
@@ -107,12 +108,14 @@
                   ng-click="PassagemCtrl.menuReticiencias.toggle(passagem)">
                 </i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menuReticiencias">
-                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.passarServicoCtrl.open(passagem); PassagemCtrl.menuReticiencias.toggle(passagem)">
+                  <li sc-dropdown-close-menu=""
+                    ng-click="PassagensCtrl.passarServicoCtrl.open(passagem); PassagemCtrl.menuReticiencias.toggle(passagem)"
+                    ng-show="!passagem.user_entrou_id">
                     <span>
                       <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
                     </span>
                   </li>
-                  <li sc-dropdown-close-menu="" ng-click="PassagemCtrl.formCtrl.open(passagem)">
+                  <li sc-dropdown-close-menu="" ng-show="!passagem.user_entrou_id" ng-click="PassagemCtrl.formCtrl.open(passagem)">
                     <span>
                       <i class="sc-icon-lapis"></i> Editar
                     </span>

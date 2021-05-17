@@ -1,7 +1,7 @@
 class Administrativo::PassagensService
 
   def self.index(params)
-    passagens = Administrativo::PassagemServico.all.reverse_order.map(&:to_frontend_obj)
+    passagens = Administrativo::PassagemServico.buscar(params).reverse_order.map(&:to_frontend_obj)
 
     resp = { list: passagens }
 
@@ -34,9 +34,6 @@ class Administrativo::PassagensService
     end
 
     pas_params = set_params(params)
-
-    # pas_params....
-
     passagem.assign_attributes(pas_params)
 
     if passagem.save
@@ -44,7 +41,7 @@ class Administrativo::PassagensService
       [:success, resp]
     else
       resp = passagem.errors.full_messages
-      [:error, errors]
+      return [:error, resp]
     end
 
   end
@@ -54,7 +51,10 @@ class Administrativo::PassagensService
 
     if params[:id].present?
       passagem = Administrativo::PassagemServico.where(id: params[:id]).first
-      if passagem.blank?
+      if passagem[:user_entrou_id].present?
+        errors = "Passagem já realizada"
+        return [:error, errors]
+      elsif passagem.blank?
         errors = "Registro não existe"
         return [:not_found, errors]
       end
@@ -103,16 +103,21 @@ class Administrativo::PassagensService
 
     resp[:lista_categorias] = Administrativo::PassagemServicoObjetoCategoria.all
     resp[:usuarios] = User.all.map(&:to_frontend_obj)
+    resp[:lista_tipo_data] = Administrativo::PassagemServico::LISTA_TIPO_DATA
 
     resp
   end
 
   def self.set_params(params)
-
-    params[:validar_user_opts] = {
-      user_saiu_senha:   params.delete(:user_saiu_senha),
-      user_entrou_senha: params.delete(:user_entrou_senha)
-    }
+    if params[:user_saiu_senha].presence || params[:user_entrou_senha].presence
+      params[:validar_user_opts] = {
+        user_saiu_senha:   params.delete(:user_saiu_senha),
+        user_entrou_senha: params.delete(:user_entrou_senha)
+      }
+    else
+      params.delete(:user_saiu_senha) if params[:user_saiu_senha].blank?
+      params.delete(:user_entrou_senha) if params[:user_entrou_senha].blank?
+    end
 
     params = set_objetos(params)
     params

@@ -75,6 +75,7 @@
       vmForm.formCadastro = {
         save: function(baseFact) {
           console.log(baseFact)
+          vmForm.formUser.checkUsers(baseFact)
           if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
@@ -101,7 +102,6 @@
             }
           }
 
-          this.isRelizada(baseFact)
           if (errors.length){
             scTopMessages.openDanger(errors.join('; '), {timeOut: 3000})
             return false
@@ -113,13 +113,6 @@
           if (!data.novo) { return }
           data.passagem.novo = true
           vmForm.indexFactory.itemCtrl.handleList(data.passagem, { unshift_if_new: true })
-        },
-        isRelizada: function(baseFact) {
-          if(baseFact.params.user_entrou_id) {
-            baseFact.params.status = "Relizada"
-          } else {
-            baseFact.params.status = "Pendente"
-          }
         },
         addListaObj: function(baseFact) {
           if(baseFact.params.objetos) {
@@ -175,6 +168,15 @@
           baseFact.params.user_entrou = {nome: user.nome}
           baseFact.params.user_entrou_id = user.id
           this.toggleUserEntra()
+        },
+        checkUsers: function(baseFact) {
+          if (baseFact.params.user_entrou) {
+            if (!baseFact.params.user_entrou.nome) {
+              baseFact.params.user_entrou_id = null
+            }
+          } else if (!baseFact.params.user_saiu.nome) {
+              baseFact.params.user_saiu_id = null
+          }
         }
       }
 

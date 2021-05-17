@@ -30,20 +30,26 @@
           this.modal.active = false
         },
         passarServico: function() {
-          params = Object.slice(this.params, 'id', 'observacoes', 'user_entrou', 'user_saiu')
-          params.micro_update_type = "passar_servico"
-
-          Passagem.micro_update(params,
+          this.params = Object.slice(this.params, 'id', 'observacoes', 'user_entrou_id', 'user_saiu_id',
+            'user_saiu_senha', 'user_entrou_senha', 'user_entrou', 'user_saiu')
+          this.params.micro_update_type = "passar_servico"
+          console.log(this.params)
+          Passagem.micro_update(this.params,
             function(data) {
+              vmIdx.itemCtrl.handleList(data.passagem)
+
               scTopMessages.openSuccess("Registro atualizado com sucesso.", {timeOut: 3000})
+              vmIdx.passarServicoCtrl.close()
             }, function(response) {
-              scTopMessages.openDanger("Erro desconhecido", {timeOut: 3000})
+              console.log(response)
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
             }
           )
         },
         setUserSai: function(user) {
           this.params.user_saiu = {nome: user.nome}
-          this.params.user_saiu = user.id
+          this.params.user_saiu_id = user.id
+          console.log(params)
           this.toggleUserSai()
         },
         toggleUserSai: function() {
@@ -54,7 +60,7 @@
         },
         setUserEntra: function(user) {
           this.params.user_entrou = {nome: user.nome}
-          this.params.user_entrou = user.id
+          this.params.user_entrou_id = user.id
           this.toggleUserEntra()
         }
       }
@@ -81,6 +87,7 @@
           Passagem.list(params,
             function(data) {
               loadSettings(data)
+              console.log(data)
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
               console.log("Pode ter acontecido algum erro.", response)
@@ -112,7 +119,7 @@
           Passagem.destroy(passagem,
             function(data) {
               scTopMessages.openSuccess(data.msg, {timeOut: 3000})
-              vmIdx.listCtrl.list.splice(vmIdx.listCtrl.list.indexOf(passagem), 1)
+              vmIdx.listCtrl.list.remove(vmIdx.listCtrl.list.getById(passagem.id))
             }, function(response) {
 
             }
@@ -123,8 +130,8 @@
           delete novaPassagem.id
           delete novaPassagem.quem_entra
           delete novaPassagem.quem_sai
-          delete novaPassagem.senha_quem_entra
-          delete novaPassagem.senha_quem_sai
+          delete novaPassagem.user_entrou_senha
+          delete novaPassagem.user_saiu_senha
           vmIdx.formFactory.init(novaPassagem)
         }
       }
@@ -146,9 +153,6 @@
           this.params = angular.copy(this.paramsInit)
           this.params.filtrado = false
           vmIdx.listCtrl.loadList()
-          for(i in vmIdx.settings.passagens.lista_opcoes) {
-            vmIdx.settings.passagens.lista_opcoes[i].active = false
-          }
         }
       }
 
