@@ -1,10 +1,11 @@
 class Administrativo::PassagemServico < ApplicationRecord
   attr_accessor :validar_user_opts
+  attr_accessor :desativar
 
   # Associations
 
-  has_one :user_entrou, class_name: "User", foreign_key: :user_entrou_id
-  has_one :user_saiu, class_name: "User", foreign_key: :user_saiu_id
+  belongs_to :user_saiu, class_name: "User", foreign_key: :user_saiu_id
+  belongs_to :user_entrou, class_name: "User", foreign_key: :user_entrou_id, optional: true
 
   has_many :objetos, class_name: "Administrativo::PassagemServicoObjeto",
     foreign_key: :administrativo_passagem_servico_id
@@ -32,13 +33,36 @@ class Administrativo::PassagemServico < ApplicationRecord
     sql  = []
     args = []
 
+    # raise filtro.to_json
+
     q = filtro[:q]
     return scoped if q.blank?
 
-    sql  << "(user_entrou.nome like ?)"
+    sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
     args << "%#{q}%"
 
-    scoped = scoped.where(sql.join(' OR '), *args)
+    sql  << "(user_saius_administrativo_passagem_servicos.nome like ?)"
+    args << "%#{q}%"
+
+    scoped = scoped.joins(:user_entrou)
+    scoped.left_outer_joins(:user_saiu)
+    scoped = scoped.where(sql.join(' AND '), *args)
+    scoped
+  }
+
+  scope :busca_avancada, lambda { |filtro|
+    scoped = all
+    return scoped if filtro.blank?
+
+    keys = %(nome email)
+    keys.each{ |key|
+      val = filtro[key].presence
+      scoped = scoped.where("#{key} like ?", "%#{val}%") if val
+    }
+
+    if filtro[:opcoes].present?
+      scoped = scoped.com_opcoes(filtro[:opcoes])
+    end
 
     scoped
   }
@@ -47,10 +71,10 @@ class Administrativo::PassagemServico < ApplicationRecord
     attrs = {}
     attrs[:id]             = id
     attrs[:status]         = status
-    attrs[:user_saiu]      = load_user_obj(user_saiu_id)
     attrs[:user_saiu_id]   = user_saiu_id
-    attrs[:user_entrou]    = load_user_obj(user_entrou_id)
     attrs[:user_entrou_id] = user_entrou_id
+    attrs[:user_saiu]      = user_saiu&.to_frontend_obj
+    attrs[:user_entrou]    = user_entrou&.to_frontend_obj
     attrs[:criado_em]      = created_at
     attrs
   end
@@ -71,18 +95,6 @@ class Administrativo::PassagemServico < ApplicationRecord
     attrs
   end
 
-  def load_user_obj(user_id)
-    if user_id.present?
-      user = User.find(user_id)
-      user.to_frontend_obj
-    else
-      return
-    end
-
-    user || {}
-  end
-
-
   private
 
   def validar_existencia_usuarios
@@ -94,12 +106,18 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   end
 
+  def desativar
+    unless desativar?
+      errors.add(:base, "Erro desconhecido!")
+    else
+      self.status = "Desativada" if errors.empty?
+    end
+  end
+
   def validar_user
     unless validar_user_opts.present?
       errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
     else
-      user_saiu = User.find(self.user_saiu_id)
-      user_entrou = User.find(self.user_entrou_id)
 
       unless user_saiu.verificar_senha(validar_user_opts[:user_saiu_senha])
         errors.add(:base, 'Senha errada - quem sai.')
@@ -133,8 +151,14 @@ class Administrativo::PassagemServico < ApplicationRecord
   end
 
   LISTA_TIPO_DATA = [
-    { key: :criado_em,        label: 'Criado em' },
-    { key: :passado_em,       label: 'Passado em' }
+    { key: :criado_em,  label: 'Criado em' },
+    { key: :passado_em, label: 'Passado em' }
+  ]
+
+  LISTA_STATUS = [
+    { key: :pendente,   label: 'Pendente' },
+    { key: :realizada,  label: 'Realizada' },
+    { key: :desativada, label: 'Desativada' }
   ]
 
 end

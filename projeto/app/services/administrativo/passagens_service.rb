@@ -1,7 +1,7 @@
 class Administrativo::PassagensService
 
   def self.index(params)
-    passagens = Administrativo::PassagemServico.buscar(params).reverse_order.map(&:to_frontend_obj)
+    passagens = Administrativo::PassagemServico.buscar(params).reverse_order.map(&:slim_obj)
 
     resp = { list: passagens }
 
@@ -18,16 +18,15 @@ class Administrativo::PassagensService
 
     case micro_update_type.to_s.to_sym
     when :passar_servico then passar_servico(passagem)
+    when :desativar then desativar(passagem)
     else
       fail 'Opção inválida'
     end
-
   end
 
-  def self.passar_servico(params)
-    params.delete(:micro_update_type)
-
+  def self.desativar(params)
     passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
+
     if passagem.blank?
       errors = "Registro não existe"
       return [:not_found, errors]
@@ -43,7 +42,36 @@ class Administrativo::PassagensService
       resp = passagem.errors.full_messages
       return [:error, resp]
     end
+  end
 
+  def self.passar_servico(params)
+    params.delete(:micro_update_type)
+
+    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
+    if passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    pas_params = set_params(params)
+    passagem.assign_attributes(pas_params)
+
+    if passagem.save(validate: false)
+      resp = {passagem: passagem.to_frontend_obj}
+      [:success, resp]
+    else
+      resp = passagem.errors.full_messages
+      return [:error, resp]
+    end
+  end
+
+  def self.show(params)
+    passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+
+    return [:not_found, "Registro não encontrado."] if passagem.blank?
+
+    resp = {passagem: passagem.to_frontend_obj}
+    [:success, resp]
   end
 
   def self.save(params)
@@ -104,6 +132,8 @@ class Administrativo::PassagensService
     resp[:lista_categorias] = Administrativo::PassagemServicoObjetoCategoria.all
     resp[:usuarios] = User.all.map(&:to_frontend_obj)
     resp[:lista_tipo_data] = Administrativo::PassagemServico::LISTA_TIPO_DATA
+    resp[:lista_status] = Administrativo::PassagemServico::LISTA_STATUS
+    resp[:filtro] = { q: "", user_entrou: "", user_saiu: "" }
 
     resp
   end
@@ -118,6 +148,12 @@ class Administrativo::PassagensService
       params.delete(:user_saiu_senha) if params[:user_saiu_senha].blank?
       params.delete(:user_entrou_senha) if params[:user_entrou_senha].blank?
     end
+
+    if params[:micro_update_type].present?
+      params[:desativar] = true
+      params.delete(:micro_update_type)
+    end
+
 
     params = set_objetos(params)
     params

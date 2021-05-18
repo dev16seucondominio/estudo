@@ -35,6 +35,15 @@ class Administrativo::PassagensController < ApplicationController
 		end
 	end
 
+	def show
+		status, resp = Administrativo::PassagensService.show(params)
+
+		case status
+		when :success then render json: resp, status: :ok
+		when :not_found then render json: { errors: resp }, status: :not_found
+		end
+	end
+
 	def destroy
 		status, resp = Administrativo::PassagensService.destroy(params)
 

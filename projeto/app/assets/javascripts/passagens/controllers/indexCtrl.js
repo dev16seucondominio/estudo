@@ -19,6 +19,39 @@
         vmIdx.menu_quem_entra = {isOn: false}
       }
 
+      vmIdx.desativarPassagem = {
+        beforeDesativar: function(passagem) {
+          this.params = angular.copy(passagem)
+          scAlert.open({
+            title: 'Você tem certeza que deseja desativar a passagem?',
+            buttons: [
+              {
+                label: 'Não',
+                color: 'gray'
+              }, {
+                label: 'Sim',
+                color: 'yellow',
+                action: function() {
+                  vmIdx.desativarPassagem.desativar()
+                }
+              }
+            ]
+          })
+        },
+        desativar: function() {
+          this.params = Object.slice(this.params, 'id', 'status')
+          this.params.micro_update_type = "desativar"
+          Passagem.micro_update(this.params, 
+            function(data) {
+              scTopMessages.openSuccess("Passagem desativada com sucesso.", {timeOut: 3000})
+            },
+            function(response) {
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
+            }
+          )
+        }
+      }
+
       vmIdx.passarServicoCtrl = {
         modal: { active: false },
         open: function(passagem) {
@@ -33,7 +66,6 @@
           this.params = Object.slice(this.params, 'id', 'observacoes', 'user_entrou_id', 'user_saiu_id',
             'user_saiu_senha', 'user_entrou_senha', 'user_entrou', 'user_saiu')
           this.params.micro_update_type = "passar_servico"
-          console.log(this.params)
           Passagem.micro_update(this.params,
             function(data) {
               vmIdx.itemCtrl.handleList(data.passagem)
@@ -49,7 +81,6 @@
         setUserSai: function(user) {
           this.params.user_saiu = {nome: user.nome}
           this.params.user_saiu_id = user.id
-          console.log(params)
           this.toggleUserSai()
         },
         toggleUserSai: function() {
