@@ -1,20 +1,20 @@
 class ApplicationController < ActionController::Base
 
-	before_action :load_paths
+  before_action :load_paths
 
-	def get_params
-		params_to_hash(params.to_unsafe_h)
-	end
+  def get_params
+    params_to_hash(params.to_unsafe_h)
+  end
 
-	private
+  private
 
-	def layout_erp
+  def layout_erp
     render html: "", layout: "layouts/application"
-	end
+  end
 
-	def load_paths
-		Dir["#{Rails.root}/app/services/*/*"].each{ |file| require file }
-	end
+  def load_paths
+    Dir["#{Rails.root}/app/services/*/*"].each{ |file| require file }
+  end
 
   def params_to_hash(val)
     json_parse = lambda { |item|
