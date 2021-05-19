@@ -19,6 +19,40 @@
         vmIdx.menu_quem_entra = {isOn: false}
       }
 
+      vmIdx.reativarPassagem = {
+        beforeReativar: function(passagem) {
+          this.params = angular.copy(passagem)
+          scAlert.open({
+            title: 'Deseja mesmo reativar a passagem?',
+            buttons: [
+              {
+                label: 'Não',
+                color: 'gray'
+              }, {
+                label: 'Sim',
+                color: 'yellow',
+                action: function() {
+                  vmIdx.reativarPassagem.reativar()
+                }
+              }
+            ]
+          })
+        },
+        reativar: function() {
+          this.params = Object.slice(this.params, 'id', 'status')
+          this.params.micro_update_type = "reativar"
+          Passagem.micro_update(this.params,
+            function(data) {
+              scTopMessages.openSuccess("Passagem reativada com sucesso.", {timeOut: 3000})
+              vmIdx.listCtrl.loadList()
+            },
+            function(response) {
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
+            }
+          )
+        }
+      }
+
       vmIdx.desativarPassagem = {
         beforeDesativar: function(passagem) {
           this.params = angular.copy(passagem)
@@ -41,9 +75,10 @@
         desativar: function() {
           this.params = Object.slice(this.params, 'id', 'status')
           this.params.micro_update_type = "desativar"
-          Passagem.micro_update(this.params, 
+          Passagem.micro_update(this.params,
             function(data) {
               scTopMessages.openSuccess("Passagem desativada com sucesso.", {timeOut: 3000})
+              vmIdx.listCtrl.loadList()
             },
             function(response) {
               scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
@@ -168,22 +203,29 @@
       }
 
       vmIdx.filtro = {
-        listar: {},
         params: {},
         init: function(){
-          this.paramsInit = angular.copy(vmIdx.settings.passagens.filtro)
+          this.paramsInit = angular.copy(vmIdx.settings.filtro)
           this.params = angular.copy(this.paramsInit)
         },
-
         exec: function(tipo){
           vmIdx.listCtrl.loadList()
           this.avancado = false
-          this.params.filtrado = true
         },
         limpar: function() {
           this.params = angular.copy(this.paramsInit)
-          this.params.filtrado = false
+          console.log(this.params)
           vmIdx.listCtrl.loadList()
+        },
+        setOpcoes: function(opcao) {
+          if (!this.params.status) { this.params.status = [] }
+          if(this.params.status.getByField("key", opcao.key)) {
+            this.params.status.remove(opcao.key)
+          } else {
+            this.params.status.push(opcao.key)
+          }
+          opcao.active = !opcao.active
+          console.log(this.params.status)
         }
       }
 
@@ -222,6 +264,8 @@
         vmIdx.settings = data.settings.passagens
         vmIdx.settings = vmIdx.settings
         vmIdx.indexFactory.settings = vmIdx.settings
+
+        vmIdx.filtro.init()
       }
 
       return vmIdx

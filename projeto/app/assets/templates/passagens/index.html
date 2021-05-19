@@ -111,14 +111,15 @@
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menuReticiencias">
                   <li sc-dropdown-close-menu=""
                     ng-click="PassagensCtrl.passarServicoCtrl.open(passagem); PassagemCtrl.menuReticiencias.toggle(passagem)"
-                    ng-show="!passagem.user_entrou_id">
+                    ng-if="!passagem.user_entrou_id && passagem.status != 'Desativada'">
                     <span>
                       <i class="sc-icon-seta-6-direita-esquerda"></i> Passar serviço
                     </span>
                   </li>
-                  <li sc-dropdown-close-menu="" ng-show="!passagem.user_entrou_id" ng-click="PassagemCtrl.formCtrl.open(passagem)">
+                  <li sc-dropdown-close-menu="" ng-if="!passagem.user_entrou_id && passagem.status != 'Desativada'"
+                    ng-click="PassagemCtrl.formCtrl.open(passagem)">
                     <span>
-                      <i class="sc-icon-lapis"></i> Editar
+                      <i class="sc-icon sc-icon-lapis"></i> Editar
                     </span>
                   </li>
                   <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.listCtrl.duplicarRegistro(passagem)">
@@ -126,14 +127,21 @@
                       <i class="sc-icon sc-icon-mais-4"></i> Duplicar
                     </span>
                   </li>
-                  <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.desativarPassagem.beforeDesativar(passagem)">
+                  <li sc-dropdown-close-menu="" ng-if="passagem.status != 'Desativada'"
+                    ng-click="PassagensCtrl.desativarPassagem.beforeDesativar(passagem)">
                     <span>
-                      <i class="sc-icon-banir"></i> Desativar
+                      <i class="sc-icon sc-icon-banir"></i> Desativar
+                    </span>
+                  </li>
+                  <li sc-dropdown-close-menu="" ng-if="passagem.status == 'Desativada'"
+                    ng-click="PassagensCtrl.reativarPassagem.beforeReativar(passagem)">
+                    <span>
+                      <i class="sc-icon sc-icon-seta-9-esquerda"></i> Reativar
                     </span>
                   </li>
                   <li sc-dropdown-close-menu="" ng-click="PassagensCtrl.listCtrl.beforeExcluirRegistro(passagem)">
                     <span>
-                      <i class="sc-icon-lixeira-1"></i> Excluir
+                      <i class="sc-icon sc-icon-lixeira-1"></i> Excluir
                     </span>
                   </li>
                 </ul>

@@ -19,12 +19,33 @@ class Administrativo::PassagensService
     case micro_update_type.to_s.to_sym
     when :passar_servico then passar_servico(passagem)
     when :desativar then desativar(passagem)
+    when :reativar then reativar(passagem)
     else
       fail 'Opção inválida'
     end
   end
 
   def self.desativar(params)
+    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
+
+    if passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    pas_params = set_params(params)
+    passagem.assign_attributes(pas_params)
+
+    if passagem.save
+      resp = {passagem: passagem.to_frontend_obj}
+      [:success, resp]
+    else
+      resp = passagem.errors.full_messages
+      return [:error, resp]
+    end
+  end
+
+  def self.reativar(params)
     passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
 
     if passagem.blank?
@@ -56,7 +77,7 @@ class Administrativo::PassagensService
     pas_params = set_params(params)
     passagem.assign_attributes(pas_params)
 
-    if passagem.save(validate: false)
+    if passagem.save
       resp = {passagem: passagem.to_frontend_obj}
       [:success, resp]
     else
@@ -133,7 +154,7 @@ class Administrativo::PassagensService
     resp[:usuarios] = User.all.map(&:to_frontend_obj)
     resp[:lista_tipo_data] = Administrativo::PassagemServico::LISTA_TIPO_DATA
     resp[:lista_status] = Administrativo::PassagemServico::LISTA_STATUS
-    resp[:filtro] = { q: "", user_entrou: "", user_saiu: "" }
+    resp[:filtro] = { q: "", user_entrou: "", user_saiu: "", status: []}
 
     resp
   end
@@ -149,11 +170,13 @@ class Administrativo::PassagensService
       params.delete(:user_entrou_senha) if params[:user_entrou_senha].blank?
     end
 
-    if params[:micro_update_type].present?
-      params[:desativar] = true
-      params.delete(:micro_update_type)
+    if params[:micro_update_type] == 'desativar'
+      params[:micro_update_opts] = {desativar: true}
+    elsif params[:micro_update_type] == 'reativar'
+      params[:micro_update_opts] = {reativar: true}
     end
 
+    params.delete(:micro_update_type)
 
     params = set_objetos(params)
     params

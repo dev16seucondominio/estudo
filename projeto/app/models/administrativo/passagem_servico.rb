@@ -1,6 +1,6 @@
 class Administrativo::PassagemServico < ApplicationRecord
   attr_accessor :validar_user_opts
-  attr_accessor :desativar
+  attr_accessor :micro_update_opts
 
   # Associations
 
@@ -16,13 +16,19 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   validate :validar_campos
   validate :validar_existencia_usuarios
+  validate :desativar
+  validate :reativar
 
   scope :buscar, lambda { |params|
     filtro = params[:filtro] || {}
     scoped = all
 
+    scoped = scoped.where.not("status = 'Desativada'")
+
     if filtro[:q].present?
       scoped = busca_simples(filtro)
+    elsif filtro.present?
+      scoped = busca_avancada(filtro)
     end
 
     scoped.distinct
@@ -33,37 +39,77 @@ class Administrativo::PassagemServico < ApplicationRecord
     sql  = []
     args = []
 
-    # raise filtro.to_json
-
     q = filtro[:q]
     return scoped if q.blank?
 
-    sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
+    sql  << "(users.nome like ?)"
     args << "%#{q}%"
 
-    sql  << "(user_saius_administrativo_passagem_servicos.nome like ?)"
+    sql  << "(nome like ?)"
     args << "%#{q}%"
 
-    scoped = scoped.joins(:user_entrou)
-    scoped.left_outer_joins(:user_saiu)
+    scoped = scoped.joins(:user_entrou, :user_saiu)
     scoped = scoped.where(sql.join(' AND '), *args)
-    scoped
+
+    # sql  << "(nome like ?)"
+    # args << "%#{q}%"
+
+    # scoped = scoped.joins(:user_saiu)
+    # scoped = scoped.where(sql.join(' AND '), *args)
+
+    raise scoped.to
   }
 
   scope :busca_avancada, lambda { |filtro|
     scoped = all
     return scoped if filtro.blank?
+    sql = []
+    args = []
 
-    keys = %(nome email)
-    keys.each{ |key|
-      val = filtro[key].presence
-      scoped = scoped.where("#{key} like ?", "%#{val}%") if val
-    }
+    filtro[:data_inicio] = filtro[:data_inicio].to_date.at_beginning_of_month
+    filtro[:data_fim] = filtro[:data_fim].to_date.at_end_of_month
 
-    if filtro[:opcoes].present?
-      scoped = scoped.com_opcoes(filtro[:opcoes])
+    args << filtro[:data_inicio]
+    args << filtro[:data_fim]
+
+    if filtro[:data_inicio]
+      sql << ("created_at BETWEEN ? AND ?")
+      scoped = scoped.where(sql.join(' AND '), *args)
     end
 
+    # keys = %(users.nome users.email)
+    # keys.each{ |key|
+    #   val = filtro[key].presence
+    #   scoped = scoped.joins(:user_entrou)
+    #   scoped = scoped.where("#{key} like ?", "%#{val}%") if val
+    # }
+
+    if filtro[:status].present?
+      scoped = scoped.com_status(filtro[:status])
+    end
+
+    scoped
+  }
+
+
+  scope :com_status, lambda { |*list|
+    scoped = all
+    sql = []
+
+    list = list.flatten.compact
+    list.each{ |item|
+
+      case item.to_sym
+      when :pendente
+        sql << "status = 'Pendente'"
+      when :realizada
+        sql << "status = 'Realizada'"
+      when :desativada
+        sql << "status = 'Desativada'"
+      end
+    }
+
+    scoped = scoped.where(sql.join(' OR '))
     scoped
   }
 
@@ -98,19 +144,34 @@ class Administrativo::PassagemServico < ApplicationRecord
   private
 
   def validar_existencia_usuarios
-    unless user_saiu_id && user_entrou_id
-      self.status = "Pendente"
-    else
-      validar_user
+    unless micro_update_opts[:desativar] || micro_update_opts[:reativar]
+      unless user_saiu_id && user_entrou_id
+        self.status = "Pendente"
+      else
+        validar_user
+      end
     end
-
   end
 
   def desativar
-    unless desativar?
+    return if micro_update_opts[:reativar]
+    unless micro_update_opts[:desativar]
       errors.add(:base, "Erro desconhecido!")
     else
       self.status = "Desativada" if errors.empty?
+    end
+  end
+
+  def reativar
+    return if micro_update_opts[:desativar]
+    unless micro_update_opts[:reativar]
+      errors.add(:base, "Erro desconhecido!")
+    else
+      if self.user_entrou_id
+        self.status = "Realizada" if errors.empty?
+      else
+        self.status = "Pendente" if errors.empty?
+      end
     end
   end
 
@@ -134,16 +195,18 @@ class Administrativo::PassagemServico < ApplicationRecord
   end
 
   def validar_campos
-    errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
+    unless micro_update_opts[:desativar] || micro_update_opts[:reativar]
+      errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
 
-    if self.objetos.present?
-      self.objetos.each do |objeto|
-        if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
-          errors.add(:base, 'Selecione uma categoria para os objetos.')
-        elsif objeto[:itens].blank?
-          errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
+      if self.objetos.present?
+        self.objetos.each do |objeto|
+          if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
+            errors.add(:base, 'Selecione uma categoria para os objetos.')
+          elsif objeto[:itens].blank?
+            errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
+          end
+
         end
-
       end
     end
 
