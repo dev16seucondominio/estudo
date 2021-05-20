@@ -27,16 +27,16 @@ class Administrativo::CategoriasService
 
   def self.destroy(params)
 
-  	categoria = Administrativo::PassagemServicoObjetoCategoria.where(id: params[:id]).first
+    categoria = Administrativo::PassagemServicoObjetoCategoria.where(id: params[:id]).first
 
 
-  	if categoria.destroy
-  		resp = {msg: "Registro excluído com sucesso"}
-  		[:success, resp]
-  	else
-  		errors = categoria.errors.full_messages
-  		[:error, errors]
-  	end
+    if categoria.destroy
+      resp = {msg: "Registro excluído com sucesso"}
+      [:success, resp]
+    else
+      errors = categoria.errors.full_messages
+      [:error, errors]
+    end
   end
 
 end

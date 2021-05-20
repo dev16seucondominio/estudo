@@ -126,15 +126,15 @@ class Administrativo::PassagensService
   end
 
   def self.destroy(params)
-  	passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+    passagem = Administrativo::PassagemServico.where(id: params[:id]).first
 
-  	if passagem.destroy
-  		resp = {msg: "Registro excluído com sucesso"}
-  		[:success, resp]
-  	else
-  		errors = passagem.errors.full_messages
-  		[:error, errors]
-  	end
+    if passagem.destroy
+      resp = {msg: "Registro excluído com sucesso"}
+      [:success, resp]
+    else
+      errors = passagem.errors.full_messages
+      [:error, errors]
+    end
   end
 
   def self.load_module(params)

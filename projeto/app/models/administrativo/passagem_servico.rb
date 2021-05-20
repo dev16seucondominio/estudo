@@ -13,11 +13,9 @@ class Administrativo::PassagemServico < ApplicationRecord
   accepts_nested_attributes_for :objetos, allow_destroy: true
 
   # Validates
-
+  before_validation :set_status
   validate :validar_campos
   validate :validar_existencia_usuarios
-  validate :desativar
-  validate :reativar
 
   scope :buscar, lambda { |params|
     filtro = params[:filtro] || {}
@@ -73,7 +71,7 @@ class Administrativo::PassagemServico < ApplicationRecord
     args << filtro[:data_fim]
 
     if filtro[:data_inicio]
-      sql << ("created_at BETWEEN ? AND ?")
+      sql << ("created_at ? >= AND ?")
       scoped = scoped.where(sql.join(' AND '), *args)
     end
 
@@ -142,23 +140,17 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   private
 
-  def desativar
-    if micro_update_opts.present?
-      return if micro_update_opts[:reativar]
-      unless micro_update_opts[:desativar]
-        errors.add(:base, "Erro desconhecido!")
-      else
-        self.status = "Desativada" if errors.empty?
-      end
+  def set_status
+    if self.user_entrou_id.blank?
+      self.status = 'Pendente'
+    elsif self.user_entrou_id.present?
+      self.status = 'Realizada'
     end
-  end
 
-  def reativar
     if micro_update_opts.present?
-      return if micro_update_opts[:desativar]
-      unless micro_update_opts[:reativar]
-        errors.add(:base, "Erro desconhecido!")
-      else
+      if micro_update_opts[:desativar]
+        self.status = "Desativada" if errors.empty?
+      elsif micro_update_opts[:reativar]
         if self.user_entrou_id
           self.status = "Realizada" if errors.empty?
         else
@@ -170,9 +162,7 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   def validar_existencia_usuarios
     return if micro_update_opts.present?
-    unless user_saiu_id && user_entrou_id
-      self.status = "Pendente"
-    else
+    if self.user_entrou_id && self.user_saiu_id
       validar_user
     end
   end
@@ -181,7 +171,6 @@ class Administrativo::PassagemServico < ApplicationRecord
     unless validar_user_opts.present?
       errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
     else
-
       unless user_saiu.verificar_senha(validar_user_opts[:user_saiu_senha])
         errors.add(:base, 'Senha errada - quem sai.')
       end
@@ -189,8 +178,6 @@ class Administrativo::PassagemServico < ApplicationRecord
         errors.add(:base, 'Senha errada - quem entra.')
       end
     end
-
-    self.status = "Realizada" if errors.empty?
 
     errors.empty?
   end
