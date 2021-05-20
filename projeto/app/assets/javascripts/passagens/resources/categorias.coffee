@@ -5,7 +5,7 @@ angular.module('myApp').lazy
   ($resource) ->
     encapsulateData = (data)-> JSON.stringify { categoria: data }
 
-    $resource 'http://localhost:3000/administrativo/categorias/:id.json', { id: "@id" },
+    $resource '/administrativo/categorias/:id.json', { id: "@id" },
       list:
         method: 'GET'
       show:
@@ -13,7 +13,7 @@ angular.module('myApp').lazy
 
       save:
         method: 'POST'
-        url: 'http://localhost:3000/administrativo/categorias/save.json'
+        url: '/administrativo/categorias/save.json'
         transformRequest: encapsulateData
 
       destroy:

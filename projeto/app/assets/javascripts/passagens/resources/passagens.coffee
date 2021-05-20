@@ -5,7 +5,7 @@ angular.module('myApp').lazy
   ($resource) ->
     encapsulateData = (data)-> JSON.stringify { passagem: data }
 
-    $resource 'http://localhost:3000/administrativo/passagens/:id.json', { id: "@id" },
+    $resource '/administrativo/passagens/:id.json', { id: "@id" },
       list:
         method: 'GET'
       show:
@@ -13,12 +13,12 @@ angular.module('myApp').lazy
 
       save:
         method: 'POST'
-        url: 'http://localhost:3000/administrativo/passagens/save.json'
+        url: '/administrativo/passagens/save.json'
         transformRequest: encapsulateData
 
       micro_update:
         method: 'PUT'
-        url: 'http://localhost:3000/administrativo/passagens/micro_update.json'
+        url: '/administrativo/passagens/micro_update.json'
         transformRequest: encapsulateData
 
       destroy:

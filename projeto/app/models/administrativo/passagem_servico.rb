@@ -45,19 +45,17 @@ class Administrativo::PassagemServico < ApplicationRecord
     sql  << "(users.nome like ?)"
     args << "%#{q}%"
 
-    sql  << "(nome like ?)"
+    sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
     args << "%#{q}%"
 
-    scoped = scoped.joins(:user_entrou, :user_saiu)
-    scoped = scoped.where(sql.join(' AND '), *args)
 
-    # sql  << "(nome like ?)"
-    # args << "%#{q}%"
 
-    # scoped = scoped.joins(:user_saiu)
-    # scoped = scoped.where(sql.join(' AND '), *args)
+    scoped = scoped.joins(:user_saiu, :user_entrou)
+    scoped = scoped.where(sql.join(' OR '), *args)
 
-    raise scoped.to
+    scoped = scoped.where("status = 'Pendente' AND status = 'Realizada'")
+
+    scoped
   }
 
   scope :busca_avancada, lambda { |filtro|
@@ -66,8 +64,10 @@ class Administrativo::PassagemServico < ApplicationRecord
     sql = []
     args = []
 
-    filtro[:data_inicio] = filtro[:data_inicio].to_date.at_beginning_of_month
-    filtro[:data_fim] = filtro[:data_fim].to_date.at_end_of_month
+    if filtro[:data_inicio].presence && filtro[:data_fim]
+      filtro[:data_inicio] = filtro[:data_inicio].to_date.at_beginning_of_month
+      filtro[:data_fim] = filtro[:data_fim].to_date.at_end_of_month
+    end
 
     args << filtro[:data_inicio]
     args << filtro[:data_fim]
@@ -90,7 +90,6 @@ class Administrativo::PassagemServico < ApplicationRecord
 
     scoped
   }
-
 
   scope :com_status, lambda { |*list|
     scoped = all
@@ -143,35 +142,38 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   private
 
-  def validar_existencia_usuarios
-    unless micro_update_opts[:desativar] || micro_update_opts[:reativar]
-      unless user_saiu_id && user_entrou_id
-        self.status = "Pendente"
-      else
-        validar_user
-      end
-    end
-  end
-
   def desativar
-    return if micro_update_opts[:reativar]
-    unless micro_update_opts[:desativar]
-      errors.add(:base, "Erro desconhecido!")
-    else
-      self.status = "Desativada" if errors.empty?
+    if micro_update_opts.present?
+      return if micro_update_opts[:reativar]
+      unless micro_update_opts[:desativar]
+        errors.add(:base, "Erro desconhecido!")
+      else
+        self.status = "Desativada" if errors.empty?
+      end
     end
   end
 
   def reativar
-    return if micro_update_opts[:desativar]
-    unless micro_update_opts[:reativar]
-      errors.add(:base, "Erro desconhecido!")
-    else
-      if self.user_entrou_id
-        self.status = "Realizada" if errors.empty?
+    if micro_update_opts.present?
+      return if micro_update_opts[:desativar]
+      unless micro_update_opts[:reativar]
+        errors.add(:base, "Erro desconhecido!")
       else
-        self.status = "Pendente" if errors.empty?
+        if self.user_entrou_id
+          self.status = "Realizada" if errors.empty?
+        else
+          self.status = "Pendente" if errors.empty?
+        end
       end
+    end
+  end
+
+  def validar_existencia_usuarios
+    return if micro_update_opts.present?
+    unless user_saiu_id && user_entrou_id
+      self.status = "Pendente"
+    else
+      validar_user
     end
   end
 
@@ -183,7 +185,6 @@ class Administrativo::PassagemServico < ApplicationRecord
       unless user_saiu.verificar_senha(validar_user_opts[:user_saiu_senha])
         errors.add(:base, 'Senha errada - quem sai.')
       end
-
       unless user_entrou.verificar_senha(validar_user_opts[:user_entrou_senha])
         errors.add(:base, 'Senha errada - quem entra.')
       end
@@ -195,18 +196,17 @@ class Administrativo::PassagemServico < ApplicationRecord
   end
 
   def validar_campos
-    unless micro_update_opts[:desativar] || micro_update_opts[:reativar]
-      errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
+    return if micro_update_opts.present?
+    errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
 
-      if self.objetos.present?
-        self.objetos.each do |objeto|
-          if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
-            errors.add(:base, 'Selecione uma categoria para os objetos.')
-          elsif objeto[:itens].blank?
-            errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
-          end
-
+    if self.objetos.present?
+      self.objetos.each do |objeto|
+        if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
+          errors.add(:base, 'Selecione uma categoria para os objetos.')
+        elsif objeto[:itens].blank?
+          errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
         end
+
       end
     end
 
