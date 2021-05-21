@@ -1,6 +1,6 @@
 class Administrativo::PassagensService
 
-  def self.index(params)
+  def self.index params
     passagens = Administrativo::PassagemServico.buscar(params).reverse_order.map(&:slim_obj)
 
     resp = { list: passagens }
@@ -10,7 +10,7 @@ class Administrativo::PassagensService
     [:success, resp]
   end
 
-  def self.micro_update(params)
+  def self.micro_update params
 
     passagem = params[:passagem]
 
@@ -25,69 +25,8 @@ class Administrativo::PassagensService
     end
   end
 
-  def self.desativar(params)
-    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
-
-    if passagem.blank?
-      errors = "Registro não existe"
-      return [:not_found, errors]
-    end
-
-    pas_params = set_params(params)
-    passagem.assign_attributes(pas_params)
-
-    if passagem.save
-      resp = {passagem: passagem.to_frontend_obj}
-      [:success, resp]
-    else
-      resp = passagem.errors.full_messages
-      return [:error, resp]
-    end
-  end
-
-  def self.reativar(params)
-    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
-
-    if passagem.blank?
-      errors = "Registro não existe"
-      return [:not_found, errors]
-    end
-
-    pas_params = set_params(params)
-    passagem.assign_attributes(pas_params)
-
-    if passagem.save
-      resp = {passagem: passagem.to_frontend_obj}
-      [:success, resp]
-    else
-      resp = passagem.errors.full_messages
-      return [:error, resp]
-    end
-  end
-
-  def self.passar_servico(params)
-    params.delete(:micro_update_type)
-
-    passagem = Administrativo::PassagemServico.where(id: (params || {})[:id]).first
-    if passagem.blank?
-      errors = "Registro não existe"
-      return [:not_found, errors]
-    end
-
-    pas_params = set_params(params)
-    passagem.assign_attributes(pas_params)
-
-    if passagem.save
-      resp = {passagem: passagem.to_frontend_obj}
-      [:success, resp]
-    else
-      resp = passagem.errors.full_messages
-      return [:error, resp]
-    end
-  end
-
-  def self.show(params)
-    passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+  def self.show params
+    passagem = find_passagem(params)
 
     return [:not_found, "Registro não encontrado."] if passagem.blank?
 
@@ -95,11 +34,11 @@ class Administrativo::PassagensService
     [:success, resp]
   end
 
-  def self.save(params)
+  def self.save params
     params = params[:passagem]
 
     if params[:id].present?
-      passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+      passagem = find_passagem(params)
       if passagem[:user_entrou_id].present?
         errors = "Passagem já realizada"
         return [:error, errors]
@@ -125,8 +64,8 @@ class Administrativo::PassagensService
     end
   end
 
-  def self.destroy(params)
-    passagem = Administrativo::PassagemServico.where(id: params[:id]).first
+  def self.destroy params
+    passagem = find_passagem(params )
 
     if passagem.destroy
       resp = {msg: "Registro excluído com sucesso"}
@@ -137,7 +76,65 @@ class Administrativo::PassagensService
     end
   end
 
-  def self.load_module(params)
+  # private
+
+  def self.micro_update_save (params, passagem)
+    pas_params = set_params(params)
+    passagem.assign_attributes(pas_params)
+
+    if passagem.save
+      resp = {passagem: passagem.to_frontend_obj}
+      [:success, resp]
+    else
+      resp = passagem.errors.full_messages
+      return [:error, resp]
+    end
+  end
+  private_class_method :micro_update_save
+
+  def self.find_passagem params
+    Administrativo::PassagemServico.where(id: (params || {})[:id]).first
+  end
+  private_class_method :find_passagem
+
+  def self.desativar params
+    passagem = find_passagem(params)
+
+    if passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    micro_update_save(params, passagem)
+  end
+  private_class_method :desativar
+
+  def self.reativar params
+    passagem = find_passagem(params)
+
+    if passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    micro_update_save(params, passagem)
+  end
+  private_class_method :reativar
+
+  def self.passar_servico params
+    params.delete(:micro_update_type)
+
+    passagem = find_passagem(params)
+    if passagem.blank?
+      errors = "Registro não existe"
+      return [:not_found, errors]
+    end
+
+    micro_update_save(params, passagem)
+  end
+  private_class_method :passar_servico
+
+  def self.load_module params
     resp = {}
 
     resp[:settings] = {
@@ -146,8 +143,9 @@ class Administrativo::PassagensService
 
     resp
   end
+  private_class_method :load_module
 
-  def self.load_settings(params)
+  def self.load_settings params
     resp = {}
 
     resp[:lista_categorias] = Administrativo::PassagemServicoObjetoCategoria.all
@@ -158,8 +156,9 @@ class Administrativo::PassagensService
 
     resp
   end
+  private_class_method :load_settings
 
-  def self.set_params(params)
+  def self.set_params params
     if params[:user_saiu_senha].presence || params[:user_entrou_senha].presence
       params[:validar_user_opts] = {
         user_saiu_senha:   params.delete(:user_saiu_senha),
@@ -181,13 +180,15 @@ class Administrativo::PassagensService
     params = set_objetos(params)
     params
   end
+  private_class_method :set_params
 
-  def self.set_objetos(params)
+  def self.set_objetos params
     objetos = params.delete(:objetos)
     return params if objetos.blank?
 
     params[:objetos_attributes] = objetos
     params
   end
+  private_class_method :set_objetos
 
 end

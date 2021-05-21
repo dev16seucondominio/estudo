@@ -145,7 +145,10 @@
         },
         exec: function(params) {
 
+
           params ||= {}
+
+          console.log("asdpokasdp", params)
 
           params.filtro        = vmIdx.filtro.params
           params.with_settings = vmIdx.listCtrl.with_settings
@@ -153,7 +156,6 @@
           Passagem.list(params,
             function(data) {
               loadSettings(data)
-              console.log(data)
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
               console.log("Pode ter acontecido algum erro.", response)
@@ -208,9 +210,10 @@
           this.paramsInit = angular.copy(vmIdx.settings.filtro)
           this.params = angular.copy(this.paramsInit)
         },
-        exec: function(tipo){
-          vmIdx.listCtrl.loadList()
+        exec: function(){
           this.avancado = false
+          this.params.filtrado = true
+          vmIdx.listCtrl.loadList(this.params)
         },
         limpar: function() {
           this.params = angular.copy(this.paramsInit)

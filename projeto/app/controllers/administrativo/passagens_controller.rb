@@ -52,6 +52,8 @@ class Administrativo::PassagensController < ApplicationController
 		end
 	end
 
+  private
+
 	def params_passagem
 		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id,
       :micro_update_type, :user_saiu_senha, :user_entrou_senha]

@@ -40,6 +40,7 @@ class Administrativo::PassagemServico < ApplicationRecord
     q = filtro[:q]
     return scoped if q.blank?
 
+
     sql  << "(users.nome like ?)"
     args << "%#{q}%"
 
@@ -48,10 +49,10 @@ class Administrativo::PassagemServico < ApplicationRecord
 
 
 
-    scoped = scoped.joins(:user_saiu, :user_entrou)
+    scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
+    # sql << "status = 'Pendente' OR status = 'Realizada'"
     scoped = scoped.where(sql.join(' OR '), *args)
 
-    scoped = scoped.where("status = 'Pendente' AND status = 'Realizada'")
 
     scoped
   }
@@ -63,16 +64,15 @@ class Administrativo::PassagemServico < ApplicationRecord
     args = []
 
     if filtro[:data_inicio].presence && filtro[:data_fim]
-      filtro[:data_inicio] = filtro[:data_inicio].to_date.at_beginning_of_month
-      filtro[:data_fim] = filtro[:data_fim].to_date.at_end_of_month
     end
 
     args << filtro[:data_inicio]
     args << filtro[:data_fim]
 
     if filtro[:data_inicio]
-      sql << ("created_at ? >= AND ?")
+      sql << ("created_at >= ? AND created_at <= ?")
       scoped = scoped.where(sql.join(' AND '), *args)
+      scoped = scoped.where("status = 'Pendente' OR status = 'Realizada'")
     end
 
     # keys = %(users.nome users.email)
@@ -86,6 +86,7 @@ class Administrativo::PassagemServico < ApplicationRecord
       scoped = scoped.com_status(filtro[:status])
     end
 
+    # raise scoped.to_sql
     scoped
   }
 
@@ -163,11 +164,11 @@ class Administrativo::PassagemServico < ApplicationRecord
   def validar_existencia_usuarios
     return if micro_update_opts.present?
     if self.user_entrou_id && self.user_saiu_id
-      validar_user
+      validar_senhas
     end
   end
 
-  def validar_user
+  def validar_senhas
     unless validar_user_opts.present?
       errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
     else
