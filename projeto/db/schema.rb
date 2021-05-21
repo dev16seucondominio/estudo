@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_205215) do
+ActiveRecord::Schema.define(version: 2021_05_21_185344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
 
   create_table "administrativo_passagem_servico_objetos", force: :cascade do |t|
     t.jsonb "itens", default: []
-    t.integer "administrativo_passagem_servico_objeto_categoria_id"
-    t.integer "administrativo_passagem_servico_id"
+    t.integer "objeto_categoria_id"
+    t.integer "passagem_servico_id"
   end
 
   create_table "administrativo_passagem_servicos", force: :cascade do |t|
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2021_04_30_205215) do
     t.integer "user_saiu_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "cancelada_em"
   end
 
   create_table "bancos", force: :cascade do |t|

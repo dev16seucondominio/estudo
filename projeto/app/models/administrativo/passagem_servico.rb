@@ -1,6 +1,5 @@
 class Administrativo::PassagemServico < ApplicationRecord
-  attr_accessor :validar_user_opts
-  attr_accessor :micro_update_opts
+  attr_accessor :user_saiu_senha, :user_entrou_senha
 
   # Associations
 
@@ -8,7 +7,7 @@ class Administrativo::PassagemServico < ApplicationRecord
   belongs_to :user_entrou, class_name: "User", foreign_key: :user_entrou_id, optional: true
 
   has_many :objetos, class_name: "Administrativo::PassagemServicoObjeto",
-    foreign_key: :administrativo_passagem_servico_id
+    foreign_key: :passagem_servico_id
 
   accepts_nested_attributes_for :objetos, allow_destroy: true
 
@@ -16,12 +15,13 @@ class Administrativo::PassagemServico < ApplicationRecord
   before_validation :set_status
   validate :validar_campos
   validate :validar_existencia_usuarios
+  validate :validar_ja_realizada
 
   scope :buscar, lambda { |params|
     filtro = params[:filtro] || {}
     scoped = all
 
-    scoped = scoped.where.not("status = 'Desativada'")
+    # raise filtro.to_json
 
     if filtro[:q].present?
       scoped = busca_simples(filtro)
@@ -40,19 +40,15 @@ class Administrativo::PassagemServico < ApplicationRecord
     q = filtro[:q]
     return scoped if q.blank?
 
-
     sql  << "(users.nome like ?)"
     args << "%#{q}%"
 
     sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
     args << "%#{q}%"
 
-
-
     scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
     # sql << "status = 'Pendente' OR status = 'Realizada'"
     scoped = scoped.where(sql.join(' OR '), *args)
-
 
     scoped
   }
@@ -62,9 +58,6 @@ class Administrativo::PassagemServico < ApplicationRecord
     return scoped if filtro.blank?
     sql = []
     args = []
-
-    if filtro[:data_inicio].presence && filtro[:data_fim]
-    end
 
     args << filtro[:data_inicio]
     args << filtro[:data_fim]
@@ -86,7 +79,6 @@ class Administrativo::PassagemServico < ApplicationRecord
       scoped = scoped.com_status(filtro[:status])
     end
 
-    # raise scoped.to_sql
     scoped
   }
 
@@ -141,55 +133,54 @@ class Administrativo::PassagemServico < ApplicationRecord
 
   private
 
-  def set_status
-    if self.user_entrou_id.blank?
-      self.status = 'Pendente'
-    elsif self.user_entrou_id.present?
-      self.status = 'Realizada'
-    end
+  def users_presentes?
+    user_entrou_id.present? && user_saiu_id.present?
+  end
 
-    if micro_update_opts.present?
-      if micro_update_opts[:desativar]
-        self.status = "Desativada" if errors.empty?
-      elsif micro_update_opts[:reativar]
-        if self.user_entrou_id
-          self.status = "Realizada" if errors.empty?
-        else
-          self.status = "Pendente" if errors.empty?
-        end
-      end
+  def validar_ja_realizada
+    modificando_users = user_entrou_id_changed? || user_saiu_id_changed?
+    if users_presentes? && modificando_users
+      errors.add(:base, "Passagem já realizada")
     end
+  end
+
+  def set_status
+    return self.status = "Desativada" if cancelada_em.present?
+    return self.status = 'Realizada' if user_entrou_id.present? && user_saiu_id.present?
+    return self.status = 'Pendente'  # if user_entrou_id.blank? # || user_saiu_id.blank?
   end
 
   def validar_existencia_usuarios
-    return if micro_update_opts.present?
-    if self.user_entrou_id && self.user_saiu_id
-      validar_senhas
-    end
+    validar_senhas if users_presentes?
   end
 
-  def validar_senhas
-    unless validar_user_opts.present?
-      errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
-    else
-      unless user_saiu.verificar_senha(validar_user_opts[:user_saiu_senha])
-        errors.add(:base, 'Senha errada - quem sai.')
-      end
-      unless user_entrou.verificar_senha(validar_user_opts[:user_entrou_senha])
-        errors.add(:base, 'Senha errada - quem entra.')
-      end
-    end
+  def realizando_passagem?
+    preenchendo_users = user_entrou_id_was.blank? && user_saiu_id_was.blank?
+    users_presentes? && preenchendo_users
+  end
 
+  def faltando_senha?
+    user_saiu_senha.blank? || user_entrou_senha.blank?
+    # validar_user_opts.blank?
+  end
+
+
+  def validar_senhas
+    return unless realizando_passagem?
+    if faltando_senha?
+      return errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
+    end
+    errors.add(:base, 'Senha errada - quem sai.') unless user_saiu.verificar_senha(user_saiu_senha)
+    errors.add(:base, 'Senha errada - quem entra.') unless user_entrou.verificar_senha(user_entrou_senha)
     errors.empty?
   end
 
   def validar_campos
-    return if micro_update_opts.present?
-    errors.add(:base, 'Quem sai não pode ser vazio.') if self.user_saiu_id.blank?
+    errors.add(:base, 'Quem sai não pode ser vazio.') if user_saiu_id.blank?
 
-    if self.objetos.present?
-      self.objetos.each do |objeto|
-        if objeto[:administrativo_passagem_servico_objeto_categoria_id].blank?
+    if objetos.present?
+      objetos.each do |objeto|
+        if objeto[:objeto_categoria_id].blank?
           errors.add(:base, 'Selecione uma categoria para os objetos.')
         elsif objeto[:itens].blank?
           errors.add(:base, 'É necessário adicionar ao menos 1 items para salvar objetos.')
@@ -206,10 +197,15 @@ class Administrativo::PassagemServico < ApplicationRecord
     { key: :passado_em, label: 'Passado em' }
   ]
 
+  OBJ_DEFAULT = {
+    q: "", user_entrou: "", user_saiu: "", data_inicio: Time.zone.now - 1.month,
+    data_fim: Time.zone.now, status: []
+  }
+
   LISTA_STATUS = [
-    { key: :pendente,   label: 'Pendente' },
-    { key: :realizada,  label: 'Realizada' },
-    { key: :desativada, label: 'Desativada' }
+    { key: :pendente,   label: 'Pendente' ,  active: true },
+    { key: :realizada,  label: 'Realizada',  active: true },
+    { key: :desativada, label: 'Desativada', active: false}
   ]
 
 end

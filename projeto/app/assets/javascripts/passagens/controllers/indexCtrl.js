@@ -144,18 +144,20 @@
           this.exec(params)
         },
         exec: function(params) {
-
-
           params ||= {}
 
-          console.log("asdpokasdp", params)
-
+          console.log(params)
           params.filtro        = vmIdx.filtro.params
           params.with_settings = vmIdx.listCtrl.with_settings
 
           Passagem.list(params,
             function(data) {
-              loadSettings(data)
+              console.log(data)
+              if(!params.filtro.filtrado) {
+                loadSettings(data)
+              } else {
+              }
+
               vmIdx.listCtrl.list = angular.copy(data.list)
             }, function(response) {
               console.log("Pode ter acontecido algum erro.", response)
@@ -209,6 +211,9 @@
         init: function(){
           this.paramsInit = angular.copy(vmIdx.settings.filtro)
           this.params = angular.copy(this.paramsInit)
+          this.params.data_inicio = new Date(this.params.data_inicio)
+          this.params.data_fim = new Date(this.params.data_fim)
+          this.initStatus()
         },
         exec: function(){
           this.avancado = false
@@ -217,18 +222,20 @@
         },
         limpar: function() {
           this.params = angular.copy(this.paramsInit)
-          console.log(this.params)
           vmIdx.listCtrl.loadList()
         },
-        setOpcoes: function(opcao) {
-          if (!this.params.status) { this.params.status = [] }
-          if(this.params.status.getByField("key", opcao.key)) {
+        setStatus: function(opcao) {
+          if(opcao.active) {
             this.params.status.remove(opcao.key)
           } else {
             this.params.status.push(opcao.key)
           }
           opcao.active = !opcao.active
-          console.log(this.params.status)
+        },
+        initStatus: function() {
+          for (var i = 0; i < vmIdx.settings.lista_status.length; i++) {
+            if(vmIdx.settings.lista_status[i].active) this.params.status.push(vmIdx.settings.lista_status[i].key)
+          }
         }
       }
 
@@ -263,10 +270,10 @@
       }
 
       // Settings
-      loadSettings = function(data){
+      loadSettings = function(data) {
         vmIdx.settings = data.settings.passagens
-        vmIdx.settings = vmIdx.settings
         vmIdx.indexFactory.settings = vmIdx.settings
+
 
         vmIdx.filtro.init()
       }

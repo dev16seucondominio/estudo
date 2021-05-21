@@ -58,13 +58,14 @@ class Administrativo::PassagensController < ApplicationController
 		attrs = [:passagem, :id, :observacoes, :status, :objetos, :user_saiu_id, :user_entrou_id,
       :micro_update_type, :user_saiu_senha, :user_entrou_senha]
 
-    attrs << {objetos: [:id, :administrativo_passagem_servico_objeto_categoria_id,
-      :_destroy, :administrativo_passagem_servico_id, itens: [:descricao, :qtd, :verificado]]
+    attrs << {objetos: [:id, :objeto_categoria_id,
+      :_destroy, :passagem_servico_id, itens: [:descricao, :qtd, :verificado]]
     }
 
 		resp = {}
 
 		resp[:passagem] = params.require(:passagem).permit(attrs)
+    resp[:filtro] = get_params[:filtro]
 
 		resp
 	end

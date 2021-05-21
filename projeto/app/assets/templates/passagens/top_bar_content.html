@@ -90,7 +90,7 @@
             style="width: 100%; overflow: auto; display: block;">
 
             <li ng-repeat="opcao in PassagensCtrl.settings.lista_status">
-              <div ng-click="PassagensCtrl.filtro.setOpcoes(opcao)" class="vertical-align">
+              <div ng-click="PassagensCtrl.filtro.setStatus(opcao)" class="vertical-align">
                 <i ng-class="opcao.active ? 'sc-icon-visto-3' : 'sc-icon-quadrado-1'"></i>
                 <span>{{opcao.label}}</span>
               </div>

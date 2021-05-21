@@ -39,10 +39,7 @@ class Administrativo::PassagensService
 
     if params[:id].present?
       passagem = find_passagem(params)
-      if passagem[:user_entrou_id].present?
-        errors = "Passagem já realizada"
-        return [:error, errors]
-      elsif passagem.blank?
+      if passagem.blank?
         errors = "Registro não existe"
         return [:not_found, errors]
       end
@@ -105,6 +102,7 @@ class Administrativo::PassagensService
       return [:not_found, errors]
     end
 
+    params[:cancelada_em] = Time.zone.now
     micro_update_save(params, passagem)
   end
   private_class_method :desativar
@@ -117,6 +115,7 @@ class Administrativo::PassagensService
       return [:not_found, errors]
     end
 
+    params[:cancelada_em] = nil
     micro_update_save(params, passagem)
   end
   private_class_method :reativar
@@ -152,31 +151,14 @@ class Administrativo::PassagensService
     resp[:usuarios] = User.all.map(&:to_frontend_obj)
     resp[:lista_tipo_data] = Administrativo::PassagemServico::LISTA_TIPO_DATA
     resp[:lista_status] = Administrativo::PassagemServico::LISTA_STATUS
-    resp[:filtro] = { q: "", user_entrou: "", user_saiu: "", status: []}
+    resp[:filtro] = Administrativo::PassagemServico::OBJ_DEFAULT
 
     resp
   end
   private_class_method :load_settings
 
   def self.set_params params
-    if params[:user_saiu_senha].presence || params[:user_entrou_senha].presence
-      params[:validar_user_opts] = {
-        user_saiu_senha:   params.delete(:user_saiu_senha),
-        user_entrou_senha: params.delete(:user_entrou_senha)
-      }
-    else
-      params.delete(:user_saiu_senha) if params[:user_saiu_senha].blank?
-      params.delete(:user_entrou_senha) if params[:user_entrou_senha].blank?
-    end
-
-    if params[:micro_update_type] == 'desativar'
-      params[:micro_update_opts] = {desativar: true}
-    elsif params[:micro_update_type] == 'reativar'
-      params[:micro_update_opts] = {reativar: true}
-    end
-
     params.delete(:micro_update_type)
-
     params = set_objetos(params)
     params
   end

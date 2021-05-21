@@ -63,7 +63,7 @@
           listObj.categoria = {active: true}
         },
         set: function(listObj) {
-          listObj.administrativo_passagem_servico_objeto_categoria_id = listObj.categoria.id
+          listObj.objeto_categoria_id = listObj.categoria.id
         },
         edit: function(listObj) {
           listObj.categoria = vmForm.indexFactory.settings.lista_categorias.getById(listObj.categoria.id)
