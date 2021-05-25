@@ -19,75 +19,7 @@
         vmIdx.menu_quem_entra = {isOn: false}
       }
 
-      vmIdx.reativarPassagem = {
-        beforeReativar: function(passagem) {
-          this.params = angular.copy(passagem)
-          scAlert.open({
-            title: 'Deseja mesmo reativar a passagem?',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'yellow',
-                action: function() {
-                  vmIdx.reativarPassagem.reativar()
-                }
-              }
-            ]
-          })
-        },
-        reativar: function() {
-          this.params = Object.slice(this.params, 'id', 'status')
-          this.params.micro_update_type = "reativar"
-          Passagem.micro_update(this.params,
-            function(data) {
-              scTopMessages.openSuccess("Passagem reativada com sucesso.", {timeOut: 3000})
-              vmIdx.listCtrl.loadList()
-            },
-            function(response) {
-              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
-            }
-          )
-        }
-      }
-
-      vmIdx.desativarPassagem = {
-        beforeDesativar: function(passagem) {
-          this.params = angular.copy(passagem)
-          scAlert.open({
-            title: 'Você tem certeza que deseja desativar a passagem?',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'yellow',
-                action: function() {
-                  vmIdx.desativarPassagem.desativar()
-                }
-              }
-            ]
-          })
-        },
-        desativar: function() {
-          this.params = Object.slice(this.params, 'id', 'status')
-          this.params.micro_update_type = "desativar"
-          Passagem.micro_update(this.params,
-            function(data) {
-              scTopMessages.openSuccess("Passagem desativada com sucesso.", {timeOut: 3000})
-              vmIdx.listCtrl.loadList()
-            },
-            function(response) {
-              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
-            }
-          )
-        }
-      }
-
-      vmIdx.passarServicoCtrl = {
+      vmIdx.microUpdateCtrl = {
         modal: { active: false },
         open: function(passagem) {
           this.params = angular.copy(passagem)
@@ -106,7 +38,7 @@
               vmIdx.itemCtrl.handleList(data.passagem)
 
               scTopMessages.openSuccess("Registro atualizado com sucesso.", {timeOut: 3000})
-              vmIdx.passarServicoCtrl.close()
+              vmIdx.microUpdateCtrl.close()
             }, function(response) {
               console.log(response)
               scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
@@ -128,6 +60,68 @@
           this.params.user_entrou = {nome: user.nome}
           this.params.user_entrou_id = user.id
           this.toggleUserEntra()
+        },
+        beforeReativar: function(passagem) {
+          this.params = angular.copy(passagem)
+          scAlert.open({
+            title: 'Deseja mesmo reativar a passagem?',
+            buttons: [
+              {
+                label: 'Não',
+                color: 'gray'
+              }, {
+                label: 'Sim',
+                color: 'yellow',
+                action: function() {
+                  vmIdx.microUpdateCtrl.reativar()
+                }
+              }
+            ]
+          })
+        },
+        reativar: function() {
+          this.params = Object.slice(this.params, 'id', 'status')
+          this.params.micro_update_type = "reativar"
+          Passagem.micro_update(this.params,
+            function(data) {
+              scTopMessages.openSuccess("Passagem reativada com sucesso.", {timeOut: 3000})
+              vmIdx.listCtrl.loadList()
+            },
+            function(response) {
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
+            }
+          )
+        },
+        beforeDesativar: function(passagem) {
+          this.params = angular.copy(passagem)
+          scAlert.open({
+            title: 'Você tem certeza que deseja desativar a passagem?',
+            buttons: [
+              {
+                label: 'Não',
+                color: 'gray'
+              }, {
+                label: 'Sim',
+                color: 'yellow',
+                action: function() {
+                  vmIdx.microUpdateCtrl.desativar()
+                }
+              }
+            ]
+          })
+        },
+        desativar: function() {
+          this.params = Object.slice(this.params, 'id', 'status')
+          this.params.micro_update_type = "desativar"
+          Passagem.micro_update(this.params,
+            function(data) {
+              scTopMessages.openSuccess("Passagem desativada com sucesso.", {timeOut: 3000})
+              vmIdx.listCtrl.loadList()
+            },
+            function(response) {
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
+            }
+          )
         }
       }
 
@@ -137,16 +131,15 @@
         with_settings: true,
         init: function(){
           params = {}
-          this.exec(params)
+          this.exec()
         },
-        loadList: function(params){
+        loadList: function(){
           this.list = []
-          this.exec(params)
+          this.exec()
         },
-        exec: function(params) {
+        exec: function() {
           params ||= {}
 
-          console.log(params)
           params.filtro        = vmIdx.filtro.params
           params.with_settings = vmIdx.listCtrl.with_settings
 
@@ -191,7 +184,7 @@
               scTopMessages.openSuccess(data.msg, {timeOut: 3000})
               vmIdx.listCtrl.list.remove(vmIdx.listCtrl.list.getById(passagem.id))
             }, function(response) {
-
+              scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
             }
           )
         },
@@ -215,13 +208,18 @@
           this.params.data_fim = new Date(this.params.data_fim)
           this.initStatus()
         },
-        exec: function(){
+        exec: function(tipo){
+          if(tipo == 'avancado') {
+            this.params.q = ''
+            this.params.avancado = true
+          }
           this.avancado = false
           this.params.filtrado = true
-          vmIdx.listCtrl.loadList(this.params)
+          vmIdx.listCtrl.loadList()
         },
         limpar: function() {
           this.params = angular.copy(this.paramsInit)
+          console.log(this.paramsInit)
           vmIdx.listCtrl.loadList()
         },
         setStatus: function(opcao) {
@@ -273,7 +271,6 @@
       loadSettings = function(data) {
         vmIdx.settings = data.settings.passagens
         vmIdx.indexFactory.settings = vmIdx.settings
-
 
         vmIdx.filtro.init()
       }

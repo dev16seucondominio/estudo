@@ -1,6 +1,6 @@
-<div sc-modal="PassagensCtrl.passarServicoCtrl.modal" sc-modal-draggable="true">
+<div sc-modal="PassagensCtrl.microUpdateCtrl.modal" sc-modal-draggable="true">
   <div class="sc-modal-header">
-    <i ng-click="PassagensCtrl.passarServicoCtrl.close()" class="sc-modal-close sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer" style="font-size: 0.6em"></i>
+    <i ng-click="PassagensCtrl.microUpdateCtrl.close()" class="sc-modal-close sc-badge-hover-red sc-icon-fechar-1 sc-cursor-pointer" style="font-size: 0.6em"></i>
     Passar serviço
   </div>
 
@@ -11,14 +11,14 @@
           <div class="sc-label">Quem sai:</div>
           <span sc-dropdown-menu="" class="sc-dropdown">
             <div class="sc-input-group">
-              <input ng-model="PassagensCtrl.passarServicoCtrl.params.user_saiu.nome"
-                ng-click="PassagensCtrl.passarServicoCtrl.toggleUserSai()"
+              <input ng-model="PassagensCtrl.microUpdateCtrl.params.user_saiu.nome"
+                ng-click="PassagensCtrl.microUpdateCtrl.toggleUserSai()"
                 class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
               <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
             </div>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensCtrl.menu_quem_sai.isOn">
               <div class="sc-scrollbar">
-                <li ng-click="PassagensCtrl.passarServicoCtrl.setUserSai(user)"
+                <li ng-click="PassagensCtrl.microUpdateCtrl.setUserSai(user)"
                   ng-repeat="user in PassagensCtrl.indexFactory.settings.usuarios">
                   <span>{{user.nome}}</span>
                 </li>
@@ -29,7 +29,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 sc-m-b-md">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default" ng-model="PassagensCtrl.passarServicoCtrl.params.user_saiu_senha"
+        <input class="sc-input-default" ng-model="PassagensCtrl.microUpdateCtrl.params.user_saiu_senha"
           style="width: 100%;" type="password">
       </div>
       <div class="clear"></div>
@@ -38,14 +38,14 @@
           <div class="sc-label">Quem entra:</div>
           <span sc-dropdown-menu="" class="sc-dropdown">
             <div class="sc-input-group">
-              <input ng-model="PassagensCtrl.passarServicoCtrl.params.user_entrou.nome"
-                ng-click="PassagensCtrl.passarServicoCtrl.toggleUserEntra()"
+              <input ng-model="PassagensCtrl.microUpdateCtrl.params.user_entrou.nome"
+                ng-click="PassagensCtrl.microUpdateCtrl.toggleUserEntra()"
                 class="sc-input-group sc-input-default sc-input-block" placeholder="Digte uma pessoa">
               <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
             </div>
             <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensCtrl.menu_quem_entra.isOn">
               <div class="sc-scrollbar">
-                <li ng-click="PassagensCtrl.passarServicoCtrl.setUserEntra(user)"
+                <li ng-click="PassagensCtrl.microUpdateCtrl.setUserEntra(user)"
                   ng-repeat="user in PassagensCtrl.indexFactory.settings.usuarios">
                   <span>{{user.nome}}</span>
                 </li>
@@ -56,28 +56,28 @@
       </div>
       <div class="col-xs-12 col-sm-6 sc-m-b-md">
         <div class="sc-label">Senha:</div>
-        <input class="sc-input-default" ng-model="PassagensCtrl.passarServicoCtrl.params.user_entrou_senha"
+        <input class="sc-input-default" ng-model="PassagensCtrl.microUpdateCtrl.params.user_entrou_senha"
           style="width: 100%;" type="password">
       </div>
     </div>
     <hr class="sc-hr-gray-light">
     <div class="flex-row sc-p-t-md sc-p-h-sm">
-      <div class="sc-text-gray">Eu,<span class="sc-label"> {{PassagensCtrl.passarServicoCtrl.params.user_saiu.nome}}</span>
+      <div class="sc-text-gray">Eu,<span class="sc-label"> {{PassagensCtrl.microUpdateCtrl.params.user_saiu.nome}}</span>
         , passo o posto de serviço para o(a)
-        <span class="sc-label"> {{PassagensCtrl.passarServicoCtrl.params.user_entrou.nome}}</span>
+        <span class="sc-label"> {{PassagensCtrl.microUpdateCtrl.params.user_entrou.nome}}</span>
         de acordo com as informações abaixo:
       </div>
     </div>
     <div class="flex-row sc-m-t-xl sc-p-h-sm">
       <div class="sc-label fcol-xs-100">Observações:</div>
-      <textarea class="sc-input-default" cols="80" ng-model="PassagensCtrl.passarServicoCtrl.params.observacoes"
+      <textarea class="sc-input-default" cols="80" ng-model="PassagensCtrl.microUpdateCtrl.params.observacoes"
         rows="5" type="text">
       </textarea>
     </div>
   </div>
 
   <div class="sc-modal-footer">
-    <button ng-click="PassagensCtrl.passarServicoCtrl.passarServico()" class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-lg-sm">Passar serviço</button>
-    <button ng-click="PassagensCtrl.passarServicoCtrl.close()" class="sc-btn sc-btn-gray sc-btn-block-only-xs sc-m-l-md">Cancelar</button>
+    <button ng-click="PassagensCtrl.microUpdateCtrl.passarServico()" class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-lg-sm">Passar serviço</button>
+    <button ng-click="PassagensCtrl.microUpdateCtrl.close()" class="sc-btn sc-btn-gray sc-btn-block-only-xs sc-m-l-md">Cancelar</button>
   </div>
 </div>

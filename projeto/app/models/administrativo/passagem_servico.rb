@@ -1,6 +1,24 @@
 class Administrativo::PassagemServico < ApplicationRecord
   attr_accessor :user_saiu_senha, :user_entrou_senha
 
+  # CONSTANTES
+
+  LISTA_TIPO_DATA = [
+    { key: :criado_em,  label: 'Criado em' },
+    { key: :passado_em, label: 'Passado em' }
+  ]
+
+  OBJ_DEFAULT = {
+    q: "", user_entrou: "", user_saiu: "", data_inicio: Time.zone.now - 1.month,
+    data_fim: Time.zone.now, status: []
+  }
+
+  LISTA_STATUS = [
+    { key: :pendente,   label: 'Pendente' ,  active: true,  id: 1, color: 'yellow'},
+    { key: :realizada,  label: 'Realizada',  active: true,  id: 2, color: 'green'},
+    { key: :desativada, label: 'Desativada', active: false, id: 3, color: 'red'}
+  ]
+
   # Associations
 
   belongs_to :user_saiu, class_name: "User", foreign_key: :user_saiu_id
@@ -21,11 +39,12 @@ class Administrativo::PassagemServico < ApplicationRecord
     filtro = params[:filtro] || {}
     scoped = all
 
+    scoped = scoped.where(com_status_sql(:realizada, :pendente))
     # raise filtro.to_json
 
     if filtro[:q].present?
       scoped = busca_simples(filtro)
-    elsif filtro.present?
+    elsif filtro[:avancado].present?
       scoped = busca_avancada(filtro)
     end
 
@@ -47,8 +66,8 @@ class Administrativo::PassagemServico < ApplicationRecord
     args << "%#{q}%"
 
     scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
-    # sql << "status = 'Pendente' OR status = 'Realizada'"
     scoped = scoped.where(sql.join(' OR '), *args)
+    scoped = scoped.where(com_status_sql(filtro[:status]))
 
     scoped
   }
@@ -59,59 +78,56 @@ class Administrativo::PassagemServico < ApplicationRecord
     sql = []
     args = []
 
-    args << filtro[:data_inicio]
-    args << filtro[:data_fim]
 
-    if filtro[:data_inicio]
-      sql << ("created_at >= ? AND created_at <= ?")
-      scoped = scoped.where(sql.join(' AND '), *args)
-      scoped = scoped.where("status = 'Pendente' OR status = 'Realizada'")
+    q = filtro[:usuario]
+    if q.present?
+
+      sql  << "(users.nome like ?)"
+      args << "%#{q}%"
+
+      sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
+      args << "%#{q}%"
+
+      scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
+      scoped = scoped.where(sql.join(' OR '), *args)
     end
 
-    # keys = %(users.nome users.email)
-    # keys.each{ |key|
-    #   val = filtro[key].presence
-    #   scoped = scoped.joins(:user_entrou)
-    #   scoped = scoped.where("#{key} like ?", "%#{val}%") if val
-    # }
+    # args << filtro[:data_inicio]
+    # args << filtro[:data_fim]
+
+    # if filtro[:data_inicio]
+    #   sql << ("created_at >= ? AND ? <= created_at")
+    #   scoped = scoped.where(sql.join(' AND '), *args)
+    # end
 
     if filtro[:status].present?
-      scoped = scoped.com_status(filtro[:status])
+      scoped = scoped.where(com_status_sql(filtro[:status]))
     end
 
     scoped
   }
 
-  scope :com_status, lambda { |*list|
-    scoped = all
-    sql = []
-
-    list = list.flatten.compact
-    list.each{ |item|
-
-      case item.to_sym
-      when :pendente
-        sql << "status = 'Pendente'"
-      when :realizada
-        sql << "status = 'Realizada'"
-      when :desativada
-        sql << "status = 'Desativada'"
-      end
-    }
-
-    scoped = scoped.where(sql.join(' OR '))
-    scoped
-  }
+  LISTA_STATUS.each do |status|
+    # cria metodos
+      # passagem.realizada?
+      # passagem.desativada?
+      # passagem.pendente?
+    define_method "#{status[:key]}?" do
+      # estou dentro da instancia (objeto) - não estou dentro da classe
+      status[:id] == status_id
+    end
+  end
 
   def slim_obj
     attrs = {}
     attrs[:id]             = id
-    attrs[:status]         = status
+    attrs[:status]         = status_obj
     attrs[:user_saiu_id]   = user_saiu_id
     attrs[:user_entrou_id] = user_entrou_id
     attrs[:user_saiu]      = user_saiu&.to_frontend_obj
     attrs[:user_entrou]    = user_entrou&.to_frontend_obj
     attrs[:criado_em]      = created_at
+
     attrs
   end
 
@@ -123,31 +139,71 @@ class Administrativo::PassagemServico < ApplicationRecord
     attrs
   end
 
-  def to_obj
-    attrs = {}
-    attrs[:id]    = id
-    attrs[:nome]  = nome
-    attrs[:email] = email
-    attrs
+  def get_status_obj
+    @get_status_obj = nil if status_id_changed?
+    @get_status_obj ||= self.class.get_status_obj_by :id, status_id
+  end
+
+  def status_obj # ou status
+    resp = {}
+    obj = get_status_obj
+    resp[:color] = obj[:color]
+    resp[:label] = obj[:label]
+    resp[:key] = obj[:key]
+    # resp[:help] = 'desativado em sss/mm/yyy'
+    LISTA_STATUS.each do |status|
+      resp[status[:key]] = send("#{status[:key]}?")
+    end
+
+    resp
+  end
+
+  def get_status_id key
+    self.class.get_status_id key
+  end
+
+  def status_key
+    get_status_obj[:key]
+  end
+
+  def self.get_status_id key
+    # Administrativo::PassagemServico.get_status_id :pendente
+    self.get_status_obj_by(:key, key.to_sym)[:id]
+  end
+
+  def self.get_status_obj_by key, value
+    LISTA_STATUS.find { |it| it[key] == value } || {}
+  end
+
+  def self.com_status_sql *keys
+    # Administrativo::PassagemServico.com_status_sql(:pendente, :realizada)
+    sql = []
+    keys = keys.flatten.compact
+    ids = keys.map { |key| get_status_id(key)  }
+    return if ids.empty?
+
+    "status_id IN (#{ids.join(',')})"
   end
 
   private
+
+  def set_status
+    return self.status_id = get_status_id(:desativada) if cancelada_em.present?
+    return self.status_id = get_status_id(:realizada) if user_entrou_id.present? && user_saiu_id.present?
+    return self.status_id = get_status_id(:pendente)  # if user_entrou_id.blank? # || user_saiu_id.blank?
+  end
 
   def users_presentes?
     user_entrou_id.present? && user_saiu_id.present?
   end
 
   def validar_ja_realizada
+    return if user_entrou_id_was.nil?
+
     modificando_users = user_entrou_id_changed? || user_saiu_id_changed?
     if users_presentes? && modificando_users
       errors.add(:base, "Passagem já realizada")
     end
-  end
-
-  def set_status
-    return self.status = "Desativada" if cancelada_em.present?
-    return self.status = 'Realizada' if user_entrou_id.present? && user_saiu_id.present?
-    return self.status = 'Pendente'  # if user_entrou_id.blank? # || user_saiu_id.blank?
   end
 
   def validar_existencia_usuarios
@@ -163,7 +219,6 @@ class Administrativo::PassagemServico < ApplicationRecord
     user_saiu_senha.blank? || user_entrou_senha.blank?
     # validar_user_opts.blank?
   end
-
 
   def validar_senhas
     return unless realizando_passagem?
@@ -191,21 +246,5 @@ class Administrativo::PassagemServico < ApplicationRecord
 
     errors.empty?
   end
-
-  LISTA_TIPO_DATA = [
-    { key: :criado_em,  label: 'Criado em' },
-    { key: :passado_em, label: 'Passado em' }
-  ]
-
-  OBJ_DEFAULT = {
-    q: "", user_entrou: "", user_saiu: "", data_inicio: Time.zone.now - 1.month,
-    data_fim: Time.zone.now, status: []
-  }
-
-  LISTA_STATUS = [
-    { key: :pendente,   label: 'Pendente' ,  active: true },
-    { key: :realizada,  label: 'Realizada',  active: true },
-    { key: :desativada, label: 'Desativada', active: false}
-  ]
 
 end

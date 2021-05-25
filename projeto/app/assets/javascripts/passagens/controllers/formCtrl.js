@@ -74,11 +74,11 @@
 
       vmForm.formCadastro = {
         save: function(baseFact) {
-          console.log(baseFact)
           vmForm.formUser.checkUsers(baseFact)
           if(!this.isValido(baseFact)) { return }
           Passagem.save(baseFact.params,
             function(data){
+              console.log(data.passagem)
               vmForm.formCadastro.isNovo(data)
 
               vmForm.indexFactory.itemCtrl.handleList(data.passagem)

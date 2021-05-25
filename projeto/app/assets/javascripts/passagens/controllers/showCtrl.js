@@ -16,13 +16,14 @@
         passagem.opened = !passagem.opened
 
         vmShow.carregarPassagem(passagem)
-        
+
       }
 
       vmShow.carregarPassagem = function(passagem) {
         if (passagem.carregando || passagem.carregado) { return }
         Passagem.show(passagem,
           function(data) {
+            console.log(data)
             passagem.carregando = false
 
             vmShow.indexFactory.itemCtrl.handleList(data.passagem)

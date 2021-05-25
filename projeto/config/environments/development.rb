@@ -31,7 +31,19 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.middleware.use ExceptionNotification::Rack,
+    email: {
+    deliver_with: :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
+    email_prefix: '[PREFIX] ',
+    sender_address: %{"notifier" <notifier@example.com>},
+    exception_recipients: %w{exceptions@example.com}
+  }
+
+
 
   config.action_mailer.perform_caching = false
 

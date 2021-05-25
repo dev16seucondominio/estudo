@@ -6,10 +6,10 @@
   </div>
 
   <div class="fcol-xs-70 fcol-sm-60 fcol-lg-45 sc-p-h-lg">
-    <form class="sc-input-group" ng-submit="PassagensCtrl.filtro.exec()">
+    <form class="sc-input-group" ng-submit="PassagensCtrl.filtro.exec('simples')">
       <input class="sc-input-default" type="text"
-        placeholder="Nome, e-mail, data (de criação), etc"
-        ng-model="PassagensCtrl.filtro.params.q">
+        placeholder="Nome, e-mail, data (de criação), etc" ng-model="PassagensCtrl.filtro.params.q"
+        ng-disabled="PassagensCtrl.filtro.avancado">
 
       <button class="sc-btn sc-btn-red" ng-if="PassagensCtrl.filtro.params.q"
         ng-click="PassagensCtrl.filtro.limpar()" type="button">
@@ -40,15 +40,34 @@
 <div id="top-bar-filter" class="flex-row sc-p-h-lg" style="z-index: 10;">
   <div class="sc-bg-gray-lighter sc-border-h-solid sc-border-gray-light sc-box-shadow-z4 sc-p-lg"
     style="width: 100%" ng-show="PassagensCtrl.filtro.avancado">
-    <form ng-submit="PassagensCtrl.filtro.exec()">
+    <form ng-submit="PassagensCtrl.filtro.exec('avancado')">
 
-      <div class="col-xs-12 col-sm-6 col-md-3 sc-m-b-md">
-        <label class="sc-label">Pessoas:</label>
+
+<!--         <label class="sc-label">Pessoas:</label>
         <div class="sc-input-group">
           <input class="sc-input-default sc-input-block" type="text"
             ng-model="PassagensCtrl.filtro.params.nome" placeholder="Digite uma pessoa">
           <div class="sc-btn sc-btn-blue"><i class="sc-icon-lupa-2"></i></div>
           <div class="sc-btn sc-relative"><i class="sc-icon-visto-1"></i></div>
+ -->
+      <div class="col-xs-12 col-sm-6 col-md-3 sc-m-b-md">
+        <div sc-dropdown-menu="">
+          <div class="sc-label">Pessoas:</div>
+            <div class="sc-dropdown sc-input-group">
+              <input ng-model="PassagensCtrl.filtro.params.usuario"
+                ng-click="PassagensCtrl.microUpdateCtrl.toggleUserSai()"
+                class="sc-input-default sc-input-block" placeholder="Digte uma pessoa">
+              <i class="sc-icon sc-icon-lupa-2 sc-btn sc-btn-blue"></i>
+              <div class="sc-btn sc-relative"><i class="sc-icon-visto-1"></i></div>
+            </div>
+            <ul class="sc-dropdown-menu ng-animation-slider" ng-show="PassagensCtrl.menu_quem_sai.isOn">
+              <div class="sc-scrollbar">
+                <li ng-click="PassagensCtrl.microUpdateCtrl.setUserSai(user)"
+                  ng-repeat="user in PassagensCtrl.indexFactory.settings.usuarios">
+                  <span>{{user.nome}}</span>
+                </li>
+              </div>
+            </ul>
         </div>
       </div>
 
