@@ -1,5 +1,7 @@
 class Pagador < ApplicationRecord
 
+  # ASSOCIATIONS
+
   has_many :enderecos, class_name: "Endereco", foreign_key: :pagador_id, dependent: :destroy, inverse_of: :pagador
   accepts_nested_attributes_for :enderecos, allow_destroy: true
 
@@ -14,6 +16,60 @@ class Pagador < ApplicationRecord
 
   has_one :bloquear_clientes, class_name: "BloquearCliente", foreign_key: :pagador_id, dependent: :destroy, inverse_of: :pagador
   accepts_nested_attributes_for :bloquear_clientes, allow_destroy: true
+
+  # VALIDAÇÕES
+
+  before_validation :garantir_email
+
+  validate :validar_campos
+
+  # CONSTANTES
+
+  LISTA_PERIODOS = [
+    {id: 0, key: "dias", nome: "Dias", default: false},
+    {id: 1, key: "meses", nome: "Meses", selected: true},
+    {id: 2, key: "Anos", nome: "Anos", default: true}
+  ]
+
+  LISTA_OPCOES = [
+    { key: :com_endereco,        label: 'Com endereço' },
+    { key: :sem_endereco,        label: 'Sem endereço' },
+    { key: :endereco_completo,   label: 'Endereço completo' },
+    { key: :endereco_incompleto, label: 'Endereço Incompleto' },
+    { key: :com_documento,       label: 'Com CPF/CNPJ' },
+    { key: :sem_documento,       label: 'Sem CPF/CNPJ' },
+    { key: :com_bloqueio,        label: 'Com bloqueio inadimplente' },
+    { key: :sem_bloqueio,        label: 'Sem bloqueio inadimplente' },
+    { key: :com_email,           label: 'Com emails' },
+    { key: :sem_email,           label: 'Sem emails' },
+    { key: :com_contas,          label: 'Com contas' },
+    { key: :sem_contas,          label: 'Sem contas' }
+  ]
+
+  Q_HELP = {
+    opcoes: {
+      com_endereco: "enderecos.id IS NOT NULL",
+      sem_endereco: "enderecos.id IS NULL",
+      endereco_completo: "enderecos.cep IS NOT NULL AND
+                          enderecos.cidade IS NOT NULL AND
+                          enderecos.bairro IS NOT NULL AND
+                          enderecos.logradouro IS NOT NULL AND
+                          enderecos.complemento IS NOT NULL".squish,
+      endereco_incompleto: "enderecos.cep IS NULL OR
+                            enderecos.cidade IS NULL OR
+                            enderecos.bairro IS NULL OR
+                            enderecos.logradouro IS NULL OR
+                            enderecos.complemento IS NULL".squish,
+      com_documento: "#{table_name}.doc IS NOT NULL",
+      sem_documento: "#{table_name}.doc IS NULL",
+      com_bloqueio: "bloquear_clientes.id IS NOT NULL",
+      sem_bloqueio: "bloquear_clientes.id IS NULL",
+      com_email: "#{table_name}.email IS NOT NULL",
+      sem_email: "#{table_name}.email IS NULL",
+      com_contas: "contas.id IS NOT NULL",
+      sem_contas: "contas.id IS NULL",
+    }
+  }
 
     # if "#{q}".is_email?
     #   return scoped.where(email: email)
@@ -30,7 +86,7 @@ class Pagador < ApplicationRecord
 
     if filtro[:q].present?
       scoped = busca_simples(filtro)
-    else
+    elsif filtro[:avancado].present?
       scoped = busca_avancada(filtro)
     end
 
@@ -114,10 +170,6 @@ class Pagador < ApplicationRecord
     scoped
   }
 
-  before_validation :garantir_email
-
-  validate :validar_campos
-
   def slim_obj
     attrs = {}
     attrs[:id] = id
@@ -149,64 +201,6 @@ class Pagador < ApplicationRecord
     attrs[:obs] = obs
     attrs
   end
-
-  def to_report_obj
-    # USADO PARA RELATÓRIOS
-  end
-
-  LISTA_PERIODOS = [
-    {id: 0, key: "dias", nome: "Dias", default: false},
-    {id: 1, key: "meses", nome: "Meses", selected: true},
-    {id: 2, key: "Anos", nome: "Anos", default: true}
-  ]
-
-  # FILTRO = {
-  #   default: {
-  #     q: 'açldfka'
-  #   }
-  #   opcoes: [
-  #   ]
-  # }
-
-  LISTA_OPCOES = [
-    { key: :com_endereco,        label: 'Com endereço' },
-    { key: :sem_endereco,        label: 'Sem endereço' },
-    { key: :endereco_completo,   label: 'Endereço completo' },
-    { key: :endereco_incompleto, label: 'Endereço Incompleto' },
-    { key: :com_documento,       label: 'Com CPF/CNPJ' },
-    { key: :sem_documento,       label: 'Sem CPF/CNPJ' },
-    { key: :com_bloqueio,        label: 'Com bloqueio inadimplente' },
-    { key: :sem_bloqueio,        label: 'Sem bloqueio inadimplente' },
-    { key: :com_email,           label: 'Com emails' },
-    { key: :sem_email,           label: 'Sem emails' },
-    { key: :com_contas,          label: 'Com contas' },
-    { key: :sem_contas,          label: 'Sem contas' }
-  ]
-
-  Q_HELP = {
-    opcoes: {
-      com_endereco: "enderecos.id IS NOT NULL",
-      sem_endereco: "enderecos.id IS NULL",
-      endereco_completo: "enderecos.cep IS NOT NULL AND
-                          enderecos.cidade IS NOT NULL AND
-                          enderecos.bairro IS NOT NULL AND
-                          enderecos.logradouro IS NOT NULL AND
-                          enderecos.complemento IS NOT NULL".squish,
-      endereco_incompleto: "enderecos.cep IS NULL OR
-                            enderecos.cidade IS NULL OR
-                            enderecos.bairro IS NULL OR
-                            enderecos.logradouro IS NULL OR
-                            enderecos.complemento IS NULL".squish,
-      com_documento: "#{table_name}.doc IS NOT NULL",
-      sem_documento: "#{table_name}.doc IS NULL",
-      com_bloqueio: "bloquear_clientes.id IS NOT NULL",
-      sem_bloqueio: "bloquear_clientes.id IS NULL",
-      com_email: "#{table_name}.email IS NOT NULL",
-      sem_email: "#{table_name}.email IS NULL",
-      com_contas: "contas.id IS NOT NULL",
-      sem_contas: "contas.id IS NULL",
-    }
-  }
 
   private
 

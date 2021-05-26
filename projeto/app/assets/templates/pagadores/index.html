@@ -8,7 +8,7 @@
 
   <section id="top-bar" class="sc-bg-gray-lighter" style="height: 52px;">
     <div id="top-bar-content">
-      <div ng-include="'<%= asset_path('pagadores/top_bar_content.html') %>'"></div>
+      <div ng-include="PessoasCtrl.templates.pagadores.top_bar"></div>
     </div>
   </section>
 
@@ -43,21 +43,16 @@
         ng-init="PessoaCtrl.init(pessoa)">
         <div ng-click="PessoaCtrl.accToggle(pessoa)" class="sc-accordion-head sc-text-blue sc-acc-hover-blue">
           <div class="sc-accordion-col-3 align-center sc-divider">
-            <i class="sc-text-xl sc-icon sc-icon-homem-1" ng-show="!pessoa.juridica"></i>
-            <i class="sc-text-xl sc-icon sc-icon-fabrica" ng-show="pessoa.juridica"></i>
+            <i class="sc-text-xl sc-icon" ng-class="{'sc-icon-fabrica' : pessoa.juridica, 'sc-icon-homem-1' : !pessoa.juridica}"></i>
           </div>
           <div class="sc-accordion-elastic-col title">
             <span class="sc-p-xs flex">{{pessoa.nome}}
-              <span ng-show="pessoa.tipo.includes('Pagador')"
-                class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-blue">
-                Pagador
-              </span>
-              <span ng-show="pessoa.tipo.includes('Fornecedor')"
-                class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md sc-bg-yellow">
-                Fornecedor
+              <span ng-show="pessoa.tipo" ng-class="{'sc-bg-blue' : pessoa.tipo.includes('Pagador'), 'sc-bg-yellow' : pessoa.tipo.includes('Fornecedor')}"
+                class="sc-ellipsis-inline sc-text-white sc-p-v-xs sc-p-h-md sc-text-sm sc-border-radius sc-m-l-md">
+                {{pessoa.tipo}}
               </span>
             </span>
-            <span class="sc-text-white sc-p-v-xs sc-p-h-md sc-bg-green sc-text-xs sc-text-normal sc-border-radius sc-m-l-md ng-scope" ng-if="pessoa.novo">
+            <span class="sc-text-white sc-p-v-xs sc-p-h-md sc-bg-green sc-text-xs sc-text-normal sc-border-radius sc-m-l-md" ng-if="pessoa.novo">
               NOVO
             </span>
           </div>

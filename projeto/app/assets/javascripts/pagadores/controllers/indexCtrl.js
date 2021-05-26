@@ -86,12 +86,17 @@ angular.module("myApp").lazy
 
       exec: function(tipo){
         vmIdx.listCtrl.loadList()
+        if(tipo == 'avancado') {
+          this.params.avancado = true
+          this.params.q = ''
+        }
         this.avancado = false
         this.params.filtrado = true
       },
       limpar: function() {
         this.params = angular.copy(this.paramsInit)
         this.params.filtrado = false
+        this.avancado = false
         vmIdx.listCtrl.loadList()
         for(i in vmIdx.settings.pagadores.lista_opcoes) {
           vmIdx.settings.pagadores.lista_opcoes[i].active = false
@@ -109,7 +114,6 @@ angular.module("myApp").lazy
       setOpcoes: function(opcao) {
         opcao.active = !opcao.active
         this.params.opcoes.toggle(opcao.key)
-        console.log(this.params.opcoes)
       }
     }
 

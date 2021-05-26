@@ -8,7 +8,6 @@ class PagadoresService
     resp.merge!(load_module(params)) if params[:with_settings]
 
     [:success, resp]
-
   end
 
   def self.show(params)
@@ -19,7 +18,6 @@ class PagadoresService
     resp = {pagador: pagador.to_frontend_obj}
     [:success, resp]
   end
-
 
   def self.destroy(params)
     pagador = Pagador.where(id: params[:id]).first
@@ -36,7 +34,6 @@ class PagadoresService
       errors = pagador.errors.full_messages
       [:error, errors]
     end
-
   end
 
   def self.save(params)
@@ -53,8 +50,8 @@ class PagadoresService
       pagador = Pagador.new
     end
 
-    params = set_params(params)
-    pagador.assign_attributes(params)
+    params_pag = set_params(params)
+    pagador.assign_attributes(params_pag)
 
     novo = pagador.new_record?
 
@@ -92,9 +89,7 @@ class PagadoresService
     resp[:lista_correcao] = ReajusteContratual::LISTA_CORRECAO
     resp[:lista_opcoes] = Pagador::LISTA_OPCOES
     resp[:bancos] = Banco.all.map()
-    resp[:filtro] = {
-      q: "", nome: "", telefone: "", email: "", opcoes: []
-    }
+    resp[:filtro] = { q: "", nome: "", telefone: "", email: "", opcoes: [] }
 
     resp
   end
