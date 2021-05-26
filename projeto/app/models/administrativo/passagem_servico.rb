@@ -4,13 +4,12 @@ class Administrativo::PassagemServico < ApplicationRecord
   # CONSTANTES
 
   LISTA_TIPO_DATA = [
-    { key: :criado_em,  label: 'Criado em' },
-    { key: :passado_em, label: 'Passado em' }
+    { key: :created_at,  label: 'Criado em', selected: "selected" },
+    { key: :updated_at, label: 'Passado em' }
   ]
 
   OBJ_DEFAULT = {
-    q: "", user_entrou: "", user_saiu: "", data_inicio: Time.zone.now - 1.month,
-    data_fim: Time.zone.now, status: []
+    q: "", data_inicio: Time.zone.now - 1.month, data_fim: Time.zone.now, status: []
   }
 
   LISTA_STATUS = [
@@ -40,7 +39,6 @@ class Administrativo::PassagemServico < ApplicationRecord
     scoped = all
 
     scoped = scoped.where(com_status_sql(:realizada, :pendente))
-    # raise filtro.to_json
 
     if filtro[:q].present?
       scoped = busca_simples(filtro)
@@ -59,15 +57,20 @@ class Administrativo::PassagemServico < ApplicationRecord
     q = filtro[:q]
     return scoped if q.blank?
 
-    sql  << "(users.nome like ?)"
-    args << "%#{q}%"
+    keys = ['nome', 'email']
+    keys.each{ |key|
+      sql  << "(users.#{key} like ?)"
+      args << "%#{q}%"
 
-    sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
-    args << "%#{q}%"
-
+      sql  << "(user_entrous_administrativo_passagem_servicos.#{key} like ?)"
+      args << "%#{q}%"
+    }
     scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
     scoped = scoped.where(sql.join(' OR '), *args)
-    scoped = scoped.where(com_status_sql(filtro[:status]))
+
+    if filtro[:status].present?
+      scoped = scoped.where(com_status_sql(filtro[:status]))
+    end
 
     scoped
   }
@@ -75,30 +78,37 @@ class Administrativo::PassagemServico < ApplicationRecord
   scope :busca_avancada, lambda { |filtro|
     scoped = all
     return scoped if filtro.blank?
+    periodo = []
     sql = []
     args = []
 
+    periodo << filtro[:data_inicio].to_date.beginning_of_day if filtro[:data_inicio].present?
+    periodo << filtro[:data_fim].to_date.end_of_day if filtro[:data_fim].present?
 
-    q = filtro[:usuario]
-    if q.present?
-
-      sql  << "(users.nome like ?)"
-      args << "%#{q}%"
-
-      sql  << "(user_entrous_administrativo_passagem_servicos.nome like ?)"
-      args << "%#{q}%"
-
-      scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
-      scoped = scoped.where(sql.join(' OR '), *args)
+    # A única maneira que consegui fazer buscar por um dia específico foi fazendo
+    # essas conversões to_date e depois beginning e end of day.
+    if periodo.present?
+      if filtro[:data_fim].present?
+      scoped = scoped.where("(#{table_name}.#{filtro[:tipo_data] || 'created_at'} >= ?
+        AND #{table_name}.#{filtro[:tipo_data] || 'created_at'} <= ?)", *periodo)
+      else
+        scoped = scoped.where("(#{table_name}.#{filtro[:tipo_data] || 'created_at'} >= ?)", *periodo)
+      end
     end
 
-    # args << filtro[:data_inicio]
-    # args << filtro[:data_fim]
+    keys = ['id', 'email']
+    keys.each{ |key|
+      val = filtro[key.to_sym].presence
+      if val
+        sql  << "(users.#{key} = ?)"
+        args << "#{filtro[key.to_sym]}"
 
-    # if filtro[:data_inicio]
-    #   sql << ("created_at >= ? AND ? <= created_at")
-    #   scoped = scoped.where(sql.join(' AND '), *args)
-    # end
+        sql  << "(user_entrous_administrativo_passagem_servicos.#{key} = ?)"
+        args << "#{filtro[key.to_sym]}"
+      end
+    }
+    scoped = scoped.left_outer_joins(:user_saiu, :user_entrou)
+    scoped = scoped.where(sql.join(' OR '), *args)
 
     if filtro[:status].present?
       scoped = scoped.where(com_status_sql(filtro[:status]))
@@ -221,7 +231,7 @@ class Administrativo::PassagemServico < ApplicationRecord
   end
 
   def validar_senhas
-    return unless realizando_passagem?
+    return unless users_presentes?
     if faltando_senha?
       return errors.add(:base, "É necessário preencher a senha de quem sai e quem entra para realiazar a passagem de serviço!")
     end

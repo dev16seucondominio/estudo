@@ -40,7 +40,6 @@
               scTopMessages.openSuccess("Registro atualizado com sucesso.", {timeOut: 3000})
               vmIdx.microUpdateCtrl.close()
             }, function(response) {
-              console.log(response)
               scTopMessages.openDanger(response.data.errors, {timeOut: 3000})
             }
           )
@@ -145,7 +144,6 @@
 
           Passagem.list(params,
             function(data) {
-              console.log(data)
               if(!params.filtro.filtrado) {
                 loadSettings(data)
               } else {
@@ -178,7 +176,6 @@
           })
         },
         execExcluirRegistro: function(passagem) {
-          console.log(passagem)
           Passagem.destroy(passagem,
             function(data) {
               scTopMessages.openSuccess(data.msg, {timeOut: 3000})
@@ -203,9 +200,9 @@
         params: {},
         init: function(){
           this.paramsInit = angular.copy(vmIdx.settings.filtro)
+          this.paramsInit.data_inicio = new Date(this.paramsInit.data_inicio)
+          this.paramsInit.data_fim = new Date(this.paramsInit.data_fim)
           this.params = angular.copy(this.paramsInit)
-          this.params.data_inicio = new Date(this.params.data_inicio)
-          this.params.data_fim = new Date(this.params.data_fim)
           this.initStatus()
         },
         exec: function(tipo){
@@ -219,7 +216,7 @@
         },
         limpar: function() {
           this.params = angular.copy(this.paramsInit)
-          console.log(this.paramsInit)
+          this.avancado = false
           vmIdx.listCtrl.loadList()
         },
         setStatus: function(opcao) {
@@ -234,6 +231,11 @@
           for (var i = 0; i < vmIdx.settings.lista_status.length; i++) {
             if(vmIdx.settings.lista_status[i].active) this.params.status.push(vmIdx.settings.lista_status[i].key)
           }
+        },
+        setUserFiltro: function(user) {
+          this.params.id = user.id
+          this.params.user_nome = user.nome
+          vmIdx.microUpdateCtrl.toggleUserSai()
         }
       }
 
