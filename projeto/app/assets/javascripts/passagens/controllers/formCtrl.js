@@ -31,21 +31,12 @@
           )
         },
         beforeDestroyCategoria: function(listObj) {
-          scAlert.open({
-            title: 'Você tem certeza que deseja excluir essa categoria?',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'red',
-                action: function() {
-                  vmForm.formCategoria.destroyCategoria(listObj)
-                }
-              }
-            ]
-          })
+          vmForm._confirmar('Você tem certeza que deseja excluir essa categoria?',
+            opts = {
+              trueLabel: 'red',
+              onTrue: () => vmForm.formCategoria.destroyCategoria(listObj)
+            }
+          )
         },
         destroyCategoria: function(listObj) {
           Categoria.destroy(listObj.categoria,
@@ -122,21 +113,12 @@
           }
         },
         limparFormulario: function(baseFact) {
-          scAlert.open({
-            title: 'Tem certeza de que deseja limpar os objetos da passagem?',
-            buttons: [
-              {
-                label: 'Cancelar',
-                color: 'gray'
-              }, {
-                label: 'Limpar',
-                color: 'yellow',
-                action: function() {
-                  baseFact.params.objetos = []
-                }
-              }
-            ]
-          })
+          vmForm._confirmar('Tem certeza de que deseja limpar os objetos da passagem?',
+            opts = {
+              trueLabel: 'yellow',
+              onTrue: () => baseFact.params.objetos = []
+            }
+          )
         },
         destroyListaObj: function(listObj) {
           listObj._destroy = true
@@ -178,6 +160,17 @@
               baseFact.params.user_saiu_id = null
           }
         }
+      }
+
+      vmForm._confirmar = function(titulo, opts={}) {
+        scAlert.open({
+          title: titulo,
+          messages: opts.message,
+          buttons: [
+            { label: 'Não', color: 'gray' },
+            { label: 'Sim', color: (opts.trueLabel || 'green'), action: () => opts.onTrue() }
+          ]
+        })
       }
 
       return vmForm
