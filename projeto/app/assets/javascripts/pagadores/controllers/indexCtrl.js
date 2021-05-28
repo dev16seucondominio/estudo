@@ -1,6 +1,12 @@
 angular.module("myApp").lazy
 .controller("PessoasCtrl", [
-  "formFactory", "indexFactory", "scAlert", "scTopMessages", "Templates", "Pagador", function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Pagador) {
+  "formFactory",
+  "indexFactory",
+  "scAlert",
+  "scTopMessages",
+  "Templates",
+  "Pagador",
+  function(formFactory, indexFactory, scAlert, scTopMessages, Templates, Pagador) {
     vmIdx = this
 
     vmIdx.templates = Templates
@@ -46,23 +52,14 @@ angular.module("myApp").lazy
           }
         )
       },
-      alertExcluirRegistro: function(pessoa) {
-        scAlert.open({
-          title: 'Você tem certeza que deseja excluir essa pessoa?',
-          messages: 'Todos os dados serão perdidos!',
-          buttons: [
-            {
-              label: 'Não',
-              color: 'gray'
-            }, {
-              label: 'Sim',
-              color: 'yellow',
-              action: function() {
-                vmIdx.listCtrl.execExcluirRegistro(pessoa)
-              }
-            }
-          ]
-        })
+      beforeExcluirRegistro: function(pessoa) {
+        vmIdx._confirmar('Você tem certeza que deseja excluir essa pessoa?',
+          opts = {
+            message: 'Todos os dados serão perdidos!',
+            trueLabel: 'yellow',
+            onTrue: () => vmIdx.listCtrl.execExcluirRegistro(pessoa)
+          }
+        )
       },
       execExcluirRegistro: function(pessoa){
         Pagador.destroy(pessoa,
@@ -173,6 +170,19 @@ angular.module("myApp").lazy
       // vmIdx.locale = data.locales.pagadores
       // vmIdx.localeContas = data.locales.contas
     }
+
+    vmIdx._confirmar = function(titulo, opts={}) {
+      scAlert.open({
+        title: titulo,
+        messages: opts.message,
+        buttons: [
+          { label: 'Não', color: 'gray' },
+          { label: 'Sim', color: (opts.trueLabel || 'green'), action: () => opts.onTrue() }
+        ]
+      })
+    }
+
+
 
     return vmIdx
 

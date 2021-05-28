@@ -62,21 +62,12 @@
         },
         beforeReativar: function(passagem) {
           this.params = angular.copy(passagem)
-          scAlert.open({
-            title: 'Deseja mesmo reativar a passagem?',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'yellow',
-                action: function() {
-                  vmIdx.microUpdateCtrl.reativar()
-                }
-              }
-            ]
-          })
+          vmIdx._confirmar('Deseja mesmo reativar a passagem?',
+            opts = {
+              trueLabel: 'yellow',
+              onTrue: () => vmIdx.microUpdateCtrl.reativar()
+            }
+          )
         },
         reativar: function() {
           this.params = Object.slice(this.params, 'id', 'status')
@@ -93,21 +84,12 @@
         },
         beforeDesativar: function(passagem) {
           this.params = angular.copy(passagem)
-          scAlert.open({
-            title: 'Você tem certeza que deseja desativar a passagem?',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'yellow',
-                action: function() {
-                  vmIdx.microUpdateCtrl.desativar()
-                }
-              }
-            ]
-          })
+          vmIdx._confirmar('Você tem certeza que deseja desativar a passagem?',
+            opts = {
+              trueLabel: 'yellow',
+              onTrue: () => vmIdx.microUpdateCtrl.desativar()
+            }
+          )
         },
         desativar: function() {
           this.params = Object.slice(this.params, 'id', 'status')
@@ -158,22 +140,13 @@
 
         },
         beforeExcluirRegistro: function(passagem) {
-          scAlert.open({
-            title: 'Você tem certeza que deseja excluir essa passagem?',
-            messages: 'Todos os dados serão perdidos!',
-            buttons: [
-              {
-                label: 'Não',
-                color: 'gray'
-              }, {
-                label: 'Sim',
-                color: 'yellow',
-                action: function() {
-                  vmIdx.listCtrl.execExcluirRegistro(passagem)
-                }
-              }
-            ]
-          })
+          vmIdx._confirmar('Você tem certeza que deseja excluir essa passagem?',
+            opts = {
+              message: 'Todos os dados serão perdidos!',
+              trueLabel: 'yellow',
+              onTrue: () => vmIdx.listCtrl.execExcluirRegistro(passagem)
+            }
+          )
         },
         execExcluirRegistro: function(passagem) {
           Passagem.destroy(passagem,
@@ -276,6 +249,18 @@
 
         vmIdx.filtro.init()
       }
+
+      vmIdx._confirmar = function(titulo, opts={}) {
+        scAlert.open({
+          title: titulo,
+          messages: opts.message,
+          buttons: [
+            { label: 'Não', color: 'gray' },
+            { label: 'Sim', color: (opts.trueLabel || 'green'), action: () => opts.onTrue() }
+          ]
+        })
+      }
+
 
       return vmIdx
 
